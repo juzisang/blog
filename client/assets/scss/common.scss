@@ -1,0 +1,41 @@
+@import "variables";
+
+::selection {
+  color: #fff;
+  background-color: $selectionColor;
+}
+
+* {
+  -moz-box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #313131;
+  outline: 0;
+  &:hover {
+    color: $selectionColor;
+  }
+}
+
+body {
+  font-family: -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0 auto;
+  color: #313131;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul, li {
+  list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
