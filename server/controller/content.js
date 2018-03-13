@@ -91,6 +91,43 @@ class ContentController {
   }
 
   /**
+   * 编辑文章
+   * @param ctx = ctx.getParams()
+   * @param ctx.cid
+   * @param ctx.title
+   * @param ctx.content
+   * @param ctx.tags
+   * @param ctx.category
+   * @param ctx.slug
+   * @param ctx.order
+   * @param ctx.status
+   */
+  async editArticle (ctx) {
+    const rules = {
+      cid: {type: 'string', required: true},
+      title: {type: 'string'},
+      content: {type: 'string'},
+      tags: {type: 'array'},
+      category: {type: 'string'},
+      status: {type: 'enum', enum: ['online', 'draft', 'delete']}
+    }
+    const params = await util.validate(rules, ctx.getParams())
+    const article = ContentModel.findById(params.cid)
+    if (!article) {
+      return ctx.error('文章不存在', 404)
+    }
+    await ContentModel.update(
+      Object.assign(article, params),
+      {
+        where: {
+          cid: params.cid
+        }
+      }
+    )
+    ctx.success(null, '编辑成功')
+  }
+
+  /**
    * 获取指定id的内容
    * @param ctx = ctx.getParams()
    * @param ctx.cid
@@ -124,28 +161,28 @@ class ContentController {
     if (!params.cid) {
       return ctx.error('请填写cid')
     }
-    if (await ContentModel.findOne({
-        where: {
-          cid: params.cid,
-          status: {
-            not: 'delete'
-          }
+    const article = await ContentModel.findOne({
+      where: {
+        cid: params.cid,
+        status: {
+          not: 'delete'
         }
-      })) {
-      await ContentModel.update(
-        {
-          status: 'delete'
-        },
-        {
-          where: {
-            cid: params.cid
-          }
-        }
-      )
-      return ctx.success(null, '删除成功')
-    } else {
+      }
+    })
+    if (!article) {
       return ctx.error('内容不存在', 404)
     }
+    await ContentModel.update(
+      {
+        status: 'delete'
+      },
+      {
+        where: {
+          cid: params.cid
+        }
+      }
+    )
+    return ctx.success(null, '删除成功')
   }
 
   /**

@@ -11,6 +11,10 @@ module.exports = new MapRouter([
         controller: ContentController.createArticle,
       },
       {
+        url: '/edit',
+        controller: ContentController.editArticle,
+      },
+      {
         url: '/details',
         controller: ContentController.details
       },
