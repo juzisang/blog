@@ -33,7 +33,7 @@ app
   .use(jwt({
     secret: config.app.jwt,
     getToken (ctx, next) {
-      return ctx.header['Authorization'] || ctx.cookies.get('Authorization')
+      return ctx.header['authorization'] || ctx.cookies.get('authorization')
     }
   })
     .unless({
