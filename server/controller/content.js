@@ -16,9 +16,6 @@ const RelationshipsModel = require('../model').Relationships
  * @param ctx.status
  */
 async function createArticle (ctx) {
-  if (!ctx.session.user) {
-    return ctx.error('请先登录', 403)
-  }
   const rules = {
     title: {type: 'string', required: true},
     content: {type: 'string', required: true},

@@ -2,6 +2,7 @@ const md5 = require('md5')
 const config = require('../config')
 const util = require('../util/util')
 const UserModel = require('../model').Users
+const jwt = require('jsonwebtoken')
 
 /**
  * 注册
@@ -38,29 +39,28 @@ async function register (ctx) {
  * @returns {Promise<void>}
  */
 async function login (ctx) {
-  try {
-    const params = ctx.getParams()
-    await util.validate({
+  const params = ctx.getParams()
+  await util.validate(
+    {
       name: {type: 'string', required: true},
       password: {type: 'string', required: true}
     }, params)
-    let users = await UserModel.findAll({where: {name: params.name}})
-    if (users.length === 0) {
-      throw new Error('用户不存在')
-    }
-    const user = users[0].dataValues
-    if (user.name !== params.name) {
-      throw new Error('用户名错误')
-    } else if (user.password !== md5(params.password)) {
-      throw new Error('密码错误')
-    }
-    ctx.session.user = Object.assign({}, user)
-    delete user.password
-    ctx.success(user, '登录成功')
-  } catch (e) {
-    console.error(e)
-    ctx.error(e)
+  let user = await UserModel.findOne({where: {name: params.name}})
+  if (!user) {
+    throw new Error('用户不存在')
   }
+  if (user.name !== params.name || user.password !== md5(params.password)) {
+    throw new Error('用户名或密码错误')
+  }
+  // 生成Token
+  const token = jwt.sign({
+    user: user,
+    exp: Math.floor(Date.now() / 1000) + (60 * 60)
+  }, config.app.jwt)
+
+  ctx.success({
+    token
+  }, '登录成功')
 }
 
 /**
@@ -106,29 +106,25 @@ async function details (ctx) {
  */
 async function edit (ctx) {
   const params = ctx.getParams()
-  try {
-    const {uid, name, mail, url, screenName} = await util.validate({
-      uid: {type: 'string', required: true},
-      name: {type: 'string', required: true},
-      mail: {type: 'email', required: true},
-      url: {type: 'url', required: true},
-      screenName: {type: 'string', required: true, transform: (value) => value ? value : params.name}
-    }, params)
+  const {uid, name, mail, url, screenName} = await util.validate({
+    uid: {type: 'string', required: true},
+    name: {type: 'string', required: true},
+    mail: {type: 'email', required: true},
+    url: {type: 'url', required: true},
+    screenName: {type: 'string', required: true, transform: (value) => value ? value : params.name}
+  }, params)
 
-    if (await UserModel.findById(params.uid)) {
-      await UserModel.update(
-        {uid, name, mail, url, screenName},
-        {
-          where: {
-            uid: params.uid
-          }
-        })
-      ctx.success(params, '更新成功')
-    } else {
-      throw new Error('用户不存在')
-    }
-  } catch (e) {
-    ctx.error(e)
+  if (await UserModel.findById(params.uid)) {
+    await UserModel.update(
+      {uid, name, mail, url, screenName},
+      {
+        where: {
+          uid: params.uid
+        }
+      })
+    ctx.success(params, '更新成功')
+  } else {
+    throw new Error('用户不存在')
   }
 }
 

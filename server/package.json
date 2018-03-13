@@ -24,9 +24,11 @@
   "homepage": "https://github.com/JuZiSang/blog-server#readme",
   "dependencies": {
     "async-validator": "1.8.2",
+    "jsonwebtoken": "^8.2.0",
     "koa": "2.5.0",
     "koa-bodyparser": "4.2.0",
     "koa-jsonp": "2.0.2",
+    "koa-jwt": "^3.3.0",
     "koa-logger": "3.1.0",
     "koa-onerror": "4.0.0",
     "koa-router": "7.4.0",
