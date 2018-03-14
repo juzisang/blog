@@ -14,6 +14,15 @@ const Metas = seq.import('./metas.js')
 const Users = seq.import('./users.js')
 const Content = seq.import('./content.js')
 
+Relationships.removeAttribute('id')
+
+Users.hasMany(Content, {foreignKey: 'authorId', targetKey: 'uid'})
+Users.hasMany(Comment, {foreignKey: 'authorId', targetKey: 'uid'})
+Users.hasMany(Options, {foreignKey: 'user', targetKey: 'uid'})
+
+Relationships.belongsTo(Metas, {foreignKey: 'mid', targetKey: 'mid'})
+Relationships.belongsTo(Content, {foreignKey: 'cid', targetKey: 'cid'})
+
 seq.sync({force: false})
 
 module.exports = {

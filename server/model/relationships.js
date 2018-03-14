@@ -2,10 +2,10 @@ module.exports = function (sequelize, DataTypes) {
   return sequelize.define('relationships', {
       cid: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: true
       },
       mid: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: true
       }
     },

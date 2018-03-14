@@ -9,5 +9,6 @@ module.exports = {
     password: process.env.MYSQL_PASSWORD || 'developer',
     host: process.env.MYSQL_HOST || 'localhost',
     port: 3306
-  }
+  },
+  env: ''
 }

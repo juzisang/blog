@@ -1,5 +1,6 @@
 const ContentController = require('../controller/content')
 const UserController = require('./../controller/user')
+const MetaController = require('../controller/meta')
 const MapRouter = require('../util/router')
 
 module.exports = new MapRouter([
@@ -25,7 +26,7 @@ module.exports = new MapRouter([
       {
         url: '/list',
         controller: ContentController.articleList
-      }
+      },
     ]
   },
   {
@@ -51,6 +52,19 @@ module.exports = new MapRouter([
         url: '/details/:id',
         controller: UserController.details,
       },
+    ]
+  },
+  {
+    url: '/meta',
+    children: [
+      {
+        url: '/create',
+        controller: MetaController.createMeta
+      },
+      {
+        url: '/del',
+        controller: MetaController.delMeta
+      }
     ]
   },
   {

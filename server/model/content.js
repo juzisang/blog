@@ -24,11 +24,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       authorId: {
         field: 'author_id',
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'users',
-          key: 'uid',
-        }
+        type: DataTypes.INTEGER
       },
       status: {
         field: 'status',

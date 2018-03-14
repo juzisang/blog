@@ -18,10 +18,10 @@ const origin = [
 ]
 
 app
+  .use(middlewares.ctx)
   .use(middlewares.errorHandle)
   .use(logger())
   .use(bodyParser())
-  .use(middlewares.ctx)
   .use(cors({
     origin: function (url) {
       if (origin.includes(url)) {

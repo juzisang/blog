@@ -10,11 +10,7 @@ module.exports = function (sequelize, DataTypes) {
       cid: {
         field: 'cid',
         type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'contents',
-          key: 'cid',
-        }
+        allowNull: false
       },
       createTime: {
         field: 'create_time',

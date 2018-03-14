@@ -2,13 +2,10 @@ module.exports = (ctx, next) => {
   return next().catch((err) => {
     if (err.status === 401) {
       ctx.status = 401
-      ctx.body = {
-        code: 401,
-        msg: err.originalError ? err.originalError.message : err.message,
-        status: 'error',
-      }
+      ctx.error(err.originalError ? err.originalError.message : err.message, 401)
     } else {
-      throw err
+      // throw err
+      ctx.error(err.originalError ? err.originalError.message : err.message, 500)
     }
   })
 }

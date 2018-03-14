@@ -20,6 +20,26 @@ async function getMetas (cid) {
   }
 }
 
+/**
+ * 根据名字，创建对应tag，或者分类
+ */
+async function createMetas (name, type) {
+  return await MetasModel.findOrCreate(
+    {
+      where: {
+        name: name.trim(),
+        type: type
+      },
+      defaults: {
+        name: name.trim(),
+        type: type,
+        slug: name.trim(),
+        description: name.trim()
+      }
+    }
+  )
+}
+
 class ContentController {
   /**
    * @param ctx = ctx.getParams()
@@ -53,35 +73,9 @@ class ContentController {
     // 创建内容完毕
     const contentData = await ContentModel.create({title, content, authorId, status, slug, order, type})
     // 创建Tag
-    const tagsData = await Promise.all(tags.map(tag => MetasModel.findOrCreate(
-      {
-        where: {
-          name: tag.trim(),
-          type: 'tag'
-        },
-        defaults: {
-          name: tag.trim(),
-          type: 'tag',
-          slug: tag.trim(),
-          description: tag.trim()
-        }
-      }
-    )))
+    const tagsData = await Promise.all(tags.map(tag => createMetas(tag, 'tag')))
     // 创建分类
-    const categoryData = await MetasModel.findOrCreate(
-      {
-        where: {
-          name: category.trim(),
-          type: 'category'
-        },
-        defaults: {
-          name: category.trim(),
-          type: 'category',
-          slug: category.trim(),
-          description: category.trim()
-        }
-      }
-    )
+    const categoryData = await createMetas(category, 'category')
     // 合并文件与 tag 分类的关系
     const metasData = tagsData.map(item => item[0]).concat(categoryData).filter(item => item.mid)
     for (let i = 0; i < metasData.length; i++) {
@@ -116,6 +110,7 @@ class ContentController {
     if (!article) {
       return ctx.error('文章不存在', 404)
     }
+
     await ContentModel.update(
       Object.assign(article, params),
       {

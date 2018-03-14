@@ -43,15 +43,15 @@ class UserController {
     const params = ctx.getParams()
     await util.validate(
       {
-        name: {type: 'string', required: true},
+        mail: {type: 'email', required: true},
         password: {type: 'string', required: true}
       }, params)
-    let user = await UserModel.findOne({where: {name: params.name}})
+    let user = await UserModel.findOne({where: {mail: params.mail}})
     if (!user) {
-      throw new Error('用户不存在')
+      return ctx.error('用户不存在', 404)
     }
-    if (user.name !== params.name || user.password !== md5(params.password)) {
-      throw new Error('用户名或密码错误')
+    if (user.mail !== params.mail || user.password !== md5(params.password)) {
+      return ctx.error('用户名或密码错误', 405)
     }
     // 生成Token
     const token = jwt.sign({
@@ -81,7 +81,6 @@ class UserController {
    */
   async details (ctx) {
     const params = ctx.getParams()
-
     if (params.id) {
       const user = await UserModel.findById(params.id, {attributes: {exclude: ['password']}})
       if (user) {
@@ -92,7 +91,6 @@ class UserController {
     } else {
       ctx.error('id为必填')
     }
-
   }
 
   /**
