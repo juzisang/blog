@@ -3,6 +3,7 @@ const config = require('../config')
 const ContentModel = require('../model').Content
 const MetasModel = require('../model').Metas
 const RelationshipsModel = require('../model').Relationships
+const Sequelize = require('../model').Sequelize
 
 /**
  * 获取分类，以及Tag
@@ -18,26 +19,6 @@ async function getMetas (cid) {
     tags: all.map(item => item[0]).filter(item => item.type === 'tag'),
     category: all.map(item => item[0]).filter(item => item.type === 'category')
   }
-}
-
-/**
- * 根据名字，创建对应tag，或者分类
- */
-async function createMetas (name, type) {
-  return await MetasModel.findOrCreate(
-    {
-      where: {
-        name: name.trim(),
-        type: type
-      },
-      defaults: {
-        name: name.trim(),
-        type: type,
-        slug: name.trim(),
-        description: name.trim()
-      }
-    }
-  )
 }
 
 class ContentController {
@@ -56,7 +37,7 @@ class ContentController {
       title: {type: 'string', required: true},
       content: {type: 'string', required: true},
       tags: {type: 'array'},
-      category: {type: 'string', required: true},
+      category: {type: 'string'},
       status: {type: 'enum', enum: ['online', 'draft', 'delete']}
     }
     const {
@@ -67,19 +48,24 @@ class ContentController {
       authorId = ctx.session.user.uid,
       status = 'online',
       tags,
-      category = '默认分类',
+      category,
       order
     } = await util.validate(rules, ctx.getParams())
     // 创建内容完毕
     const contentData = await ContentModel.create({title, content, authorId, status, slug, order, type})
     // 创建Tag
-    const tagsData = await Promise.all(tags.map(tag => createMetas(tag, 'tag')))
-    // 创建分类
-    const categoryData = await createMetas(category, 'category')
-    // 合并文件与 tag 分类的关系
-    const metasData = tagsData.map(item => item[0]).concat(categoryData).filter(item => item.mid)
-    for (let i = 0; i < metasData.length; i++) {
-      await RelationshipsModel.create({cid: contentData.cid, mid: metasData[i].mid})
+    if (tags) {
+      await Promise.all(tags.map(mid => RelationshipsModel.create({
+        mid,
+        cid: contentData.cid
+      })))
+    }
+    // 创建category
+    if (category) {
+      await RelationshipsModel.create({
+        mid: category,
+        cid: contentData.cid
+      })
     }
     ctx.success(null, '创建成功')
   }
@@ -109,6 +95,46 @@ class ContentController {
     const article = ContentModel.findById(params.cid)
     if (!article) {
       return ctx.error('文章不存在', 404)
+    }
+
+    if (params.tags && params.tags.length > 0) {
+      // 删除旧的Tag
+      const list = await Sequelize.query(`
+        SELECT relationships.cid,relationships.mid 
+        FROM relationships
+        INNER JOIN metas ON relationships.mid = metas.mid
+        WHERE relationships.cid = ${params.cid} AND metas.type = 'tag'
+    `, {type: Sequelize.QueryTypes.SELECT})
+
+      for (let i = 0; i < list.length; i++) {
+        const item = list[i]
+        await  RelationshipsModel.destroy({where: item})
+      }
+
+      await Promise.all(params.tags.map(mid => RelationshipsModel.create({
+        mid,
+        cid: params.cid
+      })))
+    }
+
+    if (params.category) {
+      // 删除旧的Tag
+      const list = await Sequelize.query(`
+        SELECT relationships.cid,relationships.mid 
+        FROM relationships
+        INNER JOIN metas ON relationships.mid = metas.mid
+        WHERE relationships.cid = ${params.cid} AND metas.type = 'category'
+    `, {type: Sequelize.QueryTypes.SELECT})
+
+      for (let i = 0; i < list.length; i++) {
+        const item = list[i]
+        await  RelationshipsModel.destroy({where: item})
+      }
+
+      await RelationshipsModel.create({
+        mid: params.category,
+        cid: params.cid
+      })
     }
 
     await ContentModel.update(

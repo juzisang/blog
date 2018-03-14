@@ -70,6 +70,6 @@ module.exports = new MapRouter([
   {
     url: '*',
     controller: (ctx) => ctx.error('接口不存在', 404)
-  },
+  }
 ])
 
