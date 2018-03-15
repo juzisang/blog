@@ -1,5 +1,5 @@
 {
-    "presets": ["stage-3", "env"],
-    "plugins": ["transform-runtime", "syntax-dynamic-import"],
+    "presets": ["es2015", "stage-3"],
+    "plugins": ["transform-runtime"],
     "comments": false
 }
