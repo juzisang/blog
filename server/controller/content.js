@@ -21,6 +21,25 @@ async function getMetas (cid) {
   }
 }
 
+/**
+ * 筛选需要添加的，和需要删除的Tag
+ */
+function filterNewTag (olds, news) {
+  let newTag = []
+  let delTag = []
+  for (let i = 0; i < olds.length; i++) {
+    if (news.includes(olds[i])) {
+      newTag.push(olds[i])
+    } else {
+      delTag.push(olds[i])
+    }
+  }
+  return {
+    newTag,
+    delTag
+  }
+}
+
 class ContentController {
   /**
    * @param ctx = ctx.getParams()
@@ -85,10 +104,10 @@ class ContentController {
   async editArticle (ctx) {
     const rules = {
       cid: {type: 'string', required: true},
-      title: {type: 'string'},
-      content: {type: 'string'},
-      tags: {type: 'array'},
-      category: {type: 'string'},
+      title: {type: 'string', required: true},
+      content: {type: 'string', required: true},
+      tags: {type: 'array', required: true},
+      category: {type: 'string', required: true},
       status: {type: 'enum', enum: ['online', 'draft', 'delete']}
     }
     const params = await util.validate(rules, ctx.getParams())
@@ -96,47 +115,26 @@ class ContentController {
     if (!article) {
       return ctx.error('文章不存在', 404)
     }
-
-    if (params.tags && params.tags.length > 0) {
-      // 删除旧的Tag
-      const list = await Sequelize.query(`
-        SELECT relationships.cid,relationships.mid 
-        FROM relationships
-        INNER JOIN metas ON relationships.mid = metas.mid
-        WHERE relationships.cid = ${params.cid} AND metas.type = 'tag'
-    `, {type: Sequelize.QueryTypes.SELECT})
-
-      for (let i = 0; i < list.length; i++) {
-        const item = list[i]
-        await  RelationshipsModel.destroy({where: item})
-      }
-
+    // 创建Tag
+    if (params.tags) {
+      // 删除旧的
+      await RelationshipsModel.destroy({
+        where: {
+          cid: params.cid
+        }
+      })
       await Promise.all(params.tags.map(mid => RelationshipsModel.create({
         mid,
         cid: params.cid
       })))
     }
-
+    // 创建category
     if (params.category) {
-      // 删除旧的Tag
-      const list = await Sequelize.query(`
-        SELECT relationships.cid,relationships.mid 
-        FROM relationships
-        INNER JOIN metas ON relationships.mid = metas.mid
-        WHERE relationships.cid = ${params.cid} AND metas.type = 'category'
-    `, {type: Sequelize.QueryTypes.SELECT})
-
-      for (let i = 0; i < list.length; i++) {
-        const item = list[i]
-        await  RelationshipsModel.destroy({where: item})
-      }
-
       await RelationshipsModel.create({
         mid: params.category,
         cid: params.cid
       })
     }
-
     await ContentModel.update(
       Object.assign(article, params),
       {

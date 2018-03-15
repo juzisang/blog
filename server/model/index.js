@@ -23,8 +23,6 @@ Users.hasMany(Options, {foreignKey: 'user', targetKey: 'uid'})
 Relationships.belongsTo(Metas, {foreignKey: 'mid', targetKey: 'mid'})
 Relationships.belongsTo(Content, {foreignKey: 'cid', targetKey: 'cid'})
 
-Metas.hasMany(Relationships, {foreignKey: 'mid', targetKey: 'mid'})
-
 seq.sync({force: false})
 
 module.exports = {
