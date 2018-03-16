@@ -21,27 +21,9 @@ async function getMetas (cid) {
   }
 }
 
-/**
- * 筛选需要添加的，和需要删除的Tag
- */
-function filterNewTag (olds, news) {
-  let newTag = []
-  let delTag = []
-  for (let i = 0; i < olds.length; i++) {
-    if (news.includes(olds[i])) {
-      newTag.push(olds[i])
-    } else {
-      delTag.push(olds[i])
-    }
-  }
-  return {
-    newTag,
-    delTag
-  }
-}
-
 class ContentController {
   /**
+   * 创建文章
    * @param ctx = ctx.getParams()
    * @param ctx.title
    * @param ctx.content
@@ -55,8 +37,8 @@ class ContentController {
     const rules = {
       title: {type: 'string', required: true},
       content: {type: 'string', required: true},
-      tags: {type: 'array'},
-      category: {type: 'string'},
+      tags: {type: 'array', required: true},
+      category: {type: 'string', required: true},
       status: {type: 'enum', enum: ['online', 'draft', 'delete']}
     }
     const {
@@ -115,26 +97,22 @@ class ContentController {
     if (!article) {
       return ctx.error('文章不存在', 404)
     }
-    // 创建Tag
-    if (params.tags) {
-      // 删除旧的
-      await RelationshipsModel.destroy({
-        where: {
-          cid: params.cid
-        }
-      })
-      await Promise.all(params.tags.map(mid => RelationshipsModel.create({
-        mid,
+    // 删除旧的
+    await RelationshipsModel.destroy({
+      where: {
         cid: params.cid
-      })))
-    }
-    // 创建category
-    if (params.category) {
-      await RelationshipsModel.create({
-        mid: params.category,
-        cid: params.cid
-      })
-    }
+      }
+    })
+    // 添加Tag
+    await Promise.all(params.tags.map(mid => RelationshipsModel.create({
+      mid,
+      cid: params.cid
+    })))
+    // 添加category
+    await RelationshipsModel.create({
+      mid: params.category,
+      cid: params.cid
+    })
     await ContentModel.update(
       Object.assign(article, params),
       {
