@@ -24,23 +24,51 @@
       <el-container>
         <el-aside width="200px">
           <el-menu
-            router="true"
+            :router="true"
             style="border: none"
             default-active="2"
             background-color="rgba(0,0,0,0)"
             text-color="#fff"
             active-text-color="#3080FE">
             <el-menu-item index="/home">
-              <i style="color: #fff" class="el-icon-menu"></i>
+              <i style="width: 29px;display: inline-block;">
+                <img src="~src/assets/imgs/icon_home.png" width="18" height="18"/>
+              </i>
               <span slot="title">主页</span>
             </el-menu-item>
-            <el-submenu index="1">
+            <el-menu-item index="/tag">
+              <i style="width: 29px;display: inline-block;">
+                <img src="~src/assets/imgs/icon_tag.png" width="18" height="18"/>
+              </i>
+              <span slot="title">标签管理</span>
+            </el-menu-item>
+            <el-menu-item index="/category">
+              <i style="color: #fff" class="el-icon-menu"></i>
+              <span slot="title">分类管理</span>
+            </el-menu-item>
+            <el-submenu index="/article">
               <template slot="title">
                 <i style="color: #fff" class="el-icon-edit-outline"></i>
                 <span>文章管理</span>
               </template>
               <el-menu-item index="/article/create-article" class="children-item">新建文章</el-menu-item>
-              <el-menu-item index="/article/edit-article" class="children-item">文章编辑</el-menu-item>
+              <el-menu-item index="/article/edit-article" class="children-item">文章列表</el-menu-item>
+            </el-submenu>
+            <el-submenu index="/page">
+              <template slot="title">
+                <i style="color: #fff" class="el-icon-edit-outline"></i>
+                <span>页面管理</span>
+              </template>
+              <el-menu-item index="/page/create-article" class="children-item">新建页面</el-menu-item>
+              <el-menu-item index="/page/edit-article" class="children-item">页面列表</el-menu-item>
+            </el-submenu>
+            <el-submenu index="/setting">
+              <template slot="title">
+                <i style="color: #fff" class="el-icon-setting"></i>
+                <span>系统设置</span>
+              </template>
+              <el-menu-item index="/setting/create-article" class="children-item">基本设置</el-menu-item>
+              <el-menu-item index="/setting/edit-article" class="children-item">个人设置</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -82,7 +110,7 @@
       .blog-name {
         line-height: 80px;
         height: 80px;
-        font-size: 36px;
+        font-size: 32px;
         color: #3080FE;
         float: left;
       }

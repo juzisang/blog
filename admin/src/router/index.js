@@ -14,6 +14,14 @@ export default new Router({
           component: () => import('src/view/Home.vue')
         },
         {
+          path: 'tag',
+          component: () => import('src/view/Tag.vue')
+        },
+        {
+          path: 'category',
+          component: () => import('src/view/Category.vue')
+        },
+        {
           path: 'article/create-article',
           component: () => import('src/view/article/CreateArticle.vue')
         },
