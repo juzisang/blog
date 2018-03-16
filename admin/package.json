@@ -1,7 +1,7 @@
 {
   "name": "admin",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "blog admin",
   "author": "juzisang <1915327117@qq.com>",
   "private": true,
   "scripts": {
@@ -11,6 +11,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "element-ui": "^2.2.2",
+    "normalize.css": "^8.0.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
@@ -32,6 +34,7 @@
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",
+    "eslint-plugin-html": "^4.0.2",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.4.0",
@@ -42,6 +45,7 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "node-notifier": "^5.1.2",
+    "node-sass": "^4.7.2",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
     "portfinder": "^1.0.13",
@@ -49,6 +53,7 @@
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.2.1",
     "rimraf": "^2.6.0",
+    "sass-loader": "^6.0.7",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
     "uglifyjs-webpack-plugin": "^1.1.1",
