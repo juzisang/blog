@@ -26,7 +26,7 @@
           <el-menu
             :router="true"
             style="border: none"
-            default-active="2"
+            :default-active="$route.fullPath"
             background-color="rgba(0,0,0,0)"
             text-color="#fff"
             active-text-color="#3080FE">
@@ -100,9 +100,8 @@
 </script>
 
 <style lang="scss" scoped>
-
   .Home {
-    width: 1200px;
+    max-width: 1200px;
     margin: 0 auto;
     .header {
       height: 80px !important;
