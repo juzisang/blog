@@ -1,6 +1,8 @@
 const ContentController = require('../controller/content')
 const UserController = require('./../controller/user')
 const MetaController = require('../controller/meta')
+const CommonController = require('../controller/common')
+
 const MapRouter = require('../util/router')
 
 module.exports = new MapRouter([
@@ -56,7 +58,12 @@ module.exports = new MapRouter([
   },
   {
     url: '/common',
-    children: []
+    children: [
+      {
+        url: '/recent_comments',
+        controller: CommonController.getRecentComments
+      }
+    ]
   },
   {
     url: '/meta',

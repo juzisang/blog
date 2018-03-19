@@ -29,12 +29,11 @@ module.exports = async (ctx, next) => {
     if (keys) {
       if (typeof keys === 'string') {
         return params[keys]
-      } else if (typeof keys === 'array') {
+      } else if (keys instanceof Array) {
         const o = {}
-        for (let key in params) {
-          if (params[key]) {
-            o[key] = params[key]
-          }
+        for (let i = 0; i < keys.length; i++) {
+          let key = keys[i]
+          o[key] = params[key]
         }
         return o
       }
