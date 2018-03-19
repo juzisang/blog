@@ -6,8 +6,8 @@ services:
      ports:
        - "9000:9000"
      volumes:
-       - ./server:/www/blog/
-     working_dir: /www/blog/
+       - ./server:/www/server/
+     working_dir: /www/server/
      command: bash -c "npm install && npm run dev"
      depends_on:
        - mysql
@@ -19,6 +19,26 @@ services:
        - MYSQL_USER=developer
        - MYSQL_PASSWORD=developer
        - HOME_PORT=9000
+  admin:
+     image: node:8.9.4
+     ports:
+       - "8080:8080"
+     volumes:
+       - ./admin:/www/admin/
+     working_dir: /www/admin/
+     command: bash -c "npm install && npm run start"
+     depends_on:
+       - server
+  client:
+     image: node:8.9.4
+     ports:
+       - "3000:3000"
+     volumes:
+       - ./client:/www/client/
+     working_dir: /www/client/
+     command: bash -c "npm install && npm run dev"
+     depends_on:
+       - server
   mysql:
     image: mysql:5.7
     # restart: always
