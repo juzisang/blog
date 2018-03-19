@@ -37,23 +37,14 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.ENUM,
         values: ['article', 'page', 'file'],
         allowNull: false
-      },
-      createTime: {
-        field: 'create_time',
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false
-      },
-      modifiedTime: {
-        field: 'modified_time',
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false
-      },
+      }
     },
     {
       charset: 'utf8',
       collate: 'utf8_general_ci',
-      timestamps: false
+      timestamps: true,
+      createdAt: 'ctime',
+      updatedAt: 'utime',
+      deletedAt: 'dtime',
     })
 }

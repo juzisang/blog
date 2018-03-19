@@ -12,12 +12,6 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      createTime: {
-        field: 'create_time',
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
-      },
       author: {
         field: 'author',
         allowNull: false,
@@ -70,6 +64,9 @@ module.exports = function (sequelize, DataTypes) {
     {
       charset: 'utf8',
       collate: 'utf8_general_ci',
-      timestamps: false
+      timestamps: true,
+      createdAt: 'ctime',
+      updatedAt: 'utime',
+      deletedAt: 'dtime',
     })
 }

@@ -30,21 +30,6 @@ module.exports = function (sequelize, DataTypes) {
         field: 'screen_name',
         type: DataTypes.STRING
       },
-      createTime: {
-        field: 'create_time',
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
-      },
-      activatedTime: {
-        field: 'activated_time',
-        defaultValue: DataTypes.NOW,
-        type: DataTypes.DATE
-      },
-      loggedTime: {
-        field: 'logged_time',
-        defaultValue: DataTypes.NOW,
-        type: DataTypes.DATE
-      },
       group: {
         field: 'group',
         type: DataTypes.ENUM,
@@ -55,6 +40,9 @@ module.exports = function (sequelize, DataTypes) {
     {
       charset: 'utf8',
       collate: 'utf8_general_ci',
-      timestamps: false
+      timestamps: true,
+      createdAt: 'ctime',
+      updatedAt: 'utime',
+      deletedAt: 'dtime',
     })
 }

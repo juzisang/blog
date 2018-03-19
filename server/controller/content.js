@@ -151,9 +151,6 @@ class ContentController {
    * @param ctx.cid
    */
   async del (ctx) {
-    if (!ctx.session.user) {
-      return ctx.error('请先登录', 403)
-    }
     const params = ctx.getParams()
     if (!params.cid) {
       return ctx.error('请填写cid')

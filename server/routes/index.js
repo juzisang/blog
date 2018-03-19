@@ -55,6 +55,10 @@ module.exports = new MapRouter([
     ]
   },
   {
+    url: '/common',
+    children: []
+  },
+  {
     url: '/meta',
     children: [
       {

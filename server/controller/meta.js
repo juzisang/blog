@@ -15,16 +15,15 @@ class MetaController {
       description = null,
       type
     } = await Util.validate(rules, ctx.getParams())
-
-    if (await MetasModel.findOne({
-        where: {
-          name,
-          type
-        }
-      })) {
+    const query = {
+      where: {
+        name,
+        type
+      }
+    }
+    if (await MetasModel.findOne(query)) {
       return ctx.error(`${type}已经存在`, 405)
     }
-
     const meta = await MetasModel.create({
       name, slug, description, type
     })
@@ -36,15 +35,14 @@ class MetaController {
       mid: {type: 'string', required: true}
     }
     const {mid} = await Util.validate(rules, ctx.getParams())
-
-    if (!await MetasModel.findOne({
-        where: {
-          mid
-        }
-      })) {
+    const query = {
+      where: {
+        mid
+      }
+    }
+    if (!await MetasModel.findOne(query)) {
       return ctx.error('内容不存在', 404)
     }
-
     await MetasModel.destroy({
       where: {mid}
     })
