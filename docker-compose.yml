@@ -1,0 +1,31 @@
+version: '3'
+services:
+  server:
+     image: node:8.9.4
+     #  restart: always
+     ports:
+       - "9000:9000"
+     volumes:
+       - ./server:/www/blog/
+     working_dir: /www/blog/
+     command: bash -c "npm install && npm run dev"
+     depends_on:
+       - mysql
+     links:
+       - mysql
+     environment:
+       - MYSQL_HOST=mysql
+       - MYSQL_DATABASE=blog
+       - MYSQL_USER=developer
+       - MYSQL_PASSWORD=developer
+       - HOME_PORT=9000
+  mysql:
+    image: mysql:5.7
+    # restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=blog
+      - MYSQL_USER=developer
+      - MYSQL_PASSWORD=developer
