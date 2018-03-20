@@ -5,6 +5,13 @@ export default {
     },
     sleep (time) {
       return new Promise((resolve, reject) => setTimeout(() => resolve(), time))
+    },
+    error (err) {
+      if (err.response && err.response.data) {
+        this.$message.error(err.response.data.msg)
+      } else {
+        this.$message.error(err.message)
+      }
     }
   }
 }

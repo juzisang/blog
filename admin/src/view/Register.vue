@@ -1,22 +1,24 @@
 <template>
-  <div class="Login">
+  <div class="Register">
     <div class="login-box">
       <el-form class="form" ref="form" :model="form" :rules="rules">
         <el-form-item prop="mail">
-          <el-input class="mt" v-model="form.mail" placeholder="邮箱" size="medium" autoComplete="off"></el-input>
+          <el-input v-model="form.mail" placeholder="邮箱" size="medium" autoComplete="off"></el-input>
+        </el-form-item>
+        <el-form-item prop="name">
+          <el-input v-model="form.name" placeholder="帐号" size="medium" autoComplete="off"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input class="mt" v-model="form.password" placeholder="密码" size="medium" type="password"
+          <el-input v-model="form.password" placeholder="密码" size="medium" type="password"
                     autoComplete="off"></el-input>
         </el-form-item>
         <div class="help">
           <div>
-            <span>忘记密码</span>
-            <span @click="$router.push('/register')">注册</span>
+            <span @click="$router.push('/login')">登录</span>
           </div>
         </div>
         <el-form-item>
-          <el-button class="mt" type="primary" size="medium" @click="login">登录</el-button>
+          <el-button class="mt" type="primary" size="medium" @click="register">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -25,15 +27,15 @@
 
 <script>
   import Common from '../mixins/Common'
-  import Cookies from 'js-cookie'
 
   export default {
-    name: 'Login',
+    name: 'Register',
     mixins: [Common],
     data () {
       return {
         form: {
           mail: '',
+          name: '',
           password: ''
         },
         rules: {
@@ -41,21 +43,21 @@
             {required: true, message: '请输入邮箱', trigger: 'blur'},
             {type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur'}
           ],
+          name: [
+            {required: true, message: '请输入用户名', trigger: 'blur'}
+          ],
           password: [
-            {required: true, message: '请输入密码', trigger: 'blur'}
+            {required: true, message: '请输入密码', trigger: 'blur'},
+            {min: 6, max: 16, message: '你输入的密码太短啦', trigger: 'blur'}
           ]
         }
       }
     },
     methods: {
-      async login () {
+      async register () {
         this.validate('form')
-          .then(() => this.$Http.login(this.form))
-          .then(data => {
-            Cookies.set('authorization', data.data.data.token)
-            this.$message.success('登录成功')
-            debugger
-          })
+          .then(() => this.$Http.register(this.form))
+          .then(data => this.$message.success('注册成功'))
           .catch(err => this.error(err))
       }
     }
@@ -65,17 +67,16 @@
 <style lang="scss" scoped>
   @import "src/assets/style/util";
 
-  .Login {
+  .Register {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     .login-box {
       width: 400px;
-      height: 260px;
       background: #ffffff;
       box-sizing: border-box;
-      padding: 20px;
+      padding: 30px 20px 20px 20px;
       display: flex;
       align-items: center;
       border-radius: 2px;
@@ -101,7 +102,6 @@
             padding: 0 4px;
           }
         }
-
       }
     }
   }
