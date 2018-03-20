@@ -71,6 +71,14 @@ module.exports = new MapRouter([
       {
         url: '/del',
         controller: MetaController.delMeta
+      },
+      {
+        url: '/tags',
+        controller: MetaController.getTags
+      },
+      {
+        url: '/category',
+        controller: MetaController.getCategory
       }
     ]
   },

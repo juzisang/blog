@@ -20,7 +20,7 @@ module.exports = async (ctx, next) => {
         ctx.status = 500
         ctx.body = new DataModel(500, null, msg || '服务器错误', 'error')
       default:
-        ctx.status = 500
+        ctx.status = code
         ctx.body = new DataModel(code, null, msg || '服务器错误', 'error')
     }
   }

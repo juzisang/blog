@@ -46,7 +46,7 @@ class ContentController {
       slug = title,
       content,
       type = 'article',
-      authorId = ctx.session.user.uid,
+      authorId = ctx.state['user'],
       status = 'online',
       tags,
       category,

@@ -52,7 +52,6 @@ class UserController {
       user: user.uid,
       exp: Math.floor(Date.now() / 1000) + (60 * 60)
     }, config.app.jwt)
-    ctx.cookies.set('authorization', token)
     ctx.success({
       token
     }, '登录成功')

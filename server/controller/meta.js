@@ -48,6 +48,22 @@ class MetaController {
     })
     ctx.success(null, '删除成功')
   }
+
+  async getTags (ctx) {
+    return await MetasModel.findAll({
+      where: {
+        type: 'tag'
+      }
+    })
+  }
+
+  async getCategory (ctx) {
+    return await MetasModel.findAll({
+      where: {
+        type: 'category'
+      }
+    })
+  }
 }
 
 module.exports = new MetaController()
