@@ -50,7 +50,7 @@ class UserController {
     // 生成Token
     const token = jwt.sign({
       user: user.uid,
-      exp: Math.floor(Date.now() / 1000) + (60 * 60)
+      exp: 1000 * 60 * 60 * 24 * 20
     }, config.app.jwt)
     ctx.success({
       token

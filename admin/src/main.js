@@ -9,6 +9,7 @@ import 'src/assets/style/base.scss'
 import VueMarkdown from 'vue-markdown'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 import Http from 'src/assets/js/Http'
 
 Vue.config.productionTip = false
@@ -32,6 +33,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store,
   components: {App},
   template: '<App/>'
 })

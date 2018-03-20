@@ -1,8 +1,11 @@
 <template>
-    <div class="Tag"></div>
+  <div class="Tag"></div>
 </template>
 
 <script>
+  import { GET_TAGS } from 'src/store/common'
+  import { mapActions, mapState } from 'vuex'
+
   export default {
     name: 'Tag',
     mixins: [],
@@ -11,18 +14,24 @@
     data () {
       return {}
     },
-    computed: {},
-    mounted () {
+    computed: {
+      ...mapState({
+        tags: state => state.common.tags
+      })
     },
-    methods: {},
-    watch: {},
-    beforeDestroy () {
+    async created () {
+      await this[GET_TAGS]()
+    },
+    methods: {
+      ...mapActions([
+        GET_TAGS
+      ])
     }
   }
 </script>
 
 <style lang="scss" scoped>
-    .Tag {
-    }
+  .Tag {
+  }
 </style>
 

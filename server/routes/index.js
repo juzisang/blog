@@ -74,6 +74,7 @@ module.exports = new MapRouter([
       },
       {
         url: '/tags',
+        type: 'get',
         controller: MetaController.getTags
       },
       {

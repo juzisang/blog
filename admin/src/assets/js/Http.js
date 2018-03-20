@@ -4,6 +4,7 @@ class Http {
   constructor () {
     this.axios = require('axios').create({
       baseURL: 'http://localhost:9000/',
+      withCredentials: true,
       transformRequest: [function (data) {
         return qs.stringify(data)
       }]

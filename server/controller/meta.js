@@ -50,19 +50,19 @@ class MetaController {
   }
 
   async getTags (ctx) {
-    return await MetasModel.findAll({
+    return ctx.success(await MetasModel.findAll({
       where: {
         type: 'tag'
       }
-    })
+    }))
   }
 
   async getCategory (ctx) {
-    return await MetasModel.findAll({
+    return ctx.success(await MetasModel.findAll({
       where: {
         type: 'category'
       }
-    })
+    }))
   }
 }
 

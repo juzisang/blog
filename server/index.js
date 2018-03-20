@@ -29,7 +29,8 @@ app
         return ctx.headers.origin
       }
       return false
-    }
+    },
+    credentials: true
   }))
   .use(jwt({
     secret: config.app.jwt,
