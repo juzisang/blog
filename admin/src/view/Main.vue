@@ -101,6 +101,7 @@
 
 <style lang="scss" scoped>
   .Home {
+    color: #666;
     max-width: 1200px;
     margin: 0 auto;
     .header {

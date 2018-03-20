@@ -17,6 +17,14 @@ class Http {
   login ({mail, password}) {
     return this.axios.post('/user/login', {mail, password})
   }
+
+  getTags () {
+    return this.axios.get('/meta/tags')
+  }
+
+  getCategory () {
+    return this.axios.get('/meta/category')
+  }
 }
 
 export default new Http()

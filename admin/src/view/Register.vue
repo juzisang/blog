@@ -57,7 +57,10 @@
       async register () {
         this.validate('form')
           .then(() => this.$Http.register(this.form))
-          .then(data => this.$message.success('注册成功'))
+          .then(data => {
+            this.$message.success('注册成功')
+            this.$router.replace('/login')
+          })
           .catch(err => this.error(err))
       }
     }

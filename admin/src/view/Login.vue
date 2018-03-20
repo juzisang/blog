@@ -52,9 +52,9 @@
         this.validate('form')
           .then(() => this.$Http.login(this.form))
           .then(data => {
-            Cookies.set('authorization', data.data.data.token)
+            Cookies.set('authorization', data.data.data.token, {expires: 7})
             this.$message.success('登录成功')
-            debugger
+            this.$router.replace('/home')
           })
           .catch(err => this.error(err))
       }
