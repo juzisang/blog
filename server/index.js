@@ -13,6 +13,7 @@ const middlewares = require('./middlewares')
 const app = new Koa()
 
 const origin = [
+  'http://localhost:8080',
   'http://localhost:3000',
   'http://www.juzisang.com'
 ]
@@ -23,9 +24,9 @@ app
   .use(logger())
   .use(bodyParser())
   .use(cors({
-    origin: function (url) {
-      if (origin.includes(url)) {
-        return url
+    origin: function (ctx) {
+      if (origin.includes(ctx.headers.origin)) {
+        return ctx.headers.origin
       }
       return false
     }

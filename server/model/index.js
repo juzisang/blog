@@ -16,7 +16,7 @@ const Content = seq.import('./content.js')
 
 Relationships.removeAttribute('id')
 
-seq.sync({force: true})
+seq.sync({force: false})
 
 module.exports = {
   Content,

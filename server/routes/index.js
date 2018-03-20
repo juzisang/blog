@@ -49,11 +49,7 @@ module.exports = new MapRouter([
       {
         url: '/all',
         controller: UserController.all,
-      },
-      {
-        url: '/details/:id',
-        controller: UserController.details,
-      },
+      }
     ]
   },
   {

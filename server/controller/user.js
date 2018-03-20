@@ -14,17 +14,12 @@ class UserController {
    * @returns {Promise<void>}
    */
   async register (ctx) {
-    const params = ctx.getParams()
-
-    let validate = util.validate({
+    let {name, password, mail} = await util.validate({
       name: {type: 'string', required: true},
       password: {type: 'string', required: true},
       mail: {type: 'email', required: true}
-    }, params)
-
-    let {name, password, mail} = await validate
-    let user = await UserModel.findAll({where: {mail}})
-    if (user.length) {
+    }, ctx.getParams())
+    if (await UserModel.findOne({where: {mail}})) {
       ctx.error('用户已存在', 400)
     } else {
       let data = await UserModel.create({name, screenName: name, password: md5(password), mail})
@@ -40,12 +35,11 @@ class UserController {
    * @returns {Promise<void>}
    */
   async login (ctx) {
-    const params = ctx.getParams()
-    await util.validate(
+    const params = await util.validate(
       {
         mail: {type: 'email', required: true},
         password: {type: 'string', required: true}
-      }, params)
+      }, ctx.getParams())
     let user = await UserModel.findOne({where: {mail: params.mail}})
     if (!user) {
       return ctx.error('用户不存在', 404)
@@ -55,10 +49,10 @@ class UserController {
     }
     // 生成Token
     const token = jwt.sign({
-      user: user,
+      user: user.uid,
       exp: Math.floor(Date.now() / 1000) + (60 * 60)
     }, config.app.jwt)
-
+    ctx.cookies.set('authorization', token)
     ctx.success({
       token
     }, '登录成功')
@@ -74,23 +68,15 @@ class UserController {
   }
 
   /**
-   * 获取指定用户的信息
-   * @param ctx = ctx.getParams()
-   * @param ctx.id
-   * @returns {Promise<void>}
+   * 获取当前用户的详情
    */
-  async details (ctx) {
-    const params = ctx.getParams()
-    if (params.id) {
-      const user = await UserModel.findById(params.id, {attributes: {exclude: ['password']}})
-      if (user) {
-        ctx.success(user)
-      } else {
-        ctx.error('用户不存在')
-      }
-    } else {
-      ctx.error('id为必填')
+  async userInfo (ctx) {
+    const userId = ctx.state['user']
+    const user = await UserModel.findById(userId)
+    if (!user) {
+      return ctx.error('用户不存在')
     }
+    ctx.success(user)
   }
 
   /**
@@ -112,7 +98,6 @@ class UserController {
       url: {type: 'url', required: true},
       screenName: {type: 'string', required: true, transform: (value) => value ? value : params.name}
     }, params)
-
     if (await UserModel.findById(params.uid)) {
       await UserModel.update(
         {uid, name, mail, url, screenName},
@@ -123,7 +108,7 @@ class UserController {
         })
       ctx.success(params, '更新成功')
     } else {
-      throw new Error('用户不存在')
+      ctx.error('用户不存在')
     }
   }
 }
