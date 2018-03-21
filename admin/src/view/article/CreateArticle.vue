@@ -1,5 +1,5 @@
 <template>
-  <div class="CreateArticle">
+  <div class="CreateArticle pageBody">
     <header class="header">
       新建文章
     </header>
@@ -11,7 +11,6 @@
         <el-form-item label="路径">
           <el-input v-model="articleForm.slug"></el-input>
         </el-form-item>
-
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="创建时间">
@@ -24,7 +23,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="分类">
@@ -37,7 +35,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-form-item label="内容">
           <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="编辑" name="编辑">
@@ -99,12 +96,6 @@
   @import '../../../node_modules/prismjs/themes/prism.css';
 
   .CreateArticle {
-    background: #ffffff;
-    border-radius: 8px;
-    width: 100%;
-    min-height: 80vh;
-    box-sizing: border-box;
-    padding: 24px 16px;
     .header {
       margin: 0 0 20px;
       padding-bottom: 10px;

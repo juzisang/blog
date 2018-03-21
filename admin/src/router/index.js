@@ -17,32 +17,60 @@ export default new Router({
           component: () => import('src/view/Home.vue')
         },
         {
-          path: 'tag',
+          path: 'tag/list',
           meta: {
-            title: '标签管理'
+            title: '标签列表'
           },
-          component: () => import('src/view/Tag.vue')
+          component: () => import('src/view/tag/Tag.vue')
         },
         {
-          path: 'category',
+          path: 'tag/create',
           meta: {
-            title: '分类管理'
+            title: '新建标签'
           },
-          component: () => import('src/view/Category.vue')
+          component: () => import('src/view/tag/CreateTag.vue')
         },
         {
-          path: 'article/create-article',
+          path: 'category/list',
+          meta: {
+            title: '分类列表'
+          },
+          component: () => import('src/view/category/Category.vue')
+        },
+        {
+          path: 'category/create',
+          meta: {
+            title: '分类列表'
+          },
+          component: () => import('src/view/category/CreateCategory.vue')
+        },
+        {
+          path: 'article/list',
+          meta: {
+            title: '文章列表'
+          },
+          component: () => import('src/view/article/EditArticle.vue')
+        },
+        {
+          path: 'article/create',
           meta: {
             title: '新建文章'
           },
           component: () => import('src/view/article/CreateArticle.vue')
         },
         {
-          path: 'article/edit-article',
+          path: 'setting/base',
           meta: {
-            title: '编辑文章'
+            title: '基本设置'
           },
-          component: () => import('src/view/article/EditArticle.vue')
+          component: () => import('src/view/setting/BaseSetting.vue')
+        },
+        {
+          path: 'setting/user',
+          meta: {
+            title: '个人设置'
+          },
+          component: () => import('src/view/setting/UserSetting.vue')
         }
       ]
     },

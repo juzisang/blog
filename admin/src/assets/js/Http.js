@@ -26,6 +26,14 @@ class Http {
   getCategory () {
     return this.axios.get('/meta/category')
   }
+
+  addTag ({name, slug}) {
+    return this.axios.post('/meta/create', {name, slug, type: 'tag'})
+  }
+
+  addCategory ({name, slug}) {
+    return this.axios.post('/meta/create', {name, slug, type: 'category'})
+  }
 }
 
 export default new Http()
