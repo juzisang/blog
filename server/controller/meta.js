@@ -1,4 +1,6 @@
 const MetasModel = require('../model/index').Metas
+const RelationshipsModel = require('../model/index').Relationships
+const sequelize = require('sequelize')
 const Util = require('../util/util')
 
 class MetaController {
@@ -50,11 +52,12 @@ class MetaController {
   }
 
   async getTags (ctx) {
-    return ctx.success(await MetasModel.findAll({
+    const tags = await MetasModel.findAll({
       where: {
         type: 'tag'
       }
-    }))
+    })
+    return ctx.success(tags)
   }
 
   async getCategory (ctx) {

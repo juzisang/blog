@@ -1,8 +1,42 @@
 <template>
-  <div class="Category"></div>
+  <div class="Category pageBody">
+    <el-table
+      :data="categorys"
+      stripe
+      :header-row-style="{fontSize:'14px',fontWeight: 'normal'}"
+      style="width: 100%">
+      <el-table-column
+        prop="name"
+        label="名称"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="slug"
+        label="缩写"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="文章数">
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button
+            size="mini">编辑
+          </el-button>
+          <el-button
+            size="mini"
+            type="danger">删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   export default {
     name: 'Category',
     mixins: [],
@@ -11,12 +45,10 @@
     data () {
       return {}
     },
-    computed: {},
-    mounted () {
-    },
-    methods: {},
-    watch: {},
-    beforeDestroy () {
+    computed: {
+      ...mapState({
+        categorys: state => state.common.categorys
+      })
     }
   }
 </script>

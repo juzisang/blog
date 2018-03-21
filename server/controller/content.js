@@ -45,15 +45,13 @@ class ContentController {
       title,
       slug = title,
       content,
-      type = 'article',
-      authorId = ctx.state['user'],
+      authorId = ctx.state['user'].user,
       status = 'online',
       tags,
-      category,
-      order
+      category
     } = await util.validate(rules, ctx.getParams())
     // 创建内容完毕
-    const contentData = await ContentModel.create({title, content, authorId, status, slug, order, type})
+    const contentData = await ContentModel.create({title, content, authorId, status, slug, type: 'article'})
     // 创建Tag
     if (tags) {
       await Promise.all(tags.map(mid => RelationshipsModel.create({
@@ -68,7 +66,7 @@ class ContentController {
         cid: contentData.cid
       })
     }
-    ctx.success(null, '创建成功')
+    ctx.success({cid: contentData.cid}, '创建成功')
   }
 
   /**
@@ -121,7 +119,7 @@ class ContentController {
         }
       }
     )
-    ctx.success(null, '编辑成功')
+    ctx.success({cid: params.cid}, '编辑成功')
   }
 
   /**

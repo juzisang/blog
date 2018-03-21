@@ -34,6 +34,25 @@ class Http {
   addCategory ({name, slug}) {
     return this.axios.post('/meta/create', {name, slug, type: 'category'})
   }
+
+  createArticle ({title, slug, content, type, authorId, status, tags, category, order}) {
+    return this.axios.post('/article/create', {title, slug, content, type, authorId, status, tags, category, order})
+  }
+
+  updateArticle ({cid, title, slug, content, type, authorId, status, tags, category, order}) {
+    return this.axios.post('/article/edit', {
+      cid,
+      title,
+      slug,
+      content,
+      type,
+      authorId,
+      status,
+      tags,
+      category,
+      order
+    })
+  }
 }
 
 export default new Http()

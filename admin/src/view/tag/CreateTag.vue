@@ -25,6 +25,7 @@
 
 <script>
   import Common from 'src/mixins/Common'
+  import { RESET_TAGS } from 'src/store/common'
 
   export default {
     name: 'CreateTag',
@@ -49,6 +50,7 @@
       add () {
         this.validate('form')
           .then(() => this.$Http.addTag(this.form))
+          .then(() => this.$store.dispatch(RESET_TAGS))
           .then(() => this.$refs['form'].resetFields())
           .then(() => this.$message.success('添加成功'))
           .catch(err => this.error(err))
@@ -61,7 +63,7 @@
   .CreateTag {
     .header {
       margin: 0 0 20px;
-      padding-bottom: 10px;
+      padding-bottom: 20px;
       border-bottom: 1px solid rgb(238, 238, 238);
       font-size: 20px;
     }

@@ -3,7 +3,7 @@
     <el-table
       :data="tags"
       stripe
-      header-row-style="font-size:14px;font-weight: normal;"
+      :header-row-style="{fontSize:'14px',fontWeight: 'normal'}"
       style="width: 100%">
       <el-table-column
         prop="name"
@@ -35,8 +35,7 @@
 </template>
 
 <script>
-  import { GET_TAGS } from 'src/store/common'
-  import { mapActions, mapState } from 'vuex'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'Tag',
@@ -52,13 +51,8 @@
       })
     },
     async created () {
-      await this[GET_TAGS]()
     },
-    methods: {
-      ...mapActions([
-        GET_TAGS
-      ])
-    }
+    methods: {}
   }
 </script>
 

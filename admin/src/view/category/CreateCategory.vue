@@ -1,7 +1,7 @@
 <template>
   <div class="CreateCategory pageBody">
     <header class="header">
-      新建标签
+      新建分类
     </header>
     <section class="content">
       <el-row>
@@ -28,6 +28,7 @@
 
 <script>
   import Common from 'src/mixins/Common'
+  import { RESET_CATEGORY } from 'src/store/common'
 
   export default {
     name: 'CreateCategory',
@@ -55,7 +56,8 @@
     methods: {
       add () {
         this.validate('form')
-          .then(() => this.$Http.addTag(this.form))
+          .then(() => this.$Http.addCategory(this.form))
+          .then(() => this.$store.dispatch(RESET_CATEGORY))
           .then(() => this.$refs['form'].resetFields())
           .then(() => this.$message.success('添加成功'))
           .catch(err => this.error(err))
@@ -68,7 +70,7 @@
   .CreateCategory {
     .header {
       margin: 0 0 20px;
-      padding-bottom: 10px;
+      padding-bottom: 20px;
       border-bottom: 1px solid rgb(238, 238, 238);
       font-size: 20px;
     }
