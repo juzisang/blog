@@ -1,5 +1,5 @@
 <template>
-  <div class="CreateCategory pageBody">
+  <div class="CreateCategory">
     <header class="header">
       新建分类
     </header>

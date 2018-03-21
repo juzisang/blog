@@ -6,10 +6,7 @@
 
 <script>
   export default {
-    name: 'App',
-    async created () {
-      await this.$store.dispatch('init')
-    }
+    name: 'App'
   }
 </script>
 

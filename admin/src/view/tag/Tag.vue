@@ -1,5 +1,5 @@
 <template>
-  <div class="Tag pageBody">
+  <div class="Tag">
     <el-table
       :data="tags"
       stripe

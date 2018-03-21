@@ -19,7 +19,7 @@ Vue.component('VueMarkdown', VueMarkdown)
 
 Vue.prototype.$Http = Http
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.fullPath !== '/login' && to.fullPath !== '/register') {
     if (!Cookies.get('authorization')) {
       return next('/login')

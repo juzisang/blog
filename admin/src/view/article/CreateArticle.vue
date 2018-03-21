@@ -1,5 +1,5 @@
 <template>
-  <div class="CreateArticle pageBody">
+  <div class="CreateArticle">
     <header class="header">
       新建文章
 

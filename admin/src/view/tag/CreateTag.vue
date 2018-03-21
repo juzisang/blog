@@ -1,5 +1,5 @@
 <template>
-  <div class="CreateTag pageBody">
+  <div class="CreateTag">
     <header class="header">
       新建标签
     </header>

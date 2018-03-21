@@ -1,5 +1,5 @@
 <template>
-  <div class="Category pageBody">
+  <div class="Category">
     <el-table
       :data="categorys"
       stripe

@@ -1,4 +1,6 @@
 import qs from 'qs'
+import router from 'src/router'
+import Cookies from 'js-cookie'
 
 class Http {
   constructor () {
@@ -9,6 +11,20 @@ class Http {
         return qs.stringify(data)
       }]
     })
+    this.axios.interceptors.response.use(
+      response => {
+        return response
+      },
+      error => {
+        if (error.response) {
+          switch (error.response.status) {
+            case 401:
+              Cookies.remove('authorization')
+              router.replace('/login')
+          }
+        }
+        return Promise.reject(error.response.data)
+      })
   }
 
   register ({mail, name, password}) {
@@ -17,6 +33,10 @@ class Http {
 
   login ({mail, password}) {
     return this.axios.post('/user/login', {mail, password})
+  }
+
+  getUserInfo () {
+    return this.axios.get('/user/info')
   }
 
   getTags () {

@@ -81,7 +81,9 @@
           </el-menu>
         </el-aside>
         <el-main>
-          <router-view/>
+          <div class="pageBody">
+            <router-view/>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -91,19 +93,14 @@
 <script>
   export default {
     name: 'Home',
-    mixins: [],
-    props: {},
-    components: {},
     data () {
       return {}
     },
     computed: {},
-    mounted () {
+    async created () {
+      await this.$store.dispatch('init')
     },
-    methods: {},
-    watch: {},
-    beforeDestroy () {
-    }
+    methods: {}
   }
 </script>
 
