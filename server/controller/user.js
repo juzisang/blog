@@ -70,8 +70,12 @@ class UserController {
    * 获取当前用户的详情
    */
   async userInfo (ctx) {
-    const userId = ctx.state['user']
-    const user = await UserModel.findById(userId)
+    const userId = ctx.state['user'].user
+    const user = await UserModel.findById(userId, {
+      attributes: {
+        exclude: ['password']
+      }
+    })
     if (!user) {
       return ctx.error('用户不存在')
     }

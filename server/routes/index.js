@@ -35,6 +35,10 @@ module.exports = new MapRouter([
     url: '/user',
     children: [
       {
+        url: '/info',
+        controller: UserController.userInfo
+      },
+      {
         url: '/register',
         controller: UserController.register,
       },
