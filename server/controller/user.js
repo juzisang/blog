@@ -14,17 +14,21 @@ class UserController {
    * @returns {Promise<void>}
    */
   async register (ctx) {
-    let {name, password, mail} = await util.validate({
+    const rules = {
       name: {type: 'string', required: true},
       password: {type: 'string', required: true},
       mail: {type: 'email', required: true}
-    }, ctx.getParams())
-    if (await UserModel.findOne({where: {mail}})) {
-      ctx.error('用户已存在', 400)
-    } else {
-      let data = await UserModel.create({name, screenName: name, password: md5(password), mail})
-      ctx.success(null, '用户创建成功')
     }
+    await util.validate(rules, ctx.getParams())
+      .then(async (params) => await UserModel.findOne({where: {mail: params.mail}}) ? Promise.reject('用户已存在') : params)
+      .then(async ({name, screenName = name, password, mail}) => await UserModel.create({
+        name,
+        screenName: name,
+        password: md5(password),
+        mail
+      }))
+      .then(data => ctx.success({uid: data.uid}, '创建成功'))
+      .catch(err => ctx.error(err))
   }
 
   /**
@@ -35,26 +39,30 @@ class UserController {
    * @returns {Promise<void>}
    */
   async login (ctx) {
-    const params = await util.validate(
-      {
-        mail: {type: 'email', required: true},
-        password: {type: 'string', required: true}
-      }, ctx.getParams())
-    let user = await UserModel.findOne({where: {mail: params.mail}})
-    if (!user) {
-      return ctx.error('用户不存在', 404)
+    const rules = {
+      mail: {type: 'email', required: true},
+      password: {type: 'string', required: true}
     }
-    if (user.mail !== params.mail || user.password !== md5(params.password)) {
-      return ctx.error('用户名或密码错误', 405)
-    }
-    // 生成Token
-    const token = jwt.sign({
-      user: user.uid,
-      exp: 1000 * 60 * 60 * 24 * 20
-    }, config.app.jwt)
-    ctx.success({
-      token
-    }, '登录成功')
+    await util.validate(rules, ctx.getParams())
+      .then(async params => {
+        const user = await UserModel.findOne({where: {mail: params.mail}})
+        if (!user) {
+          return Promise.reject('用户不存在')
+        }
+        return {
+          user,
+          params
+        }
+      })
+      .then(async ({params, user}) => {
+        if (user.mail !== params.mail || user.password !== md5(params.password)) {
+          return Promise.reject('用户名或密码错误')
+        }
+        return user.uid
+      })
+      .then(async (uid) => jwt.sign({user: uid, exp: 1000 * 60 * 60 * 24 * 20}, config.app.jwt))
+      .then(token => ctx.success({token}, '登录成功'))
+      .catch(err => ctx.error(err))
   }
 
   /**
@@ -93,26 +101,25 @@ class UserController {
    * @returns {Promise<void>}
    */
   async edit (ctx) {
-    const params = ctx.getParams()
-    const {uid, name, mail, url, screenName} = await util.validate({
+    const rules = {
       uid: {type: 'string', required: true},
       name: {type: 'string', required: true},
       mail: {type: 'email', required: true},
       url: {type: 'url', required: true},
       screenName: {type: 'string', required: true, transform: (value) => value ? value : params.name}
-    }, params)
-    if (await UserModel.findById(params.uid)) {
-      await UserModel.update(
-        {uid, name, mail, url, screenName},
-        {
-          where: {
-            uid: params.uid
-          }
-        })
-      ctx.success(params, '更新成功')
-    } else {
-      ctx.error('用户不存在')
     }
+    const updateUser = async ({uid, name, mail, url, screenName = name}) => await UserModel.update(
+      {uid, name, mail, url, screenName},
+      {
+        where: {
+          uid
+        }
+      })
+    await util.validate(rules, ctx.getParams())
+      .then(async params => await UserModel.findById(params.uid) ? params : Promise.reject(new Error('用户不存在')))
+      .then(async params => await updateUser(params))
+      .then(() => ctx.success(null, '修改成功'))
+      .catch(err => ctx.error(err))
   }
 }
 

@@ -11,48 +11,49 @@ class MetaController {
       description: {type: 'string'},
       type: {type: 'enum', enum: ['tag', 'category'], required: true},
     }
-    const {
-      name,
-      slug = name,
-      description = null,
-      type
-    } = await Util.validate(rules, ctx.getParams())
-    const query = {
+    const queryPromise = async (name, type) => await MetasModel.findOne({
       where: {
         name,
         type
       }
-    }
-    if (await MetasModel.findOne(query)) {
-      return ctx.error(`${type}已经存在`, 405)
-    }
-    const meta = await MetasModel.create({
-      name, slug, description, type
     })
-    ctx.success(meta, '创建成功')
+    await Util.validate(rules, ctx.getParams())
+      .then(async (params) => (await queryPromise(params.name, params.type)) ? Promise.reject(new Error(`${params.type}已经存在`)) : params)
+      .then(async ({name, slug = this.name, description, type}) => await MetasModel.create({
+        name, slug, description, type
+      }))
+      .then((meta) => ctx.success(meta, '创建成功'))
+      .catch(err => ctx.error(err))
+  }
+
+  async editMeta (ctx) {
+    const rules = {
+      mid: {type: 'string', required: true},
+      name: {type: 'string', required: true},
+      type: {type: 'enum', enum: ['tag', 'category'], required: true},
+      slug: {type: 'string'},
+      description: {type: 'string'}
+    }
+    await Util.validate(rules, ctx.getParams())
+      .then(async params => (await MetasModel.findById(params.mid)) ? params : Promise.reject(new Error('mid不能为空')))
+      .then(async params => await MetasModel.update(params, {where: {mid: params.mid}}))
+      .then(() => ctx.success(null, '编辑成功'))
+      .catch(err => ctx.error(err))
   }
 
   async delMeta (ctx) {
     const rules = {
       mid: {type: 'string', required: true}
     }
-    const {mid} = await Util.validate(rules, ctx.getParams())
-    const query = {
-      where: {
-        mid
-      }
-    }
-    if (!await MetasModel.findOne(query)) {
-      return ctx.error('内容不存在', 404)
-    }
-    await MetasModel.destroy({
-      where: {mid}
-    })
-    ctx.success(null, '删除成功')
+    await Util.validate(rules, ctx.getParams())
+      .then(async ({mid}) => await MetasModel.findOne({where: {mid}}) ? mid : Promise.reject(new Error('内容不存在', 404)))
+      .then(async mid => await MetasModel.destroy({where: {mid}}))
+      .then(() => ctx.success(null, '删除成功'))
+      .catch((err) => ctx.error(err))
   }
 
   async getTags (ctx) {
-    const tags = await MetasModel.findAll({
+    await MetasModel.findAll({
       attributes: ['mid', 'name', 'slug', [sequelize.fn('COUNT', sequelize.col('relationships.cid')), 'total']],
       include: [{
         model: RelationshipsModel,
@@ -64,11 +65,12 @@ class MetaController {
       },
       group: 'metas.mid'
     })
-    return ctx.success(tags)
+      .then(list => ctx.success(list))
+      .catch(err => ctx.error(err))
   }
 
   async getCategory (ctx) {
-    const list = await MetasModel.findAll({
+    await MetasModel.findAll({
       attributes: ['mid', 'name', 'slug', [sequelize.fn('COUNT', sequelize.col('relationships.cid')), 'total']],
       include: [{
         model: RelationshipsModel,
@@ -80,7 +82,8 @@ class MetaController {
       },
       group: 'metas.mid'
     })
-    return ctx.success(list)
+      .then(list => ctx.success(list))
+      .catch(err => ctx.error(err))
   }
 }
 

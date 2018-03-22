@@ -73,6 +73,10 @@ module.exports = new MapRouter([
         controller: MetaController.createMeta
       },
       {
+        url: '/edit',
+        controller: MetaController.editMeta
+      },
+      {
         url: '/del',
         controller: MetaController.delMeta
       },

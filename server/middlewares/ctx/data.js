@@ -1,6 +1,5 @@
 module.exports = class DataModel {
-  constructor (code, data, msg, status) {
-    this.code = code
+  constructor (data, msg, status) {
     if (data) {
       this.data = data
     }
