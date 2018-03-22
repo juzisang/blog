@@ -2,7 +2,7 @@
   <div class="Home">
     <el-container>
       <el-header class="header">
-        <div class="blog-name">博客管理系统</div>
+        <div class="blog-name" @click="$router.replace('/home')">博客管理系统</div>
         <div class="menu-list">
           <div class="message"><i class="el-icon-message"></i>消息</div>
           <div class="menu-dropdown">
@@ -13,8 +13,8 @@
                 <i class="el-icon-caret-bottom" style="padding-left:4px;"></i>
               </div>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>个人中心</el-dropdown-item>
-                <el-dropdown-item>设置</el-dropdown-item>
+                <el-dropdown-item @click.native="$router.push('/setting/user')">个人中心</el-dropdown-item>
+                <el-dropdown-item @click.native="$router.push('/setting/base')">设置</el-dropdown-item>
                 <el-dropdown-item>退出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -118,6 +118,7 @@
         font-size: 32px;
         color: #3080FE;
         float: left;
+        cursor: pointer;
       }
       .menu-list {
         line-height: 80px;

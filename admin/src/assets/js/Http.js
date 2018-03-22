@@ -23,7 +23,7 @@ class Http {
               router.replace('/login')
           }
         }
-        return Promise.reject(error.response.data)
+        return Promise.reject(error.response ? error.response.data : error)
       })
   }
 
@@ -51,8 +51,20 @@ class Http {
     return this.axios.post('/meta/create', {name, slug, type: 'tag'})
   }
 
-  addCategory ({name, slug}) {
-    return this.axios.post('/meta/create', {name, slug, type: 'category'})
+  editTag ({name, slug, mid}) {
+    return this.axios.post('/meta/edit', {name, slug, type: 'tag', mid})
+  }
+
+  delMeta (mid) {
+    return this.axios.post('/meta/del', {mid})
+  }
+
+  addCategory ({name, slug, description}) {
+    return this.axios.post('/meta/create', {name, slug, description, type: 'category'})
+  }
+
+  editCategory ({name, slug, mid, description}) {
+    return this.axios.post('/meta/edit', {name, slug, type: 'category', mid, description})
   }
 
   createArticle ({title, slug, content, type, authorId, status, tags, category, order}) {

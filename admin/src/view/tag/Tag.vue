@@ -16,34 +16,55 @@
         width="180">
       </el-table-column>
       <el-table-column
-        prop="address"
+        prop="total"
         label="文章数">
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
+            @click="handleEdit(scope.row)"
             size="mini">编辑
           </el-button>
           <el-button
+            @click="handleDel(scope.row.mid)"
             size="mini"
             type="danger">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="50%">
+      <CreateTag
+        @success="dialogVisible = false"
+        @error="dialogVisible = false"
+        v-if="dialogVisible"
+        :slug="tag.slug"
+        :name="tag.name"
+        :mid="tag.mid">
+      </CreateTag>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import { mapState } from 'vuex'
+  import { RESET_TAGS } from 'src/store/common'
+  import CreateTag from './CreateTag.vue'
 
   export default {
     name: 'Tag',
     mixins: [],
     props: {},
-    components: {},
+    components: {
+      CreateTag
+    },
     data () {
-      return {}
+      return {
+        dialogVisible: false,
+        tag: {}
+      }
     },
     computed: {
       ...mapState({
@@ -52,7 +73,22 @@
     },
     async created () {
     },
-    methods: {}
+    methods: {
+      handleEdit (tag) {
+        this.tag = tag
+        this.dialogVisible = true
+      },
+      handleDel (mid) {
+        this.$confirm('此操作将永久该标签, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => this.$Http.delMeta(mid))
+          .then(() => this.$store.dispatch(RESET_TAGS))
+          .catch((err) => console.error(err))
+      }
+    }
   }
 </script>
 

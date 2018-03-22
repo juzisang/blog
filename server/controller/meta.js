@@ -54,10 +54,10 @@ class MetaController {
 
   async getTags (ctx) {
     await MetasModel.findAll({
-      attributes: ['mid', 'name', 'slug', [sequelize.fn('COUNT', sequelize.col('relationships.cid')), 'total']],
+      attributes: ['mid', 'name', 'slug', 'description', [sequelize.fn('COUNT', sequelize.col('relationships.cid')), 'total']],
       include: [{
         model: RelationshipsModel,
-        required: true,
+        required: false,
         attributes: []
       }],
       where: {
@@ -71,10 +71,10 @@ class MetaController {
 
   async getCategory (ctx) {
     await MetasModel.findAll({
-      attributes: ['mid', 'name', 'slug', [sequelize.fn('COUNT', sequelize.col('relationships.cid')), 'total']],
+      attributes: ['mid', 'name', 'slug', 'description', [sequelize.fn('COUNT', sequelize.col('relationships.cid')), 'total']],
       include: [{
         model: RelationshipsModel,
-        required: true,
+        required: false,
         attributes: []
       }],
       where: {

@@ -14,7 +14,7 @@
               <el-input v-model="form.slug"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" @click="add" round>添加</el-button>
+              <el-button type="primary" size="medium" @click="saveOrEdit" round>添加</el-button>
             </el-form-item>
           </el-form>
         </el-col>
@@ -30,11 +30,12 @@
   export default {
     name: 'CreateTag',
     mixins: [Common],
+    props: ['mid', 'name', 'slug'],
     data () {
       return {
         form: {
-          name: '',
-          slug: ''
+          name: this.name,
+          slug: this.slug
         },
         rules: {
           name: [
@@ -47,13 +48,17 @@
       }
     },
     methods: {
-      add () {
+      saveOrEdit () {
         this.validate('form')
-          .then(() => this.$Http.addTag(this.form))
+          .then(() => this.mid ? this.$Http.editTag(Object.assign({}, this.form, {mid: this.mid})) : this.$Http.addTag(this.form))
           .then(() => this.$store.dispatch(RESET_TAGS))
           .then(() => this.$refs['form'].resetFields())
-          .then(() => this.$message.success('添加成功'))
-          .catch(err => this.error(err))
+          .then(() => this.$message.success(`${this.mid ? '编辑' : '添加'}成功`))
+          .then(() => this.$emit('success'))
+          .catch(err => {
+            this.error(err)
+            this.$emit('error')
+          })
       }
     }
   }
