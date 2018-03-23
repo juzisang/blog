@@ -1,27 +1,15 @@
 const DataModel = require('./data')
+const StatusError = require('../../plugin/StatusError')
 
 module.exports = async (ctx, next) => {
 
-  ctx.error = (msg, code = 500) => {
-    if (msg instanceof Error) {
-      msg = msg.message
-    }
-    switch (code) {
-      case 403:
-        ctx.status = 403
-        ctx.body = new DataModel(null, msg || '权限不足', 'error')
-      case 404:
-        ctx.status = 404
-        ctx.body = new DataModel(null, msg || '获取失败', 'error')
-      case 405:
-        ctx.status = 405
-        ctx.body = new DataModel(null, msg || '不存在的方法', 'error')
-      case 500:
-        ctx.status = 500
-        ctx.body = new DataModel(null, msg || '服务器错误', 'error')
-      default:
-        ctx.status = code
-        ctx.body = new DataModel(null, msg || '服务器错误', 'error')
+  ctx.error = (err, code = 500) => {
+    if (err instanceof Error) {
+      ctx.status = err.status || 500
+      ctx.body = new DataModel(null, err.message || '获取错误', 'error')
+    } else if (typeof msg === 'string') {
+      ctx.status = code
+      ctx.body = new DataModel(null, err || '获取错误', 'error')
     }
   }
 
@@ -45,6 +33,9 @@ module.exports = async (ctx, next) => {
     }
     return params
   }
+
+  // 自定义异常
+  ctx.StatusError = StatusError
 
   await next()
 }

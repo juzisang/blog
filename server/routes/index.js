@@ -2,8 +2,7 @@ const ContentController = require('../controller/content')
 const UserController = require('./../controller/user')
 const MetaController = require('../controller/meta')
 const CommonController = require('../controller/common')
-
-const MapRouter = require('../util/router')
+const MapRouter = require('../plugin/MapRouter')
 
 module.exports = new MapRouter([
   {

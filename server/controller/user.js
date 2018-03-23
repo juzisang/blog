@@ -56,7 +56,7 @@ class UserController {
       })
       .then(async ({params, user}) => {
         if (user.mail !== params.mail || user.password !== md5(params.password)) {
-          return Promise.reject('用户名或密码错误')
+          return Promise.reject(new ctx.StatusError('用户名或密码错误', 403))
         }
         return user.uid
       })
@@ -70,7 +70,6 @@ class UserController {
    */
   async all (ctx) {
     const users = await UserModel.findAll({attributes: {exclude: ['password']}})
-    users.forEach(item => delete item.password)
     ctx.success(users)
   }
 
@@ -116,7 +115,7 @@ class UserController {
         }
       })
     await util.validate(rules, ctx.getParams())
-      .then(async params => await UserModel.findById(params.uid) ? params : Promise.reject(new Error('用户不存在')))
+      .then(async params => await UserModel.findById(params.uid) ? params : Promise.reject(new ctx.StatusError('用户不存在', 404)))
       .then(async params => await updateUser(params))
       .then(() => ctx.success(null, '修改成功'))
       .catch(err => ctx.error(err))

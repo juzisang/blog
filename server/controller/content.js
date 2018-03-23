@@ -131,7 +131,7 @@ class ContentController {
         if (data) {
           return params
         }
-        return Promise.reject(new Error('内容不存在'))
+        return Promise.reject(new ctx.StatusError('内容不存在', 404))
       })
       .then(async params => {
         await delList(params.cid)
@@ -160,7 +160,7 @@ class ContentController {
       data.setDataValue('category', metas.category)
       resolve(data)
     })
-    await start.then(params => params.cid ? params.cid : Promise.resolve(new Error('请填写cid')))
+    await start.then(params => params.cid ? params.cid : Promise.resolve(new ctx.StatusError('请填写cid', 404)))
       .then(async cid => await queryArticle(cid))
       .then(async cid => await withArticle(cid))
       .then(data => ctx.success(data))
@@ -192,8 +192,8 @@ class ContentController {
         }
       }
     )
-    await start.then(params => params.cid ? params.cid : Promise.resolve(new Error('请填写cid')))
-      .then(async cid => await queryArticle(cid) ? cid : Promise.reject(new Error('内容不存在')))
+    await start.then(params => params.cid ? params.cid : Promise.resolve(new ctx.StatusError('请填写cid', 404)))
+      .then(async cid => await queryArticle(cid) ? cid : Promise.reject(new ctx.StatusError('内容不存在', 404)))
       .then(async cid => await delArticle(cid))
       .then(() => ctx.success(null, '刪除成功'))
       .catch(err => ctx.error(err))

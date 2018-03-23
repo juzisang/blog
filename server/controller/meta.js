@@ -18,7 +18,7 @@ class MetaController {
       }
     })
     await Util.validate(rules, ctx.getParams())
-      .then(async (params) => (await queryPromise(params.name, params.type)) ? Promise.reject(new Error(`${params.type}已经存在`)) : params)
+      .then(async (params) => (await queryPromise(params.name, params.type)) ? Promise.reject(new ctx.StatusError(`${params.type}已经存在`)) : params)
       .then(async ({name, slug = this.name, description, type}) => await MetasModel.create({
         name, slug, description, type
       }))
@@ -35,7 +35,7 @@ class MetaController {
       description: {type: 'string'}
     }
     await Util.validate(rules, ctx.getParams())
-      .then(async params => (await MetasModel.findById(params.mid)) ? params : Promise.reject(new Error('mid不能为空')))
+      .then(async params => (await MetasModel.findById(params.mid)) ? params : Promise.reject(new ctx.StatusError('mid不能为空', 404)))
       .then(async params => await MetasModel.update(params, {where: {mid: params.mid}}))
       .then(() => ctx.success(null, '编辑成功'))
       .catch(err => ctx.error(err))
@@ -46,7 +46,7 @@ class MetaController {
       mid: {type: 'string', required: true}
     }
     await Util.validate(rules, ctx.getParams())
-      .then(async ({mid}) => await MetasModel.findOne({where: {mid}}) ? mid : Promise.reject(new Error('内容不存在', 404)))
+      .then(async ({mid}) => await MetasModel.findOne({where: {mid}}) ? mid : Promise.reject(new ctx.StatusError('内容不存在', 404)))
       .then(async mid => await MetasModel.destroy({where: {mid}}))
       .then(() => ctx.success(null, '删除成功'))
       .catch((err) => ctx.error(err))
