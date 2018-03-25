@@ -8,9 +8,9 @@ export default {
     },
     error (err) {
       if (err instanceof Error) {
-        this.$message.error(err.message)
+        this.$message.error(err.message || '未知错误')
       } else {
-        this.$message.error(err.msg)
+        this.$message.error(err.msg || '未知错误')
       }
     }
   }

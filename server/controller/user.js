@@ -47,7 +47,7 @@ class UserController {
       .then(async params => {
         const user = await UserModel.findOne({where: {mail: params.mail}})
         if (!user) {
-          return Promise.reject('用户不存在')
+          return Promise.reject(new ctx.StatusError('用户不存在'))
         }
         return {
           user,

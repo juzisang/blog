@@ -7,9 +7,12 @@ module.exports = async (ctx, next) => {
     if (err instanceof Error) {
       ctx.status = err.status || 500
       ctx.body = new DataModel(null, err.message || '获取错误', 'error')
-    } else if (typeof msg === 'string') {
+    } else if (typeof err === 'string') {
       ctx.status = code
       ctx.body = new DataModel(null, err || '获取错误', 'error')
+    } else if (err instanceof Object) {
+      ctx.status = 405
+      ctx.body = new DataModel(null, err.message || '获取错误', 'error')
     }
   }
 
