@@ -73,18 +73,7 @@
           </el-col>
         </el-row>
         <el-form-item label="内容">
-          <el-tabs v-model="activeName" type="card">
-            <el-tab-pane label="编辑" name="编辑">
-              <el-input class="text-content" type="textarea" v-model="articleForm.content" :rows="10"></el-input>
-            </el-tab-pane>
-            <el-tab-pane label="预览" name="预览">
-              <VueMarkdown v-if="activeName === '预览'"
-                           :source="articleForm.content"
-                           :show="true"
-                           @rendered="rendered">
-              </VueMarkdown>
-            </el-tab-pane>
-          </el-tabs>
+          <markdown-editor v-model="articleForm.content" ref="markdownEditor"></markdown-editor>
         </el-form-item>
       </el-form>
     </section>

@@ -6,16 +6,17 @@ import Cookies from 'js-cookie'
 import 'normalize.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'src/assets/style/base.scss'
-import VueMarkdown from 'vue-markdown'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import Http from 'src/assets/js/Http'
+import VueSimplemde from 'vue-simplemde'
+import 'simplemde/dist/simplemde.min.css'
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI, {size: 'small'})
-Vue.component('VueMarkdown', VueMarkdown)
+Vue.use(VueSimplemde)
 
 Vue.prototype.$Http = Http
 
