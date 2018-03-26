@@ -89,6 +89,10 @@ class Http {
   findOrCreateTag ({name, slug}) {
     return this.axios.post('/meta/find_or_create', {name, slug, type: 'tag'})
   }
+
+  findOrCreateCategory ({name, slug}) {
+    return this.axios.post('/meta/find_or_create', {name, slug, type: 'category'})
+  }
 }
 
 export default new Http()

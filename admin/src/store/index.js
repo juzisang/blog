@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import router from 'src/router'
 import common, { GET_CATEGORY, GET_TAGS, GET_USERINFO } from './common'
+import article from './article'
 import Cookies from 'js-cookie'
 
 Vue.use(Vuex)
@@ -21,7 +22,8 @@ const store = new Vuex.Store({
     }
   },
   modules: {
-    common
+    common,
+    article
   },
   strict: process.env.NODE_ENV !== 'production'
 })

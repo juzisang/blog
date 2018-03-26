@@ -44,7 +44,7 @@
                 <span slot="title">标签管理</span>
               </template>
               <el-menu-item index="/tag/list" class="children-item">标签列表</el-menu-item>
-              <el-menu-item index="/tag/create" class="children-item">标签分类</el-menu-item>
+              <el-menu-item index="/tag/create" class="children-item">新建标签</el-menu-item>
             </el-submenu>
             <el-submenu index="/category">
               <template slot="title">

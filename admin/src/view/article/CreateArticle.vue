@@ -2,7 +2,6 @@
   <div class="CreateArticle">
     <header class="header">
       新建文章
-
       <div class="bt-submit">
         <el-button type="primary" @click="save">保存</el-button>
         <el-button type="primary" @click="push">发布</el-button>
@@ -67,9 +66,9 @@
                          placeholder="请选择">
                 <el-option
                   v-for="item in tags"
-                  :key="item.mid"
+                  :key="item.name"
                   :label="item.name"
-                  :value="item.mid">
+                  :value="item.name">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -84,10 +83,10 @@
 </template>
 
 <script>
-  import 'prismjs'
   import { mapState } from 'vuex'
   import Common from 'src/mixins/Common'
   import { RESET_TAGS, RESET_CATEGORY } from 'src/store/common'
+  import { SAVE_ARTICLE } from 'src/store/article'
 
   export default {
     name: 'CreateArticle',
@@ -97,16 +96,7 @@
     data () {
       return {
         activeName: '编辑',
-        articleForm: {
-          title: '',
-          slug: '',
-          content: '',
-          status: 'online',
-          tags: [],
-          category: '',
-          ctime: '',
-          utime: ''
-        },
+        articleForm: Object.assign({}, this.$store.state.article.article),
         rules: {
           title: [{required: true, message: '必须填写', trigger: 'blur'}],
           slug: [{required: true, message: '必须填写', trigger: 'blur'}],
@@ -119,8 +109,13 @@
       }
     },
     computed: {
+      formData () {
+        const data = Object.assign({}, this.articleForm)
+        data.tags = this.tags.filter(tag => data.tags.find(item => tag.name === item)).map(item => item.mid)
+        return data
+      },
       slugPath () {
-        return `${location.host}/archives/${this.articleForm.cid || 'cid'}/`
+        return `${location.host}/archives/${this.$store.state.article.cid || '{cid}'}/`
       },
       ...mapState({
         tags: state => state.common.tags,
@@ -130,9 +125,6 @@
     mounted () {
     },
     methods: {
-      rendered () {
-        window.Prism.highlightAll()
-      },
       save () {
         this.saveOrUpdate('draft')
       },
@@ -143,13 +135,10 @@
         this.articleForm.status = status
         this.validate('form')
           .then(() => this.findCreateTag())
-          .then(() => this.articleForm.cid ? this.$Http.updateArticle(this.articleForm) : this.$Http.createArticle(this.articleForm))
-          .then((data) => {
-            (this.articleForm.cid = data.data.data.cid)
-          })
+          .then(() => this.$store.dispatch(SAVE_ARTICLE, this.formData))
           .then(() => this.$refs['form'].resetFields())
           .then(() => this.$message.success(`${status === 'online' ? '发布' : '保存'}成功`))
-          .then(() => {
+          .then(async () => {
             if (status === 'online') {
               this.$store.dispatch(RESET_TAGS)
               this.$store.dispatch(RESET_CATEGORY)
@@ -158,30 +147,18 @@
           .catch(err => this.error(err))
       },
       async findCreateTag () {
-        const notTags = this.articleForm.tags.filter(name => this.tags.includes(tag => tag.name !== name))
-        const findTags = await Promise.all(notTags.map(name => this.$Http.addTag({name: name, slug: name})))
-        findTags.forEach((tag, index) => {
-          const i = this.articleForm.tags.findIndex(name => name === tag.name)
-          if (i !== -1) {
-            this.articleForm.tags[i] = tag.mid
-          }
-        })
+        await Promise.all(this.articleForm.tags.map(name => this.$Http.findOrCreateTag({
+          name: name,
+          slug: name
+        })))
+        await this.$store.dispatch(RESET_TAGS)
       }
     },
-    watch: {
-      'articleForm.tags' () {
-        const notTags = this.articleForm.tags.filter(name => this.tags.find(tag => tag.name !== name))
-        console.log(notTags)
-      }
-    },
-    beforeDestroy () {
-    }
+    watch: {}
   }
 </script>
 
 <style lang="scss" scoped>
-  @import '../../../node_modules/prismjs/themes/prism.css';
-
   .CreateArticle {
     .header {
       margin: 0 0 20px;
@@ -194,9 +171,6 @@
       }
     }
     .text-content {
-      input {
-        border: none;
-      }
     }
   }
 </style>

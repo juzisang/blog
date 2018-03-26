@@ -12,14 +12,22 @@ class MetaController {
       slug: {type: 'string'},
       description: {type: 'string'}
     }
-    const params = Util.validate(rules, ctx.getParams())
-    params.slug = params.slug || params.name
-    await MetasModel.findOrCreate({
+    const findOrCreate = async (params) => await MetasModel.findOrCreate({
       where: {
         name: params.name
       },
-      defaults: params
-    }).then(data => ctx.success(data))
+      defaults: params,
+      attributes: {
+        exclude: ['ctime', 'utime']
+      }
+    })
+    await Util.validate(rules, ctx.getParams())
+      .then((params) => {
+        params.slug = params.slug || params.name
+        return params
+      })
+      .then(params => findOrCreate(params))
+      .then(data => ctx.success(data))
       .catch(err => ctx.error(err))
   }
 

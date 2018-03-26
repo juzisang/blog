@@ -3,7 +3,6 @@ const config = require('../config')
 const ContentModel = require('../model').Content
 const MetasModel = require('../model').Metas
 const RelationshipsModel = require('../model').Relationships
-const Sequelize = require('../model').Sequelize
 
 /**
  * 获取分类，以及Tag
@@ -22,17 +21,6 @@ async function getMetas (cid) {
 }
 
 class ContentController {
-  /**
-   * 创建文章
-   * @param ctx = ctx.getParams()
-   * @param ctx.title
-   * @param ctx.content
-   * @param ctx.tags
-   * @param ctx.category
-   * @param ctx.slug
-   * @param ctx.order
-   * @param ctx.status
-   */
   async createArticle (ctx) {
     const rules = {
       title: {type: 'string', required: true},
@@ -68,7 +56,6 @@ class ContentController {
     }
     // 修改slug为id
     const updateSlug = async (cid) => await ContentModel.update({slug: cid}, {where: {cid}})
-
     await util.validate(rules, ctx.getParams())
       .then(async params => ({
         params,
@@ -86,18 +73,6 @@ class ContentController {
       .catch(err => ctx.error(err))
   }
 
-  /**
-   * 编辑文章
-   * @param ctx = ctx.getParams()
-   * @param ctx.cid
-   * @param ctx.title
-   * @param ctx.content
-   * @param ctx.tags
-   * @param ctx.category
-   * @param ctx.slug
-   * @param ctx.order
-   * @param ctx.status
-   */
   async editArticle (ctx) {
     const rules = {
       cid: {type: 'string', required: true},
@@ -149,16 +124,14 @@ class ContentController {
         await addList(params)
         return params
       })
-      .then(async params => await save(params))
-      .then(data => ctx.success(null, '编辑成功'))
+      .then(async params => {
+        await save(params)
+        return params
+      })
+      .then(params => ctx.success({cid: params.cid}, '编辑成功'))
       .catch(err => ctx.error(err))
   }
 
-  /**
-   * 获取指定id的内容
-   * @param ctx = ctx.getParams()
-   * @param ctx.cid
-   */
   async details (ctx) {
     const start = new Promise((resolve, reject) => resolve(ctx.getParams()))
     const queryArticle = async cid => await ContentModel.findById(cid)
@@ -175,11 +148,6 @@ class ContentController {
       .catch(err => ctx.error(err))
   }
 
-  /**
-   * 删除指定id的内容
-   * @param ctx = ctx.getParams()
-   * @param ctx.cid
-   */
   async del (ctx) {
     const start = new Promise((resolve, reject) => resolve(ctx.getParams()))
     const queryArticle = async cid => await ContentModel.findOne({
@@ -207,12 +175,6 @@ class ContentController {
       .catch(err => ctx.error(err))
   }
 
-  /**
-   * 获取文章列表
-   * @param ctx = ctx.getParams()
-   * @param ctx.pageIndex = 1
-   * @param ctx.pageSize = 10
-   */
   async articleList (ctx) {
     const start = new Promise(resolve => resolve(ctx.getParams()))
     // 查询出数据
@@ -247,7 +209,6 @@ class ContentController {
       .then(async data => await listFor(data))
       .then(data => ctx.success(data))
       .catch(err => ctx.error(err))
-
   }
 }
 
