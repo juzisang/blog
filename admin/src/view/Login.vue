@@ -2,8 +2,8 @@
   <div class="Login">
     <div class="login-box">
       <el-form class="form" ref="form" :model="form" :rules="rules">
-        <el-form-item prop="mail">
-          <el-input class="mt" v-model="form.mail" placeholder="邮箱" size="medium" autoComplete="off"></el-input>
+        <el-form-item prop="name">
+          <el-input class="mt" v-model="form.name" placeholder="用户名/邮箱" size="medium" autoComplete="off"></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input class="mt" v-model="form.password" placeholder="密码" size="medium" type="password"
@@ -33,13 +33,12 @@
     data () {
       return {
         form: {
-          mail: '',
+          name: '',
           password: ''
         },
         rules: {
-          mail: [
-            {required: true, message: '请输入邮箱', trigger: 'blur'},
-            {type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur'}
+          name: [
+            {required: true, message: '请输入用户名或邮箱', trigger: 'blur'}
           ],
           password: [
             {required: true, message: '请输入密码', trigger: 'blur'}

@@ -31,8 +31,8 @@ class Http {
     return this.axios.post('/user/register', {mail, name, password})
   }
 
-  login ({mail, password}) {
-    return this.axios.post('/user/login', {mail, password})
+  login ({name, password}) {
+    return this.axios.post('/user/login', {name, password})
   }
 
   getUserInfo () {
@@ -84,6 +84,10 @@ class Http {
       category,
       order
     })
+  }
+
+  findOrCreateTag ({name, slug}) {
+    return this.axios.post('/meta/find_or_create', {name, slug, type: 'tag'})
   }
 }
 

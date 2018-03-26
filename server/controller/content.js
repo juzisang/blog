@@ -41,14 +41,15 @@ class ContentController {
       category: {type: 'string', required: true},
       status: {type: 'enum', enum: ['online', 'draft', 'delete']}
     }
-    const createContent = async ({title, slug = title, content, authorId = ctx.state['user'].user, status = 'online', tags, category}) => await ContentModel.create({
+    // 新建
+    const createContent = async ({title, content, authorId = ctx.state['user'].user, status = 'online', tags, category}) => await ContentModel.create({
       title,
       content,
       authorId,
       status,
-      slug,
       type: 'article'
     })
+    // 新建Tag
     const createList = async (tags, category, contentData) => {
       // 创建Tag
       if (tags) {
@@ -65,11 +66,18 @@ class ContentController {
         })
       }
     }
+    // 修改slug为id
+    const updateSlug = async (cid) => await ContentModel.update({slug: cid}, {where: {cid}})
+
     await util.validate(rules, ctx.getParams())
       .then(async params => ({
         params,
         data: await createContent(params)
       }))
+      .then(async params => {
+        await updateSlug(params.data.cid)
+        return params
+      })
       .then(async data => {
         await createList(data.params.tags, data.params.category, data.data)
         return data.data
@@ -121,7 +129,7 @@ class ContentController {
       {title, content, status},
       {
         where: {
-          cid: params.cid
+          cid: cid
         }
       }
     )

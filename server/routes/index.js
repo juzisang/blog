@@ -34,10 +34,6 @@ module.exports = new MapRouter([
     url: '/user',
     children: [
       {
-        url: '/info',
-        controller: UserController.userInfo
-      },
-      {
         url: '/register',
         controller: UserController.register,
       },
@@ -50,16 +46,16 @@ module.exports = new MapRouter([
         controller: UserController.edit,
       },
       {
-        url: '/all',
-        controller: UserController.all,
+        url: '/info',
+        controller: UserController.userInfo,
       }
     ]
   },
   {
-    url: '/common',
+    url: '/comment',
     children: [
       {
-        url: '/recent_comments',
+        url: '/recent',
         controller: CommonController.getRecentComments
       }
     ]
@@ -81,12 +77,15 @@ module.exports = new MapRouter([
       },
       {
         url: '/tags',
-        type: 'get',
         controller: MetaController.getTags
       },
       {
         url: '/category',
         controller: MetaController.getCategory
+      },
+      {
+        url: '/find_or_create',
+        controller: MetaController.findOrCreateMeta
       }
     ]
   },
@@ -95,4 +94,3 @@ module.exports = new MapRouter([
     controller: (ctx) => ctx.error('接口不存在', 404)
   }
 ])
-

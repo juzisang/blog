@@ -4,6 +4,25 @@ const sequelize = require('sequelize')
 const Util = require('../util/util')
 
 class MetaController {
+
+  async findOrCreateMeta (ctx) {
+    const rules = {
+      name: {type: 'string', required: true},
+      type: {type: 'enum', enum: ['tag', 'category'], required: true},
+      slug: {type: 'string'},
+      description: {type: 'string'}
+    }
+    const params = Util.validate(rules, ctx.getParams())
+    params.slug = params.slug || params.name
+    await MetasModel.findOrCreate({
+      where: {
+        name: params.name
+      },
+      defaults: params
+    }).then(data => ctx.success(data))
+      .catch(err => ctx.error(err))
+  }
+
   async createMeta (ctx) {
     const rules = {
       name: {type: 'string', required: true},

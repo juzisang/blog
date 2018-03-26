@@ -15,7 +15,7 @@ module.exports = function (sequelize, DataTypes) {
       slug: {
         field: 'slug',
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       content: {
         field: 'content',

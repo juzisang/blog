@@ -14,7 +14,7 @@
           <el-input v-model="articleForm.title"></el-input>
         </el-form-item>
         <el-form-item label="路径">
-          <el-input v-model="articleForm.slug"></el-input>
+          <el-input v-model="slugPath" :disabled="true"></el-input>
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -61,6 +61,9 @@
               <el-select style="width: 100%"
                          v-model="articleForm.tags"
                          multiple
+                         allow-create
+                         filterable
+                         default-first-option
                          placeholder="请选择">
                 <el-option
                   v-for="item in tags"
@@ -73,7 +76,7 @@
           </el-col>
         </el-row>
         <el-form-item label="内容">
-          <markdown-editor v-model="articleForm.content" ref="markdownEditor"></markdown-editor>
+          <markdown-editor v-model="articleForm.content" ref="markdownEditor" :highlight="true"></markdown-editor>
         </el-form-item>
       </el-form>
     </section>
@@ -84,6 +87,7 @@
   import 'prismjs'
   import { mapState } from 'vuex'
   import Common from 'src/mixins/Common'
+  import { RESET_TAGS, RESET_CATEGORY } from 'src/store/common'
 
   export default {
     name: 'CreateArticle',
@@ -96,9 +100,9 @@
         articleForm: {
           title: '',
           slug: '',
-          content: 'Hello Wrold',
+          content: '',
           status: 'online',
-          tags: '',
+          tags: [],
           category: '',
           ctime: '',
           utime: ''
@@ -115,6 +119,9 @@
       }
     },
     computed: {
+      slugPath () {
+        return `${location.host}/archives/${this.articleForm.cid || 'cid'}/`
+      },
       ...mapState({
         tags: state => state.common.tags,
         categorys: state => state.common.categorys
@@ -135,16 +142,38 @@
       saveOrUpdate (status) {
         this.articleForm.status = status
         this.validate('form')
+          .then(() => this.findCreateTag())
           .then(() => this.articleForm.cid ? this.$Http.updateArticle(this.articleForm) : this.$Http.createArticle(this.articleForm))
           .then((data) => {
             (this.articleForm.cid = data.data.data.cid)
           })
           .then(() => this.$refs['form'].resetFields())
           .then(() => this.$message.success(`${status === 'online' ? '发布' : '保存'}成功`))
+          .then(() => {
+            if (status === 'online') {
+              this.$store.dispatch(RESET_TAGS)
+              this.$store.dispatch(RESET_CATEGORY)
+            }
+          })
           .catch(err => this.error(err))
+      },
+      async findCreateTag () {
+        const notTags = this.articleForm.tags.filter(name => this.tags.includes(tag => tag.name !== name))
+        const findTags = await Promise.all(notTags.map(name => this.$Http.addTag({name: name, slug: name})))
+        findTags.forEach((tag, index) => {
+          const i = this.articleForm.tags.findIndex(name => name === tag.name)
+          if (i !== -1) {
+            this.articleForm.tags[i] = tag.mid
+          }
+        })
       }
     },
-    watch: {},
+    watch: {
+      'articleForm.tags' () {
+        const notTags = this.articleForm.tags.filter(name => this.tags.find(tag => tag.name !== name))
+        console.log(notTags)
+      }
+    },
     beforeDestroy () {
     }
   }

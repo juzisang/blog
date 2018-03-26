@@ -16,7 +16,7 @@ module.exports = function MapRouter (conf) {
       if (item.controller) {
         router[type](url, item.controller)
       } else {
-        throw new Error(`${url} controller is not defined`)
+        throw new Error(url + ` controller is not defined`)
       }
     }
   }

@@ -40,22 +40,37 @@ class UserController {
    */
   async login (ctx) {
     const rules = {
-      mail: {type: 'email', required: true},
+      name: {type: 'string', required: true},
       password: {type: 'string', required: true}
     }
+
+    const findUser = async (params) => {
+      const user = await UserModel.findOne(
+        {
+          where: {
+            $or: [
+              {
+                mail: params.name
+              },
+              {
+                name: params.name
+              }
+            ]
+          }
+        })
+      if (!user) {
+        return Promise.reject(new ctx.StatusError('用户不存在'))
+      }
+      return {
+        user,
+        params
+      }
+    }
+
     await util.validate(rules, ctx.getParams())
-      .then(async params => {
-        const user = await UserModel.findOne({where: {mail: params.mail}})
-        if (!user) {
-          return Promise.reject(new ctx.StatusError('用户不存在'))
-        }
-        return {
-          user,
-          params
-        }
-      })
+      .then(async params => await findUser(params))
       .then(async ({params, user}) => {
-        if (user.mail !== params.mail || user.password !== md5(params.password)) {
+        if (user.password !== md5(params.password)) {
           return Promise.reject(new ctx.StatusError('用户名或密码错误', 403))
         }
         return user.uid
@@ -63,14 +78,6 @@ class UserController {
       .then(async (uid) => jwt.sign({user: uid, exp: 1000 * 60 * 60 * 24 * 20}, config.app.jwt))
       .then(token => ctx.success({token}, '登录成功'))
       .catch(err => ctx.error(err))
-  }
-
-  /**
-   * 获取所有用户信息
-   */
-  async all (ctx) {
-    const users = await UserModel.findAll({attributes: {exclude: ['password']}})
-    ctx.success(users)
   }
 
   /**

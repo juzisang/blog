@@ -1,7 +1,8 @@
-const Sequelize = require('sequelize')
+const sequelize = require('sequelize')
 const config = require('../config')
+const md5 = require('md5')
 
-const seq = new Sequelize(config.db.name, config.db.user, config.db.password, {
+const seq = new sequelize(config.db.name, config.db.user, config.db.password, {
   dialect: 'mysql',
   host: config.db.host,
   port: config.db.port
@@ -24,7 +25,36 @@ Content.hasMany(Relationships, {foreignKey: 'cid', targetKey: 'cid'})
 Relationships.belongsTo(Metas, {foreignKey: 'mid', targetKey: 'mid'})
 Content.belongsTo(Users, {foreignKey: 'authorId', targetKey: 'uid'})
 
-seq.sync({force: true})
+seq.sync({force: false}).then(async () => {
+  await Users.findOrCreate({
+    where: {
+      name: 'root',
+      password: md5('123456789'),
+      mail: '1915327117@qq.com',
+      group: 'admin'
+    },
+    defaults: {
+      name: 'root',
+      password: md5('123456789'),
+      mail: '1915327117@qq.com',
+      group: 'admin'
+    }
+  })
+  await Metas.findOrCreate({
+    where: {
+      name: '默认分类',
+      slug: 'default',
+      description: 'default',
+      type: 'category'
+    },
+    defaults: {
+      name: '默认分类',
+      slug: 'default',
+      description: 'default',
+      type: 'category'
+    }
+  })
+})
 
 module.exports = {
   Content,
@@ -32,6 +62,5 @@ module.exports = {
   Relationships,
   Options,
   Metas,
-  Users,
-  Sequelize: seq
+  Users
 }
