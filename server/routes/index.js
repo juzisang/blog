@@ -2,95 +2,30 @@ const ContentController = require('../controller/content')
 const UserController = require('./../controller/user')
 const MetaController = require('../controller/meta')
 const CommonController = require('../controller/common')
-const MapRouter = require('../plugin/MapRouter')
+const Router = require('koa-router')
 
-module.exports = new MapRouter([
-  {
-    url: '/article',
-    children: [
-      {
-        url: '/create',
-        controller: ContentController.createArticle,
-      },
-      {
-        url: '/edit',
-        controller: ContentController.editArticle,
-      },
-      {
-        url: '/details',
-        controller: ContentController.details
-      },
-      {
-        url: '/delete',
-        controller: ContentController.del
-      },
-      {
-        url: '/list',
-        controller: ContentController.articleList
-      },
-    ]
-  },
-  {
-    url: '/user',
-    children: [
-      {
-        url: '/register',
-        controller: UserController.register,
-      },
-      {
-        url: '/login',
-        controller: UserController.login,
-      },
-      {
-        url: '/edit',
-        controller: UserController.edit,
-      },
-      {
-        url: '/info',
-        controller: UserController.userInfo,
-      }
-    ]
-  },
-  {
-    url: '/comment',
-    children: [
-      {
-        url: '/recent',
-        controller: CommonController.getRecentComments
-      }
-    ]
-  },
-  {
-    url: '/meta',
-    children: [
-      {
-        url: '/create',
-        controller: MetaController.createMeta
-      },
-      {
-        url: '/edit',
-        controller: MetaController.editMeta
-      },
-      {
-        url: '/del',
-        controller: MetaController.delMeta
-      },
-      {
-        url: '/tags',
-        controller: MetaController.getTags
-      },
-      {
-        url: '/category',
-        controller: MetaController.getCategory
-      },
-      {
-        url: '/find_or_create',
-        controller: MetaController.findOrCreateMeta
-      }
-    ]
-  },
-  {
-    url: '*',
-    controller: (ctx) => ctx.error('接口不存在', 404)
-  }
-])
+const router = new Router()
+
+router.get('/articles', ContentController.articleList)
+  .get('/article/:cid', ContentController.details)
+  .post('/article', ContentController.createArticle)
+  .del('/article', ContentController.del)
+  .put('/article', ContentController.editArticle)
+
+router.get('/user/:uid', UserController.userInfo)
+  .put('/user', UserController.edit)
+  .post('/register', UserController.register)
+  .post('/login', UserController.login)
+
+router.get('/comment', CommonController.getRecentComments)
+
+router.get('/tags', MetaController.getTags)
+  .post('/tag', MetaController.createMeta)
+  .put('/tag', MetaController.editMeta)
+  .del('/tag', MetaController.delMeta)
+  .get('/category', MetaController.getCategory)
+  .all('/meta', MetaController.findOrCreateMeta)
+
+router.get('*', (ctx) => ctx.error('接口不存在', 404))
+
+module.exports = router
