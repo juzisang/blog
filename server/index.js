@@ -40,10 +40,10 @@ app
   })
     .unless({
       path: [
-        /\/user\/register/,
-        /\/user\/login/,
-        /\/article\/list/,
-        /\/article\/details/,
+        /\/register/,
+        /\/login/,
+        /\/articles/,
+        /\/article/
       ]
     }))
   .use(routes.routes())

@@ -24,85 +24,83 @@
 </template>
 
 <script>
-  import Common from '../mixins/Common'
-  import Cookies from 'js-cookie'
+import Common from '../mixins/Common'
 
-  export default {
-    name: 'Login',
-    mixins: [Common],
-    data () {
-      return {
-        form: {
-          name: '',
-          password: ''
-        },
-        rules: {
-          name: [
-            {required: true, message: '请输入用户名或邮箱', trigger: 'blur'}
-          ],
-          password: [
-            {required: true, message: '请输入密码', trigger: 'blur'}
-          ]
-        }
-      }
-    },
-    methods: {
-      async login () {
-        this.validate('form')
-          .then(() => this.$Http.login(this.form))
-          .then(data => {
-            Cookies.set('authorization', data.data.data.token, {expires: 7})
-            this.$message.success('登录成功')
-            this.$router.replace('/home')
-          })
-          .catch(err => this.error(err))
+export default {
+  name: 'Login',
+  mixins: [Common],
+  data () {
+    return {
+      form: {
+        name: '',
+        password: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入用户名或邮箱', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
       }
     }
+  },
+  methods: {
+    async login () {
+      this.validate('form')
+        .then(() => this.$Http.login(this.form))
+        .then(({data}) => {
+          localStorage.setItem('Authorization', data.token)
+          this.$message.success('登录成功')
+          this.$router.replace('/home')
+        })
+        .catch(err => this.error(err))
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  @import "src/assets/style/util";
+@import "src/assets/style/util";
 
-  .Login {
+.Login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  .login-box {
+    width: 400px;
+    height: 260px;
+    background: #ffffff;
+    box-sizing: border-box;
+    padding: 20px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    .login-box {
-      width: 400px;
-      height: 260px;
-      background: #ffffff;
-      box-sizing: border-box;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      border-radius: 2px;
-      box-shadow: 0 1px 3px rgba(26, 26, 26, .1);
-      .form {
-        width: 100%;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
+    .form {
+      width: 100%;
+    }
+    .mt {
+      width: 100%;
+      margin-top: 12px;
+    }
+    .help {
+      font-size: 14px;
+      color: #8590a6;
+      @include clearfix;
+      > div {
+        float: right;
       }
-      .mt {
-        width: 100%;
-        margin-top: 12px;
-      }
-      .help {
-        font-size: 14px;
-        color: #8590a6;
-        @include clearfix;
-        > div {
-          float: right;
+      span {
+        cursor: pointer;
+        display: inline-block;
+        &:first-child {
+          padding: 0 4px;
         }
-        span {
-          cursor: pointer;
-          display: inline-block;
-          &:first-child {
-            padding: 0 4px;
-          }
-        }
-
       }
     }
   }
+}
 </style>
 
