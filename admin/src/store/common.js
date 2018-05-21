@@ -41,16 +41,16 @@ export default {
     },
     async [GET_USERINFO] ({state, commit, dispatch}) {
       const userInfo = await Http.getUserInfo()
-      commit(SAVE_USERINFO, userInfo.data.data)
+      commit(SAVE_USERINFO, userInfo.data)
     },
     async [RESET_TAGS] ({state, commit}) {
       const list = await Http.getTags()
-      const tags = list.data.data
+      const tags = list.data
       commit(SAVE_TAGS, tags)
     },
     async [RESET_CATEGORY] ({state, commit}) {
       const list = await Http.getCategory()
-      const categorys = list.data.data
+      const categorys = list.data
       commit(SAVE_CATEGORY, categorys)
     }
   }
