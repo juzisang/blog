@@ -1,97 +1,60 @@
-import qs from 'qs'
-import router from 'src/router'
-import Cookies from 'js-cookie'
+import { request } from './axios.js'
 
 class Http {
-  constructor () {
-    this.axios = require('axios').create({
-      baseURL: 'http://localhost:9000/',
-      withCredentials: true,
-      transformRequest: [function (data) {
-        return qs.stringify(data)
-      }]
-    })
-    this.axios.interceptors.response.use(
-      response => {
-        return response
-      },
-      error => {
-        if (error.response) {
-          switch (error.response.status) {
-            case 401:
-              Cookies.remove('authorization')
-              router.replace('/login')
-          }
-        }
-        return Promise.reject(error.response ? error.response.data : error)
-      })
+  register ({ mail, name, password }) {
+    return request('post', '/register', { mail, name, password })
   }
 
-  register ({mail, name, password}) {
-    return this.axios.post('/user/register', {mail, name, password})
-  }
-
-  login ({name, password}) {
-    return this.axios.post('/user/login', {name, password})
+  login ({ name, password }) {
+    return request('post', '/login', { name, password })
   }
 
   getUserInfo () {
-    return this.axios.get('/user/info')
+    return request('get', '/user')
   }
 
   getTags () {
-    return this.axios.get('/meta/tags')
+    return request('get', '/tags')
+  }
+
+  addTag ({ name, slug }) {
+    return request('post', '/tag', { name, slug })
+  }
+
+  editTag ({ name, slug, mid }) {
+    return request('put', '/tag', { name, slug, mid })
+  }
+
+  delTag (mid) {
+    return request('delete', '/tag', { mid })
   }
 
   getCategory () {
-    return this.axios.get('/meta/category')
+    return request('get', '/categorys')
   }
 
-  addTag ({name, slug}) {
-    return this.axios.post('/meta/create', {name, slug, type: 'tag'})
+  delCategory (mid) {
+    return request('delete', '/category', { mid })
   }
 
-  editTag ({name, slug, mid}) {
-    return this.axios.post('/meta/edit', {name, slug, type: 'tag', mid})
+  addCategory ({ name, slug, description }) {
+    return request('post', '/category', { name, slug, description })
   }
 
-  delMeta (mid) {
-    return this.axios.post('/meta/del', {mid})
+  editCategory ({ name, slug, mid, description }) {
+    return request('put', '/category', { name, slug, mid, description })
   }
 
-  addCategory ({name, slug, description}) {
-    return this.axios.post('/meta/create', {name, slug, description, type: 'category'})
+  createArticle ({ title, slug, content, type, authorId, status, tags, category, order }) {
+    return request('post', '/article', { title, slug, content, type, authorId, status, tags, category, order })
   }
 
-  editCategory ({name, slug, mid, description}) {
-    return this.axios.post('/meta/edit', {name, slug, type: 'category', mid, description})
+  updateArticle ({ cid, title, slug, content, type, authorId, status, tags, category, order }) {
+    return request('put', '/article', { cid, title, slug, content, type, authorId, status, tags, category, order })
   }
 
-  createArticle ({title, slug, content, type, authorId, status, tags, category, order}) {
-    return this.axios.post('/article/create', {title, slug, content, type, authorId, status, tags, category, order})
-  }
-
-  updateArticle ({cid, title, slug, content, type, authorId, status, tags, category, order}) {
-    return this.axios.post('/article/edit', {
-      cid,
-      title,
-      slug,
-      content,
-      type,
-      authorId,
-      status,
-      tags,
-      category,
-      order
-    })
-  }
-
-  findOrCreateTag ({name, slug}) {
-    return this.axios.post('/meta/find_or_create', {name, slug, type: 'tag'})
-  }
-
-  findOrCreateCategory ({name, slug}) {
-    return this.axios.post('/meta/find_or_create', {name, slug, type: 'category'})
+  findOrCreateMeta ({ name, slug, type }) {
+    return request('post', '/meta', { name, slug, type })
   }
 }
 

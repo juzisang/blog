@@ -7,24 +7,28 @@ const Router = require('koa-router')
 const router = new Router()
 
 router.get('/articles', ContentController.articleList)
-  .get('/article/:cid', ContentController.details)
+  .get('/article', ContentController.details)
   .post('/article', ContentController.createArticle)
-  .del('/article', ContentController.del)
   .put('/article', ContentController.editArticle)
+  .del('/article', ContentController.del)
 
-router.get('/user/:uid', UserController.userInfo)
-  .put('/user', UserController.edit)
-  .post('/register', UserController.register)
+router.post('/register', UserController.register)
   .post('/login', UserController.login)
-
-router.get('/comment', CommonController.getRecentComments)
+  .get('/user', UserController.userInfo)
+  .put('/user', UserController.edit)
 
 router.get('/tags', MetaController.getTags)
   .post('/tag', MetaController.createMeta)
   .put('/tag', MetaController.editMeta)
   .del('/tag', MetaController.delMeta)
-  .get('/category', MetaController.getCategory)
-  .all('/meta', MetaController.findOrCreateMeta)
+
+router.get('/categorys', MetaController.getCategory)
+  .post('/category', MetaController.createMeta)
+  .put('/category', MetaController.editMeta)
+  .del('/category', MetaController.delMeta)
+  .post('/meta', MetaController.findOrCreateMeta)
+
+router.get('/comment', CommonController.getRecentComments)
 
 router.get('*', (ctx) => ctx.error('接口不存在', 404))
 

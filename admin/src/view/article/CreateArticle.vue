@@ -159,19 +159,19 @@
 </script>
 
 <style lang="scss" scoped>
-  .CreateArticle {
-    .header {
-      margin: 0 0 20px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid rgb(238, 238, 238);
-      font-size: 20px;
-      position: relative;
-      .bt-submit {
-        float: right;
-      }
-    }
-    .text-content {
+.CreateArticle {
+  .header {
+    margin: 0 0 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgb(238, 238, 238);
+    font-size: 20px;
+    position: relative;
+    .bt-submit {
+      float: right;
     }
   }
+  .text-content {
+  }
+}
 </style>
 
