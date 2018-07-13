@@ -5,6 +5,7 @@ services:
      #  restart: always
      ports:
        - "9000:9000"
+       - "0.0.0.0:9222:9222"
      volumes:
        - ./server:/www/server/
      working_dir: /www/server/

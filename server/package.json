@@ -38,6 +38,7 @@
     "koa2-cors": "2.0.5",
     "md5": "2.2.1",
     "mysql2": "1.5.2",
+    "rxjs": "^6.2.1",
     "sequelize": "4.33.3"
   },
   "devDependencies": {
