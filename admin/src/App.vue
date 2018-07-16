@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -9,14 +9,3 @@ export default {
   name: 'App'
 }
 </script>
-
-<style>
-#app {
-  width: 100%;
-  min-height: 100vh;
-  background-color: #2e323f;
-  background-image: url("~src/assets/imgs/home_bg.png");
-  background-repeat: no-repeat;
-  background-size: 100%;
-}
-</style>

@@ -1,31 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import router from 'src/router'
-import common, { GET_CATEGORY, GET_TAGS, GET_USERINFO } from './common'
-import article from './article'
-import Cookies from 'js-cookie'
+import app from './modules/app'
+import user from './modules/user'
+import getters from './getters'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  actions: {
-    async init ({state, dispatch}) {
-      dispatch(GET_USERINFO)
-        .then(() => {
-          dispatch(GET_CATEGORY)
-          dispatch(GET_TAGS)
-        })
-        .catch(() => {
-          Cookies.remove('authorization')
-          router.replace('/login')
-        })
-    }
-  },
   modules: {
-    common,
-    article
+    app,
+    user
   },
-  strict: process.env.NODE_ENV !== 'production'
+  getters
 })
 
 export default store
