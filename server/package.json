@@ -4,8 +4,8 @@
   "description": "blog-api",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -L --harmony --inspect=0.0.0.0:9222 index.js",
-    "start": "cross-env NODE_ENV=production node --harmony index.js"
+    "start": "nodemon -L --harmony --inspect=0.0.0.0:9222 index.js",
+    "build": "cross-env NODE_ENV=production node --harmony index.js"
   },
   "repository": {
     "type": "git",
@@ -13,8 +13,7 @@
   },
   "keywords": [
     "blog",
-    "api",
-    "koa2"
+    "api"
   ],
   "author": "",
   "license": "ISC",

@@ -4,6 +4,6 @@ const config = require('./config')
 
 const app = express()
 
-app.listen(config.app.port, function () {
-  console.log('Example app listening on port 3000!')
+app.listen(config.app.port, config.app.host, function () {
+  console.log(`Example app ${config.app.host} on port ${config.app.port}!`)
 })

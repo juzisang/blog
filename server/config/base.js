@@ -1,5 +1,6 @@
 module.exports = {
   app: {
+    host: process.env.HOST || '127.0.0.1',
     port: process.env.HOME_PORT || 3000,
     jwt: 'jwt_secret'
   },
