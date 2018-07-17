@@ -10,7 +10,7 @@ services:
        - ./server/:/www/server/
        - ./server/logs:/root/.npm/_logs/
      working_dir: /www/server/
-     command: bash -c "npm config set registry https://registry.npm.taobao.org && npm install nodemon -g && npm install --no-bin-links && npm run start"
+     command: bash -c "npm install nodemon -g && npm install --no-bin-links && npm run start"
      depends_on:
        - mysql
      links:
@@ -31,7 +31,7 @@ services:
        - ./admin/:/www/admin/
        - ./admin/logs:/root/.npm/_logs/
      working_dir: /www/admin/
-     command: bash -c "npm config set registry https://registry.npm.taobao.org && npm install webpack-dev-server -g && npm install --no-bin-links && npm run start"
+     command: bash -c "npm install webpack-dev-server -g && npm install --no-bin-links && npm run start"
      environment:
        - NODE_ENV=development
        - HOST=0.0.0.0
@@ -46,7 +46,7 @@ services:
        - ./client/:/www/client/
        - ./client/logs:/root/.npm/_logs/
      working_dir: /www/client/
-     command: bash -c "npm config set registry https://registry.npm.taobao.org && npm install nuxt -g && npm install --no-bin-links && npm run dev"
+     command: bash -c "npm install nuxt -g && npm install --no-bin-links && npm dev"
      environment:
        - NODE_ENV=development
        - HOST=0.0.0.0
