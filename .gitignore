@@ -1,5 +1,12 @@
+# dependencies
 node_modules
 .idea
+
+# logs
 npm-debug.log
-package-lock.json
-*/logs
+
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist
