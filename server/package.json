@@ -1,8 +1,8 @@
 {
   "name": "server",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "description",
-  "author": "",
+  "author": "juzisang <juziexe@gmail.com>",
   "license": "MIT",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
