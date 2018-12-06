@@ -5,6 +5,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  TreeParent,
+  TreeChildren,
+  TreeLevelColumn,
 } from 'typeorm';
 import { Article } from '../article/article.entity';
 
@@ -14,10 +17,22 @@ export class Comment {
   id: number;
 
   /**
-   * 父评论id
+   * 子评论
    */
-  @Column()
-  pid: number;
+  @TreeChildren()
+  children: Comment[];
+
+  /**
+   * 父评论
+   */
+  @TreeParent()
+  parent: Comment;
+
+  /**
+   * 评论级别
+   */
+  @TreeLevelColumn()
+  level: number;
 
   /**
    * 评论者名字
