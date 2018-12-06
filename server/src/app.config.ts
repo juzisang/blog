@@ -1,11 +1,11 @@
 export default {
   db: {
     type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'developer',
-    password: 'developer',
-    database: 'blog',
+    host: process.env.BLOG_MYSQL_HOST || 'localhost',
+    port: process.env.BLOG_MYSQL_PORT || 3306,
+    username: process.env.BLOG_MYSQL_USER || 'developer',
+    password: process.env.BLOG_MYSQL_PASSWORD || 'developer',
+    database: process.env.BLOG_MYSQL_DATABASE || 'blog',
     entities: ['src/**/**.entity{.ts,.js}'],
     synchronize: true,
   },
