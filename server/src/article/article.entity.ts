@@ -8,12 +8,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Category } from '../category/category.entity';
-import { Tag } from '../tag/tag.entity';
-import { Comment } from '../comment/comment.entity';
+import { CategoryEntity } from '../category/category.entity';
+import { TagEntity } from '../tag/tag.entity';
+import { CommentEntity } from '../comment/comment.entity';
 
 @Entity('article')
-export class Article {
+export class ArticleEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -56,23 +56,23 @@ export class Article {
   /**
    * 分类
    */
-  @OneToOne(type => Category)
+  @OneToOne(type => CategoryEntity)
   @JoinColumn()
-  category: Category;
+  category: CategoryEntity;
 
   /**
    * 标签
    */
-  @OneToMany(type => Tag, tag => tag.article)
+  @OneToMany(type => TagEntity, tag => tag.article)
   @JoinColumn()
-  tags: Tag[];
+  tags: TagEntity[];
 
   /**
    * 评论列表
    */
-  @OneToMany(type => Comment, comment => comment.article)
+  @OneToMany(type => CommentEntity, comment => comment.article)
   @JoinColumn()
-  comments: Comment[];
+  comments: CommentEntity[];
 
   @CreateDateColumn()
   create_time: Date;

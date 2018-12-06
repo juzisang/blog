@@ -6,10 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Article } from '../article/article.entity';
+import { ArticleEntity } from '../article/article.entity';
 
 @Entity('tag')
-export class Tag {
+export class TagEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -22,8 +22,8 @@ export class Tag {
   @Column({ length: 150 })
   description: string;
 
-  @ManyToOne(type => Article, article => article.tags)
-  article: Article;
+  @ManyToOne(type => ArticleEntity, article => article.tags)
+  article: ArticleEntity;
 
   @CreateDateColumn()
   create_time: Date;

@@ -9,10 +9,10 @@ import {
   TreeChildren,
   TreeLevelColumn,
 } from 'typeorm';
-import { Article } from '../article/article.entity';
+import { ArticleEntity } from '../article/article.entity';
 
 @Entity('comment')
-export class Comment {
+export class CommentEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,13 +20,13 @@ export class Comment {
    * 子评论
    */
   @TreeChildren()
-  children: Comment[];
+  children: CommentEntity[];
 
   /**
    * 父评论
    */
   @TreeParent()
-  parent: Comment;
+  parent: CommentEntity;
 
   /**
    * 评论级别
@@ -85,8 +85,8 @@ export class Comment {
   /**
    * 关联文章
    */
-  @ManyToOne(type => Article, article => article.comments)
-  article: Article;
+  @ManyToOne(type => ArticleEntity, article => article.comments)
+  article: ArticleEntity;
 
   @CreateDateColumn()
   create_time: Date;
