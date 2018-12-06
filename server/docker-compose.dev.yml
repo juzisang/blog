@@ -1,0 +1,23 @@
+version: '2'
+services:
+  server:
+    image: node:10.14.1
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./:/www/server/
+    working_dir: /www/server/
+    command: bash -c "yarn && yarn run start:dev"
+    depends_on:
+      - mysql
+    links:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=blog
+      - MYSQL_USER=developer
+      - MYSQL_PASSWORD=developer
