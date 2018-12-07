@@ -26,7 +26,7 @@ export class OptionEntity {
   /**
    * 描述
    */
-  @Column()
+  @Column({ default: '' })
   description: string;
 
   /**
@@ -34,10 +34,4 @@ export class OptionEntity {
    */
   @Column()
   site_url: string;
-
-  /**
-   * 站点邮箱
-   */
-  @Column()
-  site_email: string;
 }

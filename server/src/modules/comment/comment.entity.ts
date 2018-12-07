@@ -49,7 +49,7 @@ export class CommentEntity {
   /**
    * 评论者地址
    */
-  @Column()
+  @Column({ nullable: true })
   author_site: string;
 
   /**
@@ -61,7 +61,7 @@ export class CommentEntity {
   /**
    * 是否顶置
    */
-  @Column()
+  @Column({ default: false })
   is_top: boolean;
 
   /**

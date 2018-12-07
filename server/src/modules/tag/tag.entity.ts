@@ -19,7 +19,7 @@ export class TagEntity {
   @Column()
   slug: string;
 
-  @Column({ length: 150 })
+  @Column({ length: 150, default: '' })
   description: string;
 
   @ManyToOne(type => ArticleEntity, article => article.tags)

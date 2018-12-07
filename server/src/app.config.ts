@@ -21,6 +21,7 @@ export const DEFAULT_DATA = {
     avatar: process.env.BLOG_USER_AVATAR || '',
     slogan: process.env.BLOG_USER_SLOGAN || '',
     password: process.env.BLOG_USER_PASSWORD || '123456',
+    email: process.env.BLOG_USER_EMAIL || 'juziexe@gmail.com',
   },
   option: {
     title: process.env.BLOG_OPTION_NAME || '橘子的blog',
@@ -33,6 +34,12 @@ export const DEFAULT_DATA = {
     ],
     description: process.env.BLOG_OPTION_DESCRIPTION || '记录一些技术文章',
     site_url: process.env.BLOG_OPTION_SITE_URL || 'https://www.juzisang.top/',
-    site_email: process.env.BLOG_OPTION_SITE_EMAIL || 'juziexe@gmail.com',
   },
+};
+
+/**
+ * JWT
+ */
+export const JWT = {
+  secretKey: process.env.BLOG_JWT_SECRETKEY || 'secretKey',
 };

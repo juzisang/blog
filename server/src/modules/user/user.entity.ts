@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('user')
 export class UserEntity {
@@ -12,15 +18,21 @@ export class UserEntity {
   name: string;
 
   /**
-   * 签名
+   * 邮箱
    */
   @Column()
+  email: string;
+
+  /**
+   * 签名
+   */
+  @Column({ nullable: true })
   slogan: string;
 
   /**
    * 头像
    */
-  @Column()
+  @Column({ nullable: true })
   avatar: string;
 
   /**
@@ -28,4 +40,10 @@ export class UserEntity {
    */
   @Column({ default: '123456' })
   password: string;
+
+  @CreateDateColumn()
+  create_time: Date;
+
+  @UpdateDateColumn()
+  update_time: Date;
 }
