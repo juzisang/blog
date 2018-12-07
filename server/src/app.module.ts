@@ -9,10 +9,11 @@ import { OptionModule } from './modules/option/option.module';
 import { TagModule } from './modules/tag/tag.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { DB } from './app.config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot(DB),
     AuthModule,
     ArticleModule,
     CategoryModule,

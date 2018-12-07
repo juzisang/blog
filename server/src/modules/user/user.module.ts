@@ -21,8 +21,7 @@ export class UserModule implements OnModuleInit {
    * 创建默认用户
    */
   async createDefaultUser() {
-    const isUser = await this.userService.findOneUser(DEFAULT_DATA.user.name);
-    if (!isUser) {
+    if (await this.userService.IsEmptyUsers()) {
       await this.userService.createdUser({
         name: DEFAULT_DATA.user.name,
         email: DEFAULT_DATA.user.email,
