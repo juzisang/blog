@@ -42,7 +42,7 @@ export class AuthService {
   async loginUser(dto: LoginUserDto) {
     const user = await this.validateUser(dto.name);
     if (!user) {
-      throw new NotFoundException('用户不存在');
+      throw new NotFoundException('用户名或密码错误');
     }
     if (
       user.password !==
@@ -50,16 +50,13 @@ export class AuthService {
         .update(dto.password)
         .digest('hex')
     ) {
-      throw new HttpException('密码错误', HttpStatus.FORBIDDEN);
+      throw new NotFoundException('用户名或密码错误');
     }
     const token = this.createToken({
       id: user.id,
       email: user.email,
       name: user.name,
     });
-    return new ResponseData({
-      token,
-      user,
-    });
+    return new ResponseData({ ...user, token });
   }
 }
