@@ -17,7 +17,7 @@ export class CategoryEntity {
   @Column()
   slug: string;
 
-  @Column({ length: 150 })
+  @Column({ length: 150, nullable: true })
   description: string;
 
   @CreateDateColumn()

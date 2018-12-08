@@ -18,14 +18,13 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
+  /**
+   * 判断用户是否为空
+   */
   async IsEmptyUsers() {
     return (await this.userRepository.count()) === 0;
   }
 
-  /**
-   * 创建用户
-   * @param dto
-   */
   async createdUser(dto: CreateUserDto) {
     const user = await this.userRepository.findOne({ name: dto.name });
     if (user) {
@@ -39,11 +38,6 @@ export class UserService {
     );
   }
 
-  /**
-   * 获取用户信息
-   * @param name
-   * @param id
-   */
   async findOneUser(data: { name?: string; id?: number }) {
     const user = await this.userRepository.find({
       select: ['avatar', 'email', 'id', 'name', 'slogan'],
@@ -56,23 +50,13 @@ export class UserService {
     throw new NotFoundException('没有这个用户');
   }
 
-  /**
-   * 获取用户所有信息
-   * @param name
-   * @param id
-   */
   async findOneAllUser(data: { name?: string; id?: number }) {
     return await this.userRepository.findOne(data);
   }
 
-  /**
-   * 更新用户数据
-   * @param id 用户id
-   * @param date 需要更新的值
-   */
   async updateUser(id: number, date: UpdateUserDto) {
     return await this.userRepository.update(id, {
-      name: date.name,
+      // name: date.name,
       email: date.email,
       avatar: date.avatar,
       slogan: date.slogan,

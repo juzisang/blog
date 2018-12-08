@@ -6,13 +6,14 @@ import { ConnectionOptions } from 'typeorm';
 export const DB: ConnectionOptions = {
   type: 'mysql',
   host: process.env.BLOG_MYSQL_HOST || 'localhost',
-  port: parseInt(process.env.BLOG_MYSQL_PORT) || 3306,
+  port: (process.env.BLOG_MYSQL_PORT as any) || 3306,
   username: process.env.BLOG_MYSQL_USER || 'developer',
   password: process.env.BLOG_MYSQL_PASSWORD || 'developer',
   database: process.env.BLOG_MYSQL_DATABASE || 'blog',
   charset: 'utf8_general_ci',
   entities: ['src/**/**.entity{.ts,.js}'],
   synchronize: true,
+  extra: { charset: 'utf8_general_ci' },
 };
 
 /**
