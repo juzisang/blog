@@ -2,8 +2,11 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { OptionController } from './option.controller';
 import { OptionService } from './option.service';
 import { DEFAULT_DATA } from '../../app.config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { OptionEntity } from './option.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([OptionEntity])],
   controllers: [OptionController],
   providers: [OptionService],
 })

@@ -17,6 +17,9 @@ export class OptionService {
 
   async findOneOption() {
     const options = await this.optionEntity.find();
+    if (options.length <= 0) {
+      return null;
+    }
     return options[0];
   }
 
