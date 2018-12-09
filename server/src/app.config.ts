@@ -14,6 +14,7 @@ export const DB: ConnectionOptions = {
   entities: ['src/**/**.entity{.ts,.js}'],
   synchronize: true,
   extra: { charset: 'utf8_general_ci' },
+  logging: true,
 };
 
 /**
