@@ -1,10 +1,8 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArticleEntity } from './entity/article.entity';
-import { CategoryEntity } from './entity/category.entity';
 import { CommentEntity } from './entity/comment.entity';
 import { OptionEntity } from './entity/option.entity';
-import { TagEntity } from './entity/tag.entity';
 import { UserEntity } from './entity/user.entity';
 import { ArticleController } from './controller/article.controller';
 import { CategoryController } from './controller/category.controller';
@@ -13,22 +11,22 @@ import { OptionController } from './controller/option.controller';
 import { TagController } from './controller/tag.controller';
 import { UserController } from './controller/user.controller';
 import { ArticleService } from './service/article.service';
-import { CategoryService } from './service/category.service';
 import { CommentService } from './service/comment.service';
 import { OptionService } from './service/option.service';
-import { TagService } from './service/tag.service';
 import { UserService } from './service/user.service';
 import { DEFAULT_DATA } from './../app.config';
+import { MetasEntity } from './entity/metas.entity';
+import { RelationshipsEntity } from './entity/relationships.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       ArticleEntity,
-      CategoryEntity,
       CommentEntity,
       OptionEntity,
-      TagEntity,
       UserEntity,
+      MetasEntity,
+      RelationshipsEntity,
     ]),
   ],
   controllers: [
@@ -39,14 +37,7 @@ import { DEFAULT_DATA } from './../app.config';
     TagController,
     UserController,
   ],
-  providers: [
-    ArticleService,
-    CategoryService,
-    CommentService,
-    OptionService,
-    TagService,
-    UserService,
-  ],
+  providers: [ArticleService, CommentService, OptionService, UserService],
 })
 export class BlogModule implements OnModuleInit {
   constructor(
@@ -56,7 +47,7 @@ export class BlogModule implements OnModuleInit {
 
   onModuleInit() {
     this.createDefaultUser();
-    this.createDefaultOption();
+    // this.createDefaultOption();
   }
 
   /**
@@ -72,11 +63,11 @@ export class BlogModule implements OnModuleInit {
     }
   }
 
-  async createDefaultOption() {
-    if (!(await this.optionService.findOneOption())) {
-      this.optionService.createdOption({
-        ...DEFAULT_DATA.option,
-      });
-    }
-  }
+  //   async createDefaultOption() {
+  //     if (!(await this.optionService.findOneOption())) {
+  //       this.optionService.createdOption({
+  //         ...DEFAULT_DATA.option,
+  //       });
+  //     }
+  //   }
 }

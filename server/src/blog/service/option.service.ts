@@ -11,20 +11,9 @@ export class OptionService {
     private readonly optionEntity: Repository<OptionEntity>,
   ) {}
 
-  createdOption(option: OptionDto) {
-    return this.optionEntity.save(this.optionEntity.create(option));
-  }
+  createdOption(option: OptionDto) {}
 
-  async findOneOption() {
-    const options = await this.optionEntity.find();
-    if (options.length <= 0) {
-      return null;
-    }
-    return options[0];
-  }
+  async findOneOption() {}
 
-  async updateOption(option: OptionDto) {
-    const one = await this.findOneOption();
-    return await this.optionEntity.merge(one, option);
-  }
+  async updateOption(option: OptionDto) {}
 }

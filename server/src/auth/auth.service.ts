@@ -43,7 +43,7 @@ export class AuthService {
       throw new NotFoundException('用户名或密码错误');
     }
     const token = this.createToken({
-      id: user.id,
+      uid: user.uid,
       email: user.email,
       name: user.name,
     });

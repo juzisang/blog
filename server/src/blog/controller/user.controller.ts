@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Put,
-  UseGuards,
-  Post,
-  Body,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Put, UseGuards, Body, Param } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/common/decorators/user.decorator';
@@ -19,7 +11,6 @@ export class UserController {
   /**
    * 获取用户信息
    */
-  @UseGuards(AuthGuard())
   @Get(':id')
   async findOne(@Param('id') id) {
     return this.userService.findOneUser({ id });

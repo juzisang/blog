@@ -14,7 +14,7 @@ export class UserEntity {
   /**
    * 名字
    */
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   /**
@@ -26,7 +26,7 @@ export class UserEntity {
   /**
    * 邮箱
    */
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   /**

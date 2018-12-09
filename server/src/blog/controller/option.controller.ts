@@ -12,15 +12,11 @@ export class OptionController {
    */
   @UseGuards(AuthGuard())
   @Put()
-  update(@Body() dto: OptionDto) {
-    return this.optionService.updateOption(dto);
-  }
+  update(@Body() dto: OptionDto) {}
 
   /**
    * 返回配置
    */
   @Get()
-  find() {
-    return this.optionService.findOneOption();
-  }
+  find() {}
 }

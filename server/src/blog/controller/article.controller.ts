@@ -32,9 +32,7 @@ export class ArticleController {
    */
   @UseGuards(AuthGuard())
   @Post()
-  create(@Body() dto: ArticleDto) {
-    return this.articleService.createArticle(dto);
-  }
+  create(@Body() dto: ArticleDto) {}
 
   /**
    * 更新文章

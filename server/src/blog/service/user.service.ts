@@ -26,7 +26,10 @@ export class UserService {
   }
 
   async createdUser(dto: CreateUserDto) {
-    const user = await this.userRepository.findOne({ name: dto.name });
+    const user = await this.userRepository.findOne({
+      name: dto.name,
+      email: dto.email,
+    });
     if (user) {
       throw new BadRequestException('用户已存在');
     }
@@ -40,7 +43,7 @@ export class UserService {
 
   async findOneUser(data: { name?: string; id?: number }) {
     const user = await this.userRepository.find({
-      select: ['avatar', 'email', 'id', 'name', 'slogan'],
+      select: ['avatar', 'email', 'uid', 'name', 'slogan', 'url'],
       where: { ...data },
     });
 
@@ -56,8 +59,7 @@ export class UserService {
 
   async updateUser(id: number, date: UpdateUserDto) {
     return await this.userRepository.update(id, {
-      // name: date.name,
-      email: date.email,
+      url: date.url,
       avatar: date.avatar,
       slogan: date.slogan,
     });
