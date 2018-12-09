@@ -7,11 +7,13 @@ import {
   UseGuards,
   Body,
   Param,
+  Query,
 } from '@nestjs/common';
 import { ArticleService } from '../service/article.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ArticleDto } from '../dto/article.dto';
 import { User } from 'src/common/decorators/user.decorator';
+import { PaginationDto } from '../dto/pagination.dto';
 
 @Controller('article')
 export class ArticleController {
@@ -20,16 +22,18 @@ export class ArticleController {
   /**
    * 文章列表
    */
-  @Get()
-  findAll() {
-    return this.articleService.findList();
+  @Get('list')
+  findAll(@Query() dto: PaginationDto) {
+    return this.articleService.findList(dto);
   }
 
   /**
    * 返回文章详情
    */
   @Get(':aid')
-  findOne() {}
+  findOne(@Param('aid') aid) {
+    return this.articleService.fondOne(aid);
+  }
 
   /**
    * 添加文章

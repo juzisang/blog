@@ -32,7 +32,7 @@ export class ArticleEntity {
   /**
    * 文章内容
    */
-  @Column({ type: 'text' })
+  @Column({ type: 'text', select: false })
   content: string;
 
   /**

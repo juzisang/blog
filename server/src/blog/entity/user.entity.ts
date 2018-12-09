@@ -26,7 +26,7 @@ export class UserEntity {
   /**
    * 密码
    */
-  @Column()
+  @Column({ select: false })
   password: string;
 
   /**

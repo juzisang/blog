@@ -7,6 +7,7 @@ import { MetasEntity } from '../entity/metas.entity';
 import { RelationshipsEntity } from '../entity/relationships.entity';
 import { UserEntity } from '../entity/user.entity';
 import { UserService } from './user.service';
+import { PaginationDto } from '../dto/pagination.dto';
 
 @Injectable()
 export class ArticleService {
@@ -17,8 +18,6 @@ export class ArticleService {
     private readonly metasEntity: Repository<MetasEntity>,
     @InjectRepository(RelationshipsEntity)
     private readonly relationshipsEntity: Repository<RelationshipsEntity>,
-    @InjectRepository(UserEntity)
-    private readonly userEntity: Repository<UserEntity>,
     private readonly userService: UserService,
   ) {}
 
@@ -77,7 +76,40 @@ export class ArticleService {
     return await this.articleEntity.update(article, dto);
   }
 
-  async findList() {
+  async fondOne(aid: number) {
+    const user = await this.userService.findRoot();
+
+    if (!(await this.articleEntity.findOne(aid))) {
+      throw new BadRequestException('文章不存在');
+    }
+
+    const article: any = await this.articleEntity
+      .createQueryBuilder('article')
+      .addSelect('article.content')
+      .where('article.uid = :uid AND article.aid = :aid', {
+        uid: user.uid,
+        aid,
+      })
+      .leftJoinAndSelect(
+        RelationshipsEntity,
+        'relationships',
+        'article.aid = relationships.aid',
+      )
+      .leftJoinAndMapMany(
+        'article.metas',
+        MetasEntity,
+        'metas',
+        'relationships.mid = metas.mid',
+      )
+      .getOne();
+    article.tags = article.metas.filter(meta => meta.type === 'tag');
+    const category = article.metas.filter(meta => meta.type === 'category');
+    article.category = category.length > 0 ? category[0] : null;
+    delete article.metas;
+    return article;
+  }
+
+  async findList(dto: PaginationDto) {
     const user = await this.userService.findRoot();
     const articles = await this.articleEntity
       .createQueryBuilder('article')
@@ -94,14 +126,22 @@ export class ArticleService {
         'relationships.mid = metas.mid',
       )
       .orderBy('article.create_time', 'DESC')
+      .skip((dto.index - 1) * dto.size)
+      .take(dto.size)
       .getMany();
-
-    return articles.map((item: any) => {
-      item.tags = item.metas.filter(meta => meta.type === 'tag');
-      const category = item.metas.filter(meta => meta.type === 'category');
-      item.category = category.length > 0 ? category[0] : null;
-      delete item.metas;
-      return item;
-    });
+    return {
+      list: articles.map((item: any) => {
+        item.tags = item.metas.filter(meta => meta.type === 'tag');
+        const category = item.metas.filter(meta => meta.type === 'category');
+        item.category = category.length > 0 ? category[0] : null;
+        delete item.metas;
+        return item;
+      }),
+      pagination: {
+        size: dto.size * 1,
+        index: dto.index * 1,
+        count: await this.articleEntity.count({ uid: user.uid }),
+      },
+    };
   }
 }
