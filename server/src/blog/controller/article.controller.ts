@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ArticleService } from '../service/article.service';
 import { AuthGuard } from '@nestjs/passport';
-import { ArticleDto } from '../dto/article.dto';
+import { UpDateArticleDto, CreateArticleDto } from '../dto/article.dto';
 import { User } from 'src/common/decorators/user.decorator';
 import { PaginationDto } from '../dto/pagination.dto';
 
@@ -23,8 +23,8 @@ export class ArticleController {
    * 文章列表
    */
   @Get('list')
-  findAll(@Query() dto: PaginationDto) {
-    return this.articleService.findList(dto);
+  findAll(@User('uid') uid, @Query() dto: PaginationDto) {
+    return this.articleService.findList(uid ? '*' : 'online', dto);
   }
 
   /**
@@ -40,7 +40,7 @@ export class ArticleController {
    */
   @UseGuards(AuthGuard())
   @Post()
-  create(@User('uid') uid, @Body() dto: ArticleDto) {
+  create(@User('uid') uid, @Body() dto: CreateArticleDto) {
     return this.articleService.createArticle(uid, dto);
   }
 
@@ -49,7 +49,7 @@ export class ArticleController {
    */
   @UseGuards(AuthGuard())
   @Put(':aid')
-  update(@Param('aid') aid, @Body() dto: ArticleDto) {
+  update(@Param('aid') aid, @Body() dto: UpDateArticleDto) {
     return this.articleService.updateArticle(aid, dto);
   }
 

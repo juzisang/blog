@@ -47,6 +47,11 @@ export class AuthService {
       email: user.email,
       name: user.name,
     });
-    return new ResponseData({ ...user, token });
+    const data = {
+      ...user,
+      token,
+    };
+    delete data.password;
+    return data;
   }
 }
