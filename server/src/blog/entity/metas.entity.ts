@@ -6,10 +6,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('category')
-export class CategoryEntity {
+@Entity('metas')
+export class MetasEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  mid: number;
 
   @Column()
   name: string;
@@ -17,8 +17,11 @@ export class CategoryEntity {
   @Column()
   slug: string;
 
-  @Column({ length: 150, nullable: true })
+  @Column({ nullable: true })
   description: string;
+
+  @Column({ type: 'enum', enum: ['tag', 'category'] })
+  type: string;
 
   @CreateDateColumn()
   create_time: Date;

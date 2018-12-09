@@ -9,13 +9,19 @@ import {
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  uid: number;
 
   /**
    * 名字
    */
   @Column()
   name: string;
+
+  /**
+   * 密码
+   */
+  @Column()
+  password: string;
 
   /**
    * 邮箱
@@ -36,10 +42,10 @@ export class UserEntity {
   avatar: string;
 
   /**
-   * 密码
+   * 网站url
    */
-  @Column({ default: '123456' })
-  password: string;
+  @Column({ nullable: true })
+  url: string;
 
   @CreateDateColumn()
   create_time: Date;

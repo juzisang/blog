@@ -1,37 +1,22 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('option')
 export class OptionEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  /**
+   * key
+   */
+  @PrimaryColumn()
+  name: string;
 
   /**
-   * 标题
+   * value
    */
   @Column()
-  title: string;
+  value: string;
 
   /**
-   * 副标题
+   * 用户
    */
-  @Column()
-  sub_title: string;
-
-  /**
-   * 搜索关键字
-   */
-  @Column()
-  keywords: string;
-
-  /**
-   * 描述
-   */
-  @Column({ default: '' })
-  description: string;
-
-  /**
-   * 站点地址
-   */
-  @Column()
-  site_url: string;
+  @PrimaryColumn()
+  uid: number;
 }

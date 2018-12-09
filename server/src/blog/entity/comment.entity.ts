@@ -1,7 +1,6 @@
 import {
   Entity,
   Column,
-  ManyToOne,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
@@ -9,12 +8,17 @@ import {
   TreeChildren,
   TreeLevelColumn,
 } from 'typeorm';
-import { ArticleEntity } from './article.entity';
 
 @Entity('comment')
 export class CommentEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  cid: number;
+
+  /**
+   * 关联文章
+   */
+  @Column()
+  aid: number;
 
   /**
    * 子评论
@@ -59,12 +63,6 @@ export class CommentEntity {
   content: string;
 
   /**
-   * 是否顶置
-   */
-  @Column({ default: false })
-  is_top: boolean;
-
-  /**
    * ip地址
    */
   @Column()
@@ -81,12 +79,6 @@ export class CommentEntity {
    */
   @Column({ type: 'enum', enum: ['online', 'delete'] })
   state: 'online' | 'delete';
-
-  /**
-   * 关联文章
-   */
-  @ManyToOne(type => ArticleEntity, article => article.comments)
-  article: ArticleEntity;
 
   @CreateDateColumn()
   create_time: Date;

@@ -2,32 +2,26 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  JoinColumn,
-  OneToOne,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { CategoryEntity } from './category.entity';
-import { TagEntity } from './tag.entity';
-import { CommentEntity } from './comment.entity';
 
 @Entity('article')
 export class ArticleEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  aid: number;
+
+  /**
+   * 所属用户
+   */
+  @Column()
+  uid: number;
 
   /**
    * 文章标题
    */
   @Column()
   title: string;
-
-  /**
-   * 搜索关键字
-   */
-  @Column()
-  keywords: string;
 
   /**
    * 描述
@@ -48,31 +42,16 @@ export class ArticleEntity {
   thumb: string;
 
   /**
+   * 阅读次数
+   */
+  @Column()
+  views: number;
+
+  /**
    * 文章状态
    */
   @Column({ type: 'enum', enum: ['online', 'draft', 'delete'] })
   state: 'online' | 'draft' | 'delete';
-
-  /**
-   * 分类
-   */
-  @OneToOne(type => CategoryEntity)
-  @JoinColumn()
-  category: CategoryEntity;
-
-  /**
-   * 标签
-   */
-  @OneToMany(type => TagEntity, tag => tag.article)
-  @JoinColumn()
-  tags: TagEntity[];
-
-  /**
-   * 评论列表
-   */
-  @OneToMany(type => CommentEntity, comment => comment.article)
-  @JoinColumn()
-  comments: CommentEntity[];
 
   @CreateDateColumn()
   create_time: Date;
