@@ -23,8 +23,8 @@ export class ArticleController {
    * 文章列表
    */
   @Get('list')
-  findAll(@User('uid') uid, @Query() dto: PaginationDto) {
-    return this.articleService.findList(uid ? '*' : 'online', dto);
+  findAll(@User() user, @Query() dto: PaginationDto) {
+    return this.articleService.findList(user ? '*' : 'online', dto);
   }
 
   /**

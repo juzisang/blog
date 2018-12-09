@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { CreateArticleDto, UpDateArticleDto } from '../dto/article.dto';
 import { MetasEntity } from '../entity/metas.entity';
 import { RelationshipsEntity } from '../entity/relationships.entity';
-import { UserEntity } from '../entity/user.entity';
 import { UserService } from './user.service';
 import { PaginationDto } from '../dto/pagination.dto';
 
@@ -21,7 +20,7 @@ export class ArticleService {
     private readonly userService: UserService,
   ) {}
 
-  async createMetas(aid: number, dto: any) {
+  private async createMetas(aid: number, dto: any) {
     // 添加Tags
     if (dto.tags) {
       const tags = await this.metasEntity.findByIds([...dto.tags]);
@@ -44,6 +43,14 @@ export class ArticleService {
         }),
       );
     }
+  }
+
+  private mapMetas(article: any) {
+    article.tags = article.metas.filter(meta => meta.type === 'tag');
+    const category = article.metas.filter(meta => meta.type === 'category');
+    article.category = category.length > 0 ? category[0] : null;
+    delete article.metas;
+    return article;
   }
 
   async createArticle(uid: number, dto: CreateArticleDto) {
@@ -123,11 +130,7 @@ export class ArticleService {
         'relationships.mid = metas.mid',
       )
       .getOne();
-    article.tags = article.metas.filter(meta => meta.type === 'tag');
-    const category = article.metas.filter(meta => meta.type === 'category');
-    article.category = category.length > 0 ? category[0] : null;
-    delete article.metas;
-    return article;
+    return this.mapMetas(article);
   }
 
   async findList(type, dto: PaginationDto) {
@@ -154,17 +157,11 @@ export class ArticleService {
       .take(dto.size)
       .getMany();
     return {
-      list: articles.map((item: any) => {
-        item.tags = item.metas.filter(meta => meta.type === 'tag');
-        const category = item.metas.filter(meta => meta.type === 'category');
-        item.category = category.length > 0 ? category[0] : null;
-        delete item.metas;
-        return item;
-      }),
+      list: articles.map((item: any) => this.mapMetas(item)),
       pagination: {
         size: dto.size * 1,
         index: dto.index * 1,
-        count: await this.articleEntity.count({ uid: user.uid }),
+        count: await this.articleEntity.count({ uid: user.uid, state: type }),
       },
     };
   }
