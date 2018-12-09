@@ -12,6 +12,12 @@ export class UserEntity {
   uid: number;
 
   /**
+   * 所属分组
+   */
+  @Column({ type: 'enum', enum: ['admin', 'user'] })
+  group: string;
+
+  /**
    * 名字
    */
   @Column({ unique: true })

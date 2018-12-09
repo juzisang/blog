@@ -11,9 +11,35 @@ export class OptionService {
     private readonly optionEntity: Repository<OptionEntity>,
   ) {}
 
-  createdOption(option: OptionDto) {}
+  private toObject(optionArray: Array<any>) {
+    const option = {};
+    optionArray.forEach(item => (option[item.name] = item.value));
+    if (Object.keys(option).length === 0) {
+      return null;
+    }
+    return option;
+  }
 
-  async findOneOption() {}
+  async addOption(uid: number, option: OptionDto) {
+    const options = Object.keys(option).map(key =>
+      this.optionEntity.create({ name: key, value: option[key], uid }),
+    );
+    await this.optionEntity.save(options);
+    return option;
+  }
 
-  async updateOption(option: OptionDto) {}
+  async findOption(uid: number) {
+    const optionArray = await this.optionEntity.find({
+      where: { uid },
+    });
+    return this.toObject(optionArray);
+  }
+
+  async updateOption(uid: number, option: OptionDto) {
+    // 删除所有配置
+    await this.optionEntity.delete({ uid });
+    // 添加
+    await this.addOption(uid, option);
+    return option;
+  }
 }

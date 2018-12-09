@@ -6,10 +6,12 @@ import {
   Delete,
   UseGuards,
   Body,
+  Param,
 } from '@nestjs/common';
 import { ArticleService } from '../service/article.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ArticleDto } from '../dto/article.dto';
+import { User } from 'src/common/decorators/user.decorator';
 
 @Controller('article')
 export class ArticleController {
@@ -19,12 +21,14 @@ export class ArticleController {
    * 文章列表
    */
   @Get()
-  findAll() {}
+  findAll() {
+    return this.articleService.findList();
+  }
 
   /**
    * 返回文章详情
    */
-  @Get(':id')
+  @Get(':aid')
   findOne() {}
 
   /**
@@ -32,17 +36,22 @@ export class ArticleController {
    */
   @UseGuards(AuthGuard())
   @Post()
-  create(@Body() dto: ArticleDto) {}
+  create(@User('uid') uid, @Body() dto: ArticleDto) {
+    return this.articleService.createArticle(uid, dto);
+  }
 
   /**
    * 更新文章
    */
-  @Put(':id')
-  update() {}
+  @UseGuards(AuthGuard())
+  @Put(':aid')
+  update(@Param('aid') aid, @Body() dto: ArticleDto) {
+    return this.articleService.updateArticle(aid, dto);
+  }
 
   /**
    * 删除文章
    */
-  @Delete(':id')
+  @Delete(':aid')
   delete() {}
 }

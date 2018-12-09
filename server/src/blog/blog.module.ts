@@ -5,10 +5,9 @@ import { CommentEntity } from './entity/comment.entity';
 import { OptionEntity } from './entity/option.entity';
 import { UserEntity } from './entity/user.entity';
 import { ArticleController } from './controller/article.controller';
-import { CategoryController } from './controller/category.controller';
+import { MetasController } from './controller/metas.controller';
 import { CommentController } from './controller/comment.controller';
 import { OptionController } from './controller/option.controller';
-import { TagController } from './controller/tag.controller';
 import { UserController } from './controller/user.controller';
 import { ArticleService } from './service/article.service';
 import { CommentService } from './service/comment.service';
@@ -17,6 +16,7 @@ import { UserService } from './service/user.service';
 import { DEFAULT_DATA } from './../app.config';
 import { MetasEntity } from './entity/metas.entity';
 import { RelationshipsEntity } from './entity/relationships.entity';
+import { MetasService } from './service/metas.service';
 
 @Module({
   imports: [
@@ -31,23 +31,24 @@ import { RelationshipsEntity } from './entity/relationships.entity';
   ],
   controllers: [
     ArticleController,
-    CategoryController,
+    MetasController,
     CommentController,
     OptionController,
-    TagController,
     UserController,
   ],
-  providers: [ArticleService, CommentService, OptionService, UserService],
+  providers: [
+    ArticleService,
+    CommentService,
+    OptionService,
+    UserService,
+    MetasService,
+  ],
 })
 export class BlogModule implements OnModuleInit {
-  constructor(
-    private readonly userService: UserService,
-    private readonly optionService: OptionService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
-  onModuleInit() {
-    this.createDefaultUser();
-    // this.createDefaultOption();
+  async onModuleInit() {
+    await this.createDefaultUser();
   }
 
   /**
@@ -59,15 +60,8 @@ export class BlogModule implements OnModuleInit {
         name: DEFAULT_DATA.user.name,
         email: DEFAULT_DATA.user.email,
         password: DEFAULT_DATA.user.password,
+        group: DEFAULT_DATA.user.group,
       });
     }
   }
-
-  //   async createDefaultOption() {
-  //     if (!(await this.optionService.findOneOption())) {
-  //       this.optionService.createdOption({
-  //         ...DEFAULT_DATA.option,
-  //       });
-  //     }
-  //   }
 }

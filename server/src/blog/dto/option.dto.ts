@@ -7,7 +7,7 @@ export class OptionDto {
 
   @IsString()
   @IsNotEmpty()
-  sub_title: string;
+  subTitle: string;
 
   @IsString()
   @IsNotEmpty()
@@ -16,9 +16,4 @@ export class OptionDto {
   @IsString()
   @IsNotEmpty()
   description: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @IsUrl()
-  site_url: string;
 }

@@ -11,9 +11,12 @@ export class UserController {
   /**
    * 获取用户信息
    */
-  @Get(':id')
-  async findOne(@Param('id') id) {
-    return this.userService.findOneUser({ id });
+  @Get(':name')
+  async findOne(@Param('name') uName) {
+    const _user = await this.userService.findUser({ name: uName });
+    const { name, slogan, uid, avatar, url } = _user;
+    const user = { name, slogan, uid, avatar, url };
+    return user;
   }
 
   /**
@@ -21,8 +24,8 @@ export class UserController {
    */
   @UseGuards(AuthGuard())
   @Put()
-  update(@User('id') id, @Body() dto: UpdateUserDto) {
-    return this.userService.updateUser(id, dto).then(() => '修改成功');
+  update(@User('uid') uid, @Body() dto: UpdateUserDto) {
+    return this.userService.updateUser(uid, dto).then(() => '修改成功');
   }
 
   /**

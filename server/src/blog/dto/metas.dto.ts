@@ -1,15 +1,15 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class CategoryDto {
-  // @IsOptional()
+export class MetasDto {
+  @IsOptional()
   @IsString()
   name: string;
 
-  // @IsOptional()
+  @IsOptional()
   @IsString()
   slug: string;
 
-  // @IsOptional()
+  @IsOptional()
   @IsString()
   description: string;
 }
