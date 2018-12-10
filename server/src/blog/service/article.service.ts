@@ -2,7 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from '../entity/article.entity';
 import { Repository } from 'typeorm';
-import { CreateArticleDto, UpDateArticleDto } from '../dto/article.dto';
+import { CreateArticleDto, UpdateArticleDto } from '../dto/article.dto';
 import { MetasEntity } from '../entity/metas.entity';
 import { RelationshipsEntity } from '../entity/relationships.entity';
 import { UserService } from './user.service';
@@ -65,7 +65,7 @@ export class ArticleService {
     return '添加成功';
   }
 
-  async update(aid: number, dto: UpDateArticleDto) {
+  async update(aid: number, dto: UpdateArticleDto) {
     const article = await this.articleEntity.findOne(aid);
     if (!article) {
       throw new BadRequestException('文章不存在');

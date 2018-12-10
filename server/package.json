@@ -24,6 +24,7 @@
     "@nestjs/core": "^5.4.0",
     "@nestjs/jwt": "^0.2.0",
     "@nestjs/passport": "^5.1.0",
+    "@nestjs/swagger": "^2.5.1",
     "@nestjs/typeorm": "^5.2.2",
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",

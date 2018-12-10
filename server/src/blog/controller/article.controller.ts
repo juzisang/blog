@@ -11,10 +11,13 @@ import {
 } from '@nestjs/common';
 import { ArticleService } from '../service/article.service';
 import { AuthGuard } from '@nestjs/passport';
-import { UpDateArticleDto, CreateArticleDto } from '../dto/article.dto';
+import { UpdateArticleDto, CreateArticleDto } from '../dto/article.dto';
 import { User } from 'src/common/decorators/user.decorator';
 import { PaginationDto } from '../dto/pagination.dto';
+import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiUseTags('article')
 @Controller('article')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
@@ -49,7 +52,7 @@ export class ArticleController {
    */
   @UseGuards(AuthGuard())
   @Put(':aid')
-  update(@Param('aid') aid, @Body() dto: UpDateArticleDto) {
+  update(@Param('aid') aid, @Body() dto: UpdateArticleDto) {
     return this.articleService.update(aid, dto);
   }
 

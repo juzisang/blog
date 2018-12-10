@@ -2,9 +2,12 @@ import { Controller, Get, Put, UseGuards, Body, Param } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/common/decorators/user.decorator';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { UpdateUserDto } from '../dto/user.dto';
 import { UpdatePasswordDto } from '../dto/update-password.dto';
+import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiUseTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -25,7 +28,7 @@ export class UserController {
   @UseGuards(AuthGuard())
   @Put()
   update(@User('uid') uid, @Body() dto: UpdateUserDto) {
-    return this.userService.updateUser(uid, dto).then(() => '修改成功');
+    return this.userService.update(uid, dto).then(() => '修改成功');
   }
 
   /**

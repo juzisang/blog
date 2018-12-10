@@ -12,7 +12,10 @@ import { OptionDto } from '../dto/option.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/common/decorators/user.decorator';
 import { UserService } from '../service/user.service';
+import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiUseTags('option')
 @Controller('option')
 export class OptionController {
   constructor(
