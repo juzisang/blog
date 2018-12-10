@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, Query } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from '../entity/article.entity';
 import { Repository } from 'typeorm';
@@ -21,28 +21,27 @@ export class ArticleService {
   ) {}
 
   private async createMetas(aid: number, dto: any) {
+    const metas = [];
     // 添加Tags
     if (dto.tags) {
-      const tags = await this.metasEntity.findByIds([...dto.tags]);
-      await this.relationshipsEntity.save(
-        tags.map(tag =>
-          this.relationshipsEntity.create({
-            mid: tag.mid,
-            aid,
-          }),
-        ),
-      );
+      metas.push(...dto.tags);
     }
     // 添加分类
     if (dto.category) {
-      const category = await this.metasEntity.findOne(dto.category);
-      await this.relationshipsEntity.save(
+      metas.push(dto.category);
+    }
+    if (metas.length === 0) {
+      return;
+    }
+    const metaEns = await this.metasEntity.findByIds(metas);
+    await this.relationshipsEntity.save(
+      metaEns.map(meta =>
         this.relationshipsEntity.create({
-          mid: category.mid,
+          mid: meta.mid,
           aid,
         }),
-      );
-    }
+      ),
+    );
   }
 
   private mapMetas(article: any) {
@@ -82,21 +81,27 @@ export class ArticleService {
         )
         .where('relationships.aid = :aid', { aid })
         .getMany();
+      const removeMetas = [];
       // 删除tag
       if (dto.tags) {
-        await this.relationshipsEntity.remove(
-          metas.filter((item: any) => item.type.type === 'tag'),
+        removeMetas.push(
+          ...metas.filter((item: any) => item.type.type === 'tag'),
         );
       }
       // 删除category
       if (dto.category) {
-        await this.relationshipsEntity.remove(
-          metas.filter((item: any) => item.type.type === 'category'),
+        removeMetas.push(
+          ...metas.filter((item: any) => item.type.type === 'category'),
         );
       }
+      // 删除
+      if (removeMetas.length > 0) {
+        await this.relationshipsEntity.remove(removeMetas);
+        // 重新生成
+        await this.createMetas(aid, dto);
+      }
     }
-    // 重新生成
-    await this.createMetas(aid, dto);
+    // 更新
     await this.articleEntity.update(
       article.aid,
       this.articleEntity.create(dto),
@@ -133,13 +138,13 @@ export class ArticleService {
     return this.mapMetas(article);
   }
 
-  async findList(type, dto: PaginationDto) {
-    const user = await this.userService.findRoot();
+  async findList(state, dto: PaginationDto) {
+    const { uid } = await this.userService.findRoot();
     const articles = await this.articleEntity
       .createQueryBuilder('article')
       .where('article.uid = :uid AND article.state = :state', {
-        uid: user.uid,
-        state: type,
+        uid,
+        state,
       })
       .leftJoinAndSelect(
         RelationshipsEntity,
@@ -161,10 +166,8 @@ export class ArticleService {
       pagination: {
         size: dto.size * 1,
         index: dto.index * 1,
-        count: await this.articleEntity.count({ uid: user.uid, state: type }),
+        count: await this.articleEntity.count({ uid, state }),
       },
     };
   }
-
-  async;
 }
