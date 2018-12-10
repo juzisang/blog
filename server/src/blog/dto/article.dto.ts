@@ -34,7 +34,7 @@ export class CreateArticleDto {
   @IsUrl()
   thumb: string;
 
-  @ApiModelProperty()
+  @ApiModelProperty({ type: 'enum', enum: ['online', 'draft', 'delete'] })
   @IsNotEmpty()
   @IsIn(['online', 'draft', 'delete'])
   state: 'online' | 'draft' | 'delete';
@@ -80,7 +80,11 @@ export class UpdateArticleDto {
   @IsUrl()
   thumb: string;
 
-  @ApiModelProperty({ required: false })
+  @ApiModelProperty({
+    type: 'enum',
+    required: false,
+    enum: ['online', 'draft', 'delete'],
+  })
   @IsOptional()
   @IsNotEmpty()
   @IsIn(['online', 'draft', 'delete'])
