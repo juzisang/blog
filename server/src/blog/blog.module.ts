@@ -56,7 +56,7 @@ export class BlogModule implements OnModuleInit {
    */
   async createDefaultUser() {
     if (await this.userService.IsEmptyUsers()) {
-      await this.userService.createdUser({
+      await this.userService.created({
         name: DEFAULT_DATA.user.name,
         email: DEFAULT_DATA.user.email,
         password: DEFAULT_DATA.user.password,

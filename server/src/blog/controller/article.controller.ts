@@ -56,6 +56,9 @@ export class ArticleController {
   /**
    * 删除文章
    */
+  @UseGuards(AuthGuard())
   @Delete(':aid')
-  delete() {}
+  delete(@Param('aid') aid) {
+    return this.articleService.delete(aid);
+  }
 }

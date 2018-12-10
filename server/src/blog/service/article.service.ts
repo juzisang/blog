@@ -171,5 +171,14 @@ export class ArticleService {
     };
   }
 
-  async delete() {}
+  async delete(aid: number) {
+    const article = await this.articleEntity.findOne(aid);
+    if (!article) {
+      throw new BadRequestException('文章不存在');
+    }
+    await this.articleEntity.update(article.aid, {
+      state: 'delete',
+    });
+    return '删除成功';
+  }
 }
