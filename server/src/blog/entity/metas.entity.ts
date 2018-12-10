@@ -23,9 +23,9 @@ export class MetasEntity {
   @Column({ type: 'enum', enum: ['tag', 'category'] })
   type: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   create_time: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   update_time: Date;
 }

@@ -11,9 +11,9 @@ export class UserController {
   /**
    * 获取用户信息
    */
-  @Get(':name')
-  async findOne(@Param('name') uName) {
-    const _user = await this.userService.findUser({ name: uName });
+  @Get()
+  async findOne() {
+    const _user = await this.userService.findRoot();
     const { name, slogan, uid, avatar, url } = _user;
     const user = { name, slogan, uid, avatar, url };
     return user;

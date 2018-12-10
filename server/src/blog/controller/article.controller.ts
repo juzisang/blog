@@ -32,7 +32,7 @@ export class ArticleController {
    */
   @Get(':aid')
   findOne(@Param('aid') aid) {
-    return this.articleService.fondOne(aid);
+    return this.articleService.findOne(aid);
   }
 
   /**
@@ -41,7 +41,7 @@ export class ArticleController {
   @UseGuards(AuthGuard())
   @Post()
   create(@User('uid') uid, @Body() dto: CreateArticleDto) {
-    return this.articleService.createArticle(uid, dto);
+    return this.articleService.create(uid, dto);
   }
 
   /**
@@ -50,7 +50,7 @@ export class ArticleController {
   @UseGuards(AuthGuard())
   @Put(':aid')
   update(@Param('aid') aid, @Body() dto: UpDateArticleDto) {
-    return this.articleService.updateArticle(aid, dto);
+    return this.articleService.update(aid, dto);
   }
 
   /**

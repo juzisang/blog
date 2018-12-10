@@ -32,7 +32,7 @@ export class UserService {
     return await this.userRepository.findOne({ group: 'admin' });
   }
 
-  async createdUser(dto: CreateUserDto) {
+  async created(dto: CreateUserDto) {
     const user = await this.userRepository.findOne({
       name: dto.name,
       email: dto.email,
@@ -48,11 +48,11 @@ export class UserService {
     );
   }
 
-  async findUser(data: { name?: string; uid?: number }) {
+  async findOne(data: { name?: string; uid?: number }) {
     return await this.userRepository.findOne(data);
   }
 
-  async updateUser(id: number, date: UpdateUserDto) {
+  async update(id: number, date: UpdateUserDto) {
     return await this.userRepository.update(id, {
       url: date.url,
       avatar: date.avatar,
@@ -61,7 +61,7 @@ export class UserService {
   }
 
   async updatePwd(dto: UpdatePasswordDto) {
-    const user = await this.findUser({ name: dto.name });
+    const user = await this.findOne({ name: dto.name });
     if (user.password !== encryptPwd(dto.oldPassword)) {
       throw new BadRequestException('密码错误');
     }

@@ -52,7 +52,7 @@ export class ArticleService {
     return article;
   }
 
-  async createArticle(uid: number, dto: CreateArticleDto) {
+  async create(uid: number, dto: CreateArticleDto) {
     // 创建文章
     const article = await this.articleEntity.save(
       this.articleEntity.create({
@@ -65,7 +65,7 @@ export class ArticleService {
     return '添加成功';
   }
 
-  async updateArticle(aid: number, dto: UpDateArticleDto) {
+  async update(aid: number, dto: UpDateArticleDto) {
     const article = await this.articleEntity.findOne(aid);
     if (!article) {
       throw new BadRequestException('文章不存在');
@@ -109,7 +109,7 @@ export class ArticleService {
     return '更新成功';
   }
 
-  async fondOne(aid: number) {
+  async findOne(aid: number) {
     const user = await this.userService.findRoot();
 
     if (!(await this.articleEntity.findOne(aid))) {
@@ -170,4 +170,6 @@ export class ArticleService {
       },
     };
   }
+
+  async delete() {}
 }
