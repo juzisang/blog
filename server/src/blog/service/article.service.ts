@@ -140,7 +140,7 @@ export class ArticleService {
 
   async findList(state, dto: PaginationDto) {
     const { uid } = await this.userService.findRoot();
-    const articles = await this.articleEntity
+    const [list, count] = await this.articleEntity
       .createQueryBuilder('article')
       .where('article.uid = :uid AND article.state = :state', {
         uid,
@@ -160,13 +160,13 @@ export class ArticleService {
       .orderBy('article.create_time', 'DESC')
       .skip((dto.index - 1) * dto.size)
       .take(dto.size)
-      .getMany();
+      .getManyAndCount();
     return {
-      list: articles.map((item: any) => this.mapMetas(item)),
+      list: list.map((item: any) => this.mapMetas(item)),
       pagination: {
         size: dto.size * 1,
         index: dto.index * 1,
-        count: await this.articleEntity.count({ uid, state }),
+        count,
       },
     };
   }

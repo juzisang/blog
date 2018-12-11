@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  Tree,
 } from 'typeorm';
 
 @Entity('article')
+@Tree('nested-set')
 export class ArticleEntity {
   @PrimaryGeneratedColumn()
   aid: number;

@@ -21,22 +21,10 @@ export class CommentEntity {
   aid: number;
 
   /**
-   * 子评论
-   */
-  @TreeChildren()
-  children: CommentEntity[];
-
-  /**
    * 父评论
    */
-  @TreeParent()
-  parent: CommentEntity;
-
-  /**
-   * 评论级别
-   */
-  @TreeLevelColumn()
-  level: number;
+  @Column()
+  parent: number;
 
   /**
    * 评论者名字
