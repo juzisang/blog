@@ -4,6 +4,7 @@ import { MetasEntity } from '../entity/metas.entity';
 import { Repository } from 'typeorm';
 import { MetasDto } from '../dto/metas.dto';
 import { RelationshipsEntity } from '../entity/relationships.entity';
+import { ArticleEntity } from '../entity/article.entity';
 
 @Injectable()
 export class MetasService {
@@ -13,7 +14,25 @@ export class MetasService {
   ) {}
 
   findOne(type: 'tag' | 'category', data: { name?: string; mid?: number }) {
-    return this.metasEntity.findOne({ type, ...data });
+    return this.metasEntity
+      .createQueryBuilder('metas')
+      .leftJoinAndSelect(
+        RelationshipsEntity,
+        'relationships',
+        'metas.mid = relationships.mid',
+      )
+      .leftJoinAndMapMany(
+        'metas.articles',
+        ArticleEntity,
+        'article',
+        'relationships.aid = article.aid',
+      )
+      .where('type = :type', { type })
+      .andWhere('metas.name = :name OR metas.mid = :mid', {
+        name: data.name,
+        mid: data.mid,
+      })
+      .getMany();
   }
 
   async findAll(type: 'tag' | 'category') {
@@ -40,7 +59,7 @@ export class MetasService {
   }
 
   async create(type: 'tag' | 'category', dto: MetasDto) {
-    const meta = await this.findOne(type, { name: dto.name });
+    const meta = await this.metasEntity.findOne({ type, name: dto.name });
     if (meta) {
       throw new BadRequestException(`${type} 已经存在`);
     }
@@ -50,7 +69,7 @@ export class MetasService {
   }
 
   async update(type: 'tag' | 'category', dto: MetasDto) {
-    const meta = await this.findOne(type, { name: dto.name });
+    const meta = await this.metasEntity.findOne({ type, name: dto.name });
     if (!meta) {
       throw new BadRequestException(`${type} 不存在`);
     }
@@ -58,7 +77,7 @@ export class MetasService {
   }
 
   async delete(type: 'tag' | 'category', mid: number) {
-    const meta = await this.findOne(type, { mid });
+    const meta = await this.metasEntity.findOne({ type, mid });
     if (!meta) {
       throw new BadRequestException(`${type} 不存在`);
     }
