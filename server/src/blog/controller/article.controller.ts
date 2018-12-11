@@ -14,7 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UpdateArticleDto, CreateArticleDto } from '../dto/article.dto';
 import { User } from 'src/common/decorators/user.decorator';
 import { PaginationDto } from '../dto/pagination.dto';
-import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiUseTags, ApiBearerAuth, ApiImplicitParam } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiUseTags('article')
@@ -33,6 +33,7 @@ export class ArticleController {
   /**
    * 返回文章详情
    */
+  @ApiImplicitParam({ name: 'aid' })
   @Get(':aid')
   findOne(@Param('aid') aid) {
     return this.articleService.findOne(aid);

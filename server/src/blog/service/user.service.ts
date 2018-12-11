@@ -53,6 +53,7 @@ export class UserService {
 
   async update(id: number, date: UpdateUserDto) {
     return await this.userRepository.update(id, {
+      name: date.name,
       url: date.url,
       avatar: date.avatar,
       slogan: date.slogan,
@@ -63,6 +64,9 @@ export class UserService {
     const user = await this.findOne({ name: dto.name });
     if (user.password !== encryptPwd(dto.oldPassword)) {
       throw new BadRequestException('密码错误');
+    }
+    if (user.password === encryptPwd(dto.newPassword)) {
+      throw new BadRequestException('新旧密码不能一样');
     }
     return await this.userRepository.update(
       { name: dto.name },

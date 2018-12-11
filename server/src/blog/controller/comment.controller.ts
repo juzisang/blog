@@ -71,6 +71,7 @@ export class CommentController {
   /**
    * 删除评论
    */
+  @UseGuards(AuthGuard())
   @Delete(':cid')
   delete(@Param('cid') cid: number) {
     return this.commentService.update(cid, 'delete');

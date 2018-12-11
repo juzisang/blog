@@ -34,16 +34,16 @@ export class CreateArticleDto {
   @IsUrl()
   thumb: string;
 
-  @ApiModelProperty({ type: 'enum', enum: ['online', 'draft', 'delete'] })
+  @ApiModelProperty({ type: 'string', enum: ['online', 'draft', 'delete'] })
   @IsNotEmpty()
   @IsIn(['online', 'draft', 'delete'])
   state: 'online' | 'draft' | 'delete';
 
-  @ApiModelProperty()
+  @ApiModelProperty({ type: 'number' })
   @IsNotEmpty()
   category: string;
 
-  @ApiModelProperty()
+  @ApiModelProperty({ type: 'array' })
   @IsNotEmpty()
   @IsArray()
   tags: string;
@@ -81,7 +81,7 @@ export class UpdateArticleDto {
   thumb: string;
 
   @ApiModelProperty({
-    type: 'enum',
+    type: 'string',
     required: false,
     enum: ['online', 'draft', 'delete'],
   })

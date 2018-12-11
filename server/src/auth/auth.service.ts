@@ -27,15 +27,15 @@ export class AuthService {
    * 判断用户是否存在
    * @param name
    */
-  async validateUser(data: { name?: string; id?: number }) {
-    return await this.userRepository.findOne(data);
+  async validateUser(uid) {
+    return await this.userRepository.findOne(uid);
   }
 
   /**
    * 登录
    */
   async loginUser(dto: LoginUserDto) {
-    const user = await this.validateUser({ name: dto.name });
+    const user = await this.userRepository.findOne({ name: dto.name });
     if (!user) {
       throw new NotFoundException('用户名或密码错误');
     }
@@ -44,8 +44,6 @@ export class AuthService {
     }
     const token = this.createToken({
       uid: user.uid,
-      email: user.email,
-      name: user.name,
     });
     const data = {
       ...user,
