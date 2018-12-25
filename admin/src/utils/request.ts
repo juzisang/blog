@@ -30,7 +30,7 @@ service.interceptors.response.use(
     if (res.code !== 200) {
       return Promise.reject(new Error(res ? JSON.stringify(res) : "系统错误"));
     } else {
-      return res;
+      return res.body;
     }
   },
   error => {

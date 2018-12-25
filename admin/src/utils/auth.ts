@@ -1,6 +1,6 @@
 const TokenKey = "Token";
 
-export function getToken() {
+export function getToken(): string | null {
   const token = window.localStorage.getItem(TokenKey);
   return token ? `bearer ${token}` : null;
 }
