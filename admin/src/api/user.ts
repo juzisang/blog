@@ -11,7 +11,7 @@ export function login(data: {
   });
 }
 
-export function getUserInfo() {
+export function getUserInfo(): Promise<IUserInfo> {
   return request({
     url: "/user",
     method: "get"
