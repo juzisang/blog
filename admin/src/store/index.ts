@@ -1,13 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import user from "./modules/user";
+import { getters } from "./getters";
+import { userModule as user } from "./modules/user";
+import { RootState } from "./interfaces";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
+export default new Vuex.Store<RootState>({
+  getters,
   modules: {
     user
   }
