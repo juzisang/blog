@@ -34,13 +34,17 @@ service.interceptors.response.use(
     }
   },
   error => {
-    switch (error.response.status) {
-      case 401:
-        router.replace({ name: "Login" });
-        break;
-      default:
-        console.error(error);
-        break;
+    if (!error.response && error instanceof Error) {
+      console.error(error);
+    } else {
+      switch (error.response.status) {
+        case 401:
+          router.replace({ name: "Login" });
+          break;
+        default:
+          console.error(error);
+          break;
+      }
     }
     return Promise.reject(error);
   }
