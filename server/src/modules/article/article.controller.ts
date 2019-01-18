@@ -9,12 +9,14 @@ import {
   Param,
   Query,
 } from '@nestjs/common';
-import { ArticleService } from '../service/article.service';
 import { AuthGuard } from '@nestjs/passport';
-import { UpdateArticleDto, CreateArticleDto } from '../dto/article.dto';
-import { User } from 'src/common/decorators/user.decorator';
-import { PaginationDto } from '../dto/pagination.dto';
 import { ApiUseTags, ApiBearerAuth, ApiImplicitParam } from '@nestjs/swagger';
+
+import { User } from '@app/decorators/user.decorator';
+
+import { ArticleService } from './article.service';
+import { UpdateArticleDto, CreateArticleDto } from './article.dto';
+import { PaginationDto } from './pagination.dto';
 
 @ApiBearerAuth()
 @ApiUseTags('article')

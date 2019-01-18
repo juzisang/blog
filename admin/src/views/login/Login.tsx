@@ -11,10 +11,7 @@ import * as style from "./Login.module.scss";
 import { Action } from "vuex-class";
 
 @Component({
-  name: "Login",
-  components: {
-    Vue
-  }
+  name: "Login"
 })
 export default class Login extends Vue {
   @Action("Login")

@@ -1,18 +1,12 @@
-import {
-  Controller,
-  Put,
-  Get,
-  Body,
-  UseGuards,
-  Param,
-  BadRequestException,
-} from '@nestjs/common';
-import { OptionService } from '../service/option.service';
-import { OptionDto } from '../dto/option.dto';
+import { Controller, Put, Get, Body, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/common/decorators/user.decorator';
-import { UserService } from '../service/user.service';
 import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
+
+import { User } from '@app/decorators/user.decorator';
+
+import { OptionService } from './option.service';
+import { OptionDto } from './option.dto';
+import { UserService } from '../user/user.service';
 
 @ApiBearerAuth()
 @ApiUseTags('option')

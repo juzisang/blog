@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserPayload } from '../common/interfaces/userpayload.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../blog/entity/user.entity';
-import { LoginUserDto } from './dto/login-user.dto';
-import { ResponseData } from 'src/common/utils/response.data';
-import { encryptPwd } from 'src/common/utils/util';
+
+import { UserPayload } from '@app/interfaces/userpayload.interface';
+import { encryptPwd } from '@app/utils/util';
+
+import { UserEntity } from '../user/user.entity';
+import { LoginUserDto } from './auth.dto';
 
 @Injectable()
 export class AuthService {

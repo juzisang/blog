@@ -58,3 +58,19 @@ export class UpdateUserDto {
   @IsUrl()
   url: string;
 }
+
+export class UpdatePasswordDto {
+  @ApiModelProperty()
+  @IsNotEmpty()
+  name: string;
+
+  @ApiModelProperty()
+  @IsNotEmpty()
+  @MinLength(6)
+  oldPassword: string;
+
+  @ApiModelProperty()
+  @IsNotEmpty()
+  @MinLength(6)
+  newPassword: string;
+}

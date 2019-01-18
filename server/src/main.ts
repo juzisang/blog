@@ -1,13 +1,19 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ValidationPipe } from './common/pipes/validation.pipe';
-import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
+import { ValidationPipe } from '@app/pipes/validation.pipe';
+import { ResponseInterceptor } from '@app/interceptors/response.interceptor';
+
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ResponseInterceptor());
+
+  app.enableCors({
+    origin: ['http://localhost:3000'],
+  });
 
   const options = new DocumentBuilder()
     .setTitle('Blog')

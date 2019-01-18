@@ -1,10 +1,10 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MetasEntity } from '../entity/metas.entity';
+import { MetasEntity } from './metas.entity';
 import { Repository } from 'typeorm';
-import { MetasDto } from '../dto/metas.dto';
-import { RelationshipsEntity } from '../entity/relationships.entity';
-import { ArticleEntity } from '../entity/article.entity';
+import { MetasDto } from './metas.dto';
+import { RelationshipsEntity } from './relationships.entity';
+import { ArticleEntity } from '../article/article.entity';
 
 @Injectable()
 export class MetasService {

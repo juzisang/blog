@@ -10,16 +10,12 @@ import {
   Body,
   UseGuards,
 } from '@nestjs/common';
-import { CommentService } from '../service/comment.service';
-import {
-  ApiUseTags,
-  ApiBearerAuth,
-  ApiImplicitParam,
-  ApiImplicitBody,
-} from '@nestjs/swagger';
-import { PaginationDto } from '../dto/pagination.dto';
-import { CommentDto, UpdateCommentDto } from '../dto/comment.dto';
+import { ApiUseTags, ApiBearerAuth, ApiImplicitParam } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+
+import { CommentService } from './comment.service';
+import { PaginationDto } from '../article/pagination.dto';
+import { CommentDto, UpdateCommentDto } from './comment.dto';
 
 @ApiBearerAuth()
 @ApiUseTags('article')

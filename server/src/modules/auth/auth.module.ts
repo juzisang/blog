@@ -1,12 +1,14 @@
 import { Module, Global } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
-import { JWT } from '../app.config';
+import { PassportModule } from '@nestjs/passport';
+
+import { JWT } from '@app/app.config';
+
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
-import { UserEntity } from '../blog/entity/user.entity';
-import { PassportModule } from '@nestjs/passport';
+import { UserEntity } from '../user/user.entity';
 
 @Global()
 @Module({

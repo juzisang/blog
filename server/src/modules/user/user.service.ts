@@ -1,14 +1,11 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../entity/user.entity';
-import { CreateUserDto, UpdateUserDto } from '../dto/user.dto';
-import { UpdatePasswordDto } from '../dto/update-password.dto';
-import { encryptPwd } from 'src/common/utils/util';
+
+import { encryptPwd } from '@app/utils/util';
+
+import { UserEntity } from './user.entity';
+import { CreateUserDto, UpdateUserDto, UpdatePasswordDto } from './user.dto';
 
 @Injectable()
 export class UserService {

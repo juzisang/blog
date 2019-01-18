@@ -9,8 +9,8 @@ import {
   Param,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { MetasDto } from '../dto/metas.dto';
-import { MetasService } from '../service/metas.service';
+import { MetasDto } from './metas.dto';
+import { MetasService } from './metas.service';
 import { ApiUseTags, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()

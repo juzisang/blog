@@ -1,10 +1,11 @@
-import { Controller, Get, Put, UseGuards, Body, Param } from '@nestjs/common';
-import { UserService } from '../service/user.service';
+import { Controller, Get, Put, UseGuards, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/common/decorators/user.decorator';
-import { UpdateUserDto } from '../dto/user.dto';
-import { UpdatePasswordDto } from '../dto/update-password.dto';
 import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
+
+import { User } from '@app/decorators/user.decorator';
+
+import { UserService } from './user.service';
+import { UpdateUserDto, UpdatePasswordDto } from './user.dto';
 
 @ApiBearerAuth()
 @ApiUseTags('user')

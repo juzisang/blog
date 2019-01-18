@@ -1,12 +1,13 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ArticleEntity } from '../entity/article.entity';
 import { Repository } from 'typeorm';
-import { CreateArticleDto, UpdateArticleDto } from '../dto/article.dto';
-import { MetasEntity } from '../entity/metas.entity';
-import { RelationshipsEntity } from '../entity/relationships.entity';
-import { UserService } from './user.service';
-import { PaginationDto } from '../dto/pagination.dto';
+
+import { ArticleEntity } from './article.entity';
+import { MetasEntity } from '../metas/metas.entity';
+import { RelationshipsEntity } from '../metas/relationships.entity';
+import { UserService } from '../user/user.service';
+import { PaginationDto } from './pagination.dto';
+import { CreateArticleDto, UpdateArticleDto } from './article.dto';
 
 @Injectable()
 export class ArticleService {

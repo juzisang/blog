@@ -1,9 +1,10 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CommentEntity } from '../entity/comment.entity';
 import { Repository } from 'typeorm';
-import { PaginationDto } from '../dto/pagination.dto';
-import { ArticleEntity } from '../entity/article.entity';
+
+import { CommentEntity } from './comment.entity';
+import { PaginationDto } from '../article/pagination.dto';
+import { ArticleEntity } from '../article/article.entity';
 
 @Injectable()
 export class CommentService {
