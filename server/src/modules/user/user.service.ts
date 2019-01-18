@@ -25,14 +25,18 @@ export class UserService {
    * 获取root用户
    */
   async findRoot() {
-    return await this.userRepository.findOne({ group: 'admin' });
+    const users = await this.userRepository.find();
+    if (users.length === 0) {
+      throw new Error('用户不存在');
+    }
+    return users[0];
   }
 
+  /**
+   * 新建root用户
+   */
   async created(dto: CreateUserDto) {
-    const user = await this.userRepository.findOne({
-      name: dto.name,
-      email: dto.email,
-    });
+    const user = await this.findRoot();
     if (user) {
       throw new BadRequestException('用户已存在');
     }
@@ -44,21 +48,22 @@ export class UserService {
     );
   }
 
-  async findOne(data: { name?: string; uid?: number }) {
-    return await this.userRepository.findOne(data);
-  }
-
+  /**
+   * 更新用户数据
+   */
   async update(id: number, date: UpdateUserDto) {
     return await this.userRepository.update(id, {
       name: date.name,
-      url: date.url,
       avatar: date.avatar,
       slogan: date.slogan,
     });
   }
 
+  /**
+   * 修改密码
+   */
   async updatePwd(dto: UpdatePasswordDto) {
-    const user = await this.findOne({ name: dto.name });
+    const user = await this.findRoot();
     if (user.password !== encryptPwd(dto.oldPassword)) {
       throw new BadRequestException('密码错误');
     }

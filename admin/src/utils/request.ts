@@ -5,8 +5,7 @@ import { getToken } from "./auth";
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
-  timeout: 120000,
-  withCredentials: true
+  timeout: 120000
 });
 
 // request拦截器
@@ -27,7 +26,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data;
-    if (res.code !== 200) {
+    if (res.statusCode !== 200) {
       return Promise.reject(new Error(res ? JSON.stringify(res) : "系统错误"));
     } else {
       return res.body;

@@ -11,6 +11,7 @@ import { UserService } from './user.service';
   imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule implements OnModuleInit {
   constructor(private readonly userService: UserService) {}
@@ -26,9 +27,7 @@ export class UserModule implements OnModuleInit {
     if (await this.userService.IsEmptyUsers()) {
       await this.userService.created({
         name: DEFAULT_DATA.user.name,
-        email: DEFAULT_DATA.user.email,
         password: DEFAULT_DATA.user.password,
-        group: DEFAULT_DATA.user.group,
       });
     }
   }

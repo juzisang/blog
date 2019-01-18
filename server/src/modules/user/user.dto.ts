@@ -17,15 +17,6 @@ export class CreateUserDto {
   @MinLength(6)
   @IsNotEmpty()
   password: string;
-
-  @ApiModelProperty()
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @ApiModelProperty()
-  @IsNotEmpty()
-  group: string;
 }
 
 export class UpdateUserDto {
@@ -33,12 +24,6 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   name: string;
-
-  @ApiModelProperty({ required: false })
-  @ApiModelProperty()
-  @IsOptional()
-  @IsEmail()
-  email: string;
 
   @ApiModelProperty({ required: false })
   @ApiModelProperty()
@@ -51,12 +36,6 @@ export class UpdateUserDto {
   @IsOptional()
   @IsUrl()
   avatar: string;
-
-  @ApiModelProperty({ required: false })
-  @ApiModelProperty()
-  @IsOptional()
-  @IsUrl()
-  url: string;
 }
 
 export class UpdatePasswordDto {

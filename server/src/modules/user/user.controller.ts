@@ -16,10 +16,10 @@ export class UserController {
    * 获取用户信息
    */
   @Get()
-  async findOne() {
+  async findRoot() {
     const _user = await this.userService.findRoot();
-    const { name, slogan, uid, avatar, url } = _user;
-    const user = { name, slogan, uid, avatar, url };
+    const { name, slogan, uid, avatar } = _user;
+    const user = { name, slogan, uid, avatar };
     return user;
   }
 

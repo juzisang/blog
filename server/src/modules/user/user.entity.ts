@@ -12,12 +12,6 @@ export class UserEntity {
   uid: number;
 
   /**
-   * 所属分组
-   */
-  @Column({ type: 'enum', enum: ['admin', 'user'] })
-  group: string;
-
-  /**
    * 名字
    */
   @Column({ unique: true })
@@ -30,12 +24,6 @@ export class UserEntity {
   password: string;
 
   /**
-   * 邮箱
-   */
-  @Column({ unique: true })
-  email: string;
-
-  /**
    * 签名
    */
   @Column({ nullable: true })
@@ -46,12 +34,6 @@ export class UserEntity {
    */
   @Column({ nullable: true })
   avatar: string;
-
-  /**
-   * 网站url
-   */
-  @Column({ nullable: true })
-  url: string;
 
   @CreateDateColumn()
   create_time: Date;

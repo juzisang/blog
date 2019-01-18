@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsUrl, IsEmail } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class OptionDto {
@@ -21,4 +21,14 @@ export class OptionDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @ApiModelProperty()
+  @IsUrl()
+  @IsNotEmpty()
+  site_url: string;
+
+  @ApiModelProperty()
+  @IsEmail()
+  @IsNotEmpty()
+  site_email: string;
 }

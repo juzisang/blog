@@ -71,7 +71,7 @@ export default class Login extends Vue {
                 }
               ]}
             >
-              <MuTextField v-model={this.form.password} />
+              <MuTextField type="password" v-model={this.form.password} />
             </MuFormItem>
             <MuButton
               onClick={this.handleLogin}
