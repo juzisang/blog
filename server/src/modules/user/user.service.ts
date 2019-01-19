@@ -70,9 +70,6 @@ export class UserService {
     if (user.password === encryptPwd(dto.newPassword)) {
       throw new BadRequestException('新旧密码不能一样');
     }
-    return await this.userRepository.update(
-      { name: dto.name },
-      { password: encryptPwd(dto.newPassword) },
-    );
+    return await this.userRepository.update({ name: dto.name }, { password: encryptPwd(dto.newPassword) });
   }
 }

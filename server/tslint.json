@@ -10,7 +10,7 @@
     "indent": false,
     "member-access": [false],
     "ordered-imports": [false],
-    "max-line-length": [true, 150],
+    "max-line-length": [true, 280],
     "member-ordering": [false],
     "curly": false,
     "interface-name": [false],

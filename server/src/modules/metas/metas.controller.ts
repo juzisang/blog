@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  UseGuards,
-  Body,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, UseGuards, Body, Param } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { MetasDto } from './metas.dto';
 import { MetasService } from './metas.service';

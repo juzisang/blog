@@ -1,15 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Param,
-  Query,
-  Req,
-  Body,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Query, Req, Body, UseGuards } from '@nestjs/common';
 import { ApiUseTags, ApiBearerAuth, ApiImplicitParam } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -38,15 +27,7 @@ export class CommentController {
   @ApiImplicitParam({ name: 'aid' })
   @Post(':aid')
   create(@Req() req, @Param('aid') aid, @Body() dto: CommentDto) {
-    const ip = (
-      req.headers['x-forwarded-for'] ||
-      req.headers['x-real-ip'] ||
-      req.connection.remoteAddress ||
-      req.socket.remoteAddress ||
-      req.connection.socket.remoteAddress ||
-      req.ip ||
-      req.ips[0]
-    ).replace('::ffff:', '');
+    const ip = (req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress || req.ip || req.ips[0]).replace('::ffff:', '');
     const agent = req.headers['user-agent'];
     return this.commentService.create(aid, {
       ip,

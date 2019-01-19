@@ -1,11 +1,4 @@
-import {
-  IsNotEmpty,
-  IsString,
-  IsUrl,
-  IsIn,
-  IsArray,
-  IsOptional,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsUrl, IsIn, IsArray, IsOptional } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateArticleDto {

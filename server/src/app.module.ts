@@ -13,15 +13,7 @@ import { OptionModule } from '@app/modules/option/option.module';
 import { UserModule } from '@app/modules/user/user.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot(DB),
-    AuthModule,
-    ArticleModule,
-    CommentModule,
-    MetasModule,
-    OptionModule,
-    UserModule,
-  ],
+  imports: [TypeOrmModule.forRoot(DB), AuthModule, ArticleModule, CommentModule, MetasModule, OptionModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })

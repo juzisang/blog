@@ -1,14 +1,6 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Tree,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('article')
-@Tree('nested-set')
 export class ArticleEntity {
   @PrimaryGeneratedColumn()
   aid: number;
@@ -34,7 +26,7 @@ export class ArticleEntity {
   /**
    * 文章内容
    */
-  @Column({ type: 'text', select: false })
+  @Column({ type: 'text' })
   content: string;
 
   /**
@@ -42,12 +34,6 @@ export class ArticleEntity {
    */
   @Column({ default: '' })
   thumb: string;
-
-  /**
-   * 阅读次数
-   */
-  @Column()
-  views: number;
 
   /**
    * 文章状态

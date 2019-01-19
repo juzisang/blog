@@ -59,7 +59,6 @@ export class ArticleService {
       this.articleEntity.create({
         ...dto,
         uid,
-        views: 0,
       }),
     );
     await this.createMetas(article.aid, dto);
@@ -74,26 +73,17 @@ export class ArticleService {
     if (dto.tags || dto.category) {
       const metas = await this.relationshipsEntity
         .createQueryBuilder('relationships')
-        .leftJoinAndMapOne(
-          'relationships.type',
-          MetasEntity,
-          'metas',
-          'relationships.mid = metas.mid',
-        )
+        .leftJoinAndMapOne('relationships.type', MetasEntity, 'metas', 'relationships.mid = metas.mid')
         .where('relationships.aid = :aid', { aid })
         .getMany();
       const removeMetas = [];
       // 删除tag
       if (dto.tags) {
-        removeMetas.push(
-          ...metas.filter((item: any) => item.type.type === 'tag'),
-        );
+        removeMetas.push(...metas.filter((item: any) => item.type.type === 'tag'));
       }
       // 删除category
       if (dto.category) {
-        removeMetas.push(
-          ...metas.filter((item: any) => item.type.type === 'category'),
-        );
+        removeMetas.push(...metas.filter((item: any) => item.type.type === 'category'));
       }
       // 删除
       if (removeMetas.length > 0) {
@@ -103,10 +93,7 @@ export class ArticleService {
       }
     }
     // 更新
-    await this.articleEntity.update(
-      article.aid,
-      this.articleEntity.create(dto),
-    );
+    await this.articleEntity.update(article.aid, this.articleEntity.create(dto));
     return '更新成功';
   }
 
@@ -124,17 +111,8 @@ export class ArticleService {
         uid: user.uid,
         aid,
       })
-      .leftJoinAndSelect(
-        RelationshipsEntity,
-        'relationships',
-        'article.aid = relationships.aid',
-      )
-      .leftJoinAndMapMany(
-        'article.metas',
-        MetasEntity,
-        'metas',
-        'relationships.mid = metas.mid',
-      )
+      .leftJoinAndSelect(RelationshipsEntity, 'relationships', 'article.aid = relationships.aid')
+      .leftJoinAndMapMany('article.metas', MetasEntity, 'metas', 'relationships.mid = metas.mid')
       .getOne();
     return this.mapMetas(article);
   }
@@ -147,17 +125,8 @@ export class ArticleService {
         uid,
         state,
       })
-      .leftJoinAndSelect(
-        RelationshipsEntity,
-        'relationships',
-        'article.aid = relationships.aid',
-      )
-      .leftJoinAndMapMany(
-        'article.metas',
-        MetasEntity,
-        'metas',
-        'relationships.mid = metas.mid',
-      )
+      .leftJoinAndSelect(RelationshipsEntity, 'relationships', 'article.aid = relationships.aid')
+      .leftJoinAndMapMany('article.metas', MetasEntity, 'metas', 'relationships.mid = metas.mid')
       .orderBy('article.create_time', 'DESC')
       .skip((dto.index - 1) * dto.size)
       .take(dto.size)

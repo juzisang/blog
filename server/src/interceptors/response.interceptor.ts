@@ -4,10 +4,7 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
-  intercept(
-    context: ExecutionContext,
-    call$: Observable<any>,
-  ): Observable<any> {
+  intercept(context: ExecutionContext, call$: Observable<any>): Observable<any> {
     return call$.pipe(map(data => new ResponseData(data)));
   }
 }

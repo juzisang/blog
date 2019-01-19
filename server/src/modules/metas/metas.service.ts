@@ -16,17 +16,8 @@ export class MetasService {
   findOne(type: 'tag' | 'category', data: { name?: string; mid?: number }) {
     return this.metasEntity
       .createQueryBuilder('metas')
-      .leftJoinAndSelect(
-        RelationshipsEntity,
-        'relationships',
-        'metas.mid = relationships.mid',
-      )
-      .leftJoinAndMapMany(
-        'metas.articles',
-        ArticleEntity,
-        'article',
-        'relationships.aid = article.aid',
-      )
+      .leftJoinAndSelect(RelationshipsEntity, 'relationships', 'metas.mid = relationships.mid')
+      .leftJoinAndMapMany('metas.articles', ArticleEntity, 'article', 'relationships.aid = article.aid')
       .where('type = :type', { type })
       .andWhere('metas.name = :name OR metas.mid = :mid', {
         name: data.name,
@@ -38,13 +29,7 @@ export class MetasService {
   async findAll(type: 'tag' | 'category') {
     const metas = await this.metasEntity
       .createQueryBuilder('metas')
-      .select([
-        'metas.mid as mid',
-        'metas.name as name',
-        'metas.slug as slug',
-        'metas.description as description',
-        'metas.type as type',
-      ])
+      .select(['metas.mid as mid', 'metas.name as name', 'metas.slug as slug', 'metas.description as description', 'metas.type as type'])
       .addSelect('COUNT(relationships.aid)', 'articleNum')
       .addFrom(RelationshipsEntity, 'relationships')
       .where('metas.mid = relationships.mid')
@@ -63,9 +48,7 @@ export class MetasService {
     if (meta) {
       throw new BadRequestException(`${type} 已经存在`);
     }
-    return await this.metasEntity.save(
-      this.metasEntity.create({ ...dto, type }),
-    );
+    return await this.metasEntity.save(this.metasEntity.create({ ...dto, type }));
   }
 
   async update(type: 'tag' | 'category', dto: MetasDto) {

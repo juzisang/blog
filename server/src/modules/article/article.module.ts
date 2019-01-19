@@ -9,14 +9,7 @@ import { ArticleService } from './article.service';
 import { UserService } from '../user/user.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      ArticleEntity,
-      MetasEntity,
-      RelationshipsEntity,
-      UserEntity,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([ArticleEntity, MetasEntity, RelationshipsEntity, UserEntity])],
   controllers: [ArticleController],
   providers: [ArticleService, UserService],
 })
