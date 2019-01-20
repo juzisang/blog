@@ -11,6 +11,7 @@
     "axios": "^0.18.0",
     "muse-ui": "^3.0.1",
     "muse-ui-progress": "^0.1.0",
+    "muse-ui-toast": "^0.3.0",
     "typeface-roboto": "^0.0.54",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",

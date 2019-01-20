@@ -30,6 +30,7 @@ export default class Login extends Vue {
     const result = await this.$refs.form.validate();
     if (result) {
       await this.userLogin(this.form);
+      this.$router.replace({ name: "Home" });
     }
   }
 

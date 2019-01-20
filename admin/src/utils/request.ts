@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import router from "../router";
 import { getToken } from "./auth";
+import Toast from "@/muse/MuToast";
 
 // 创建axios实例
 const service = axios.create({
@@ -34,6 +35,7 @@ service.interceptors.response.use(
   },
   error => {
     if (!error.response && error instanceof Error) {
+      Toast.error(error.message);
       console.error(error);
     } else {
       switch (error.response.status) {
@@ -41,6 +43,7 @@ service.interceptors.response.use(
           router.replace({ name: "Login" });
           break;
         default:
+          Toast.error(error.response.data.message);
           console.error(error);
           break;
       }
