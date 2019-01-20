@@ -16,9 +16,13 @@ export class OptionService {
 
   async saveOption(option: OptionDto) {
     const { uid } = await this.userService.findRoot();
+    const { siteEmail, siteUrl, subTitle } = option;
     return this.optionEntity.save(
       this.optionEntity.create({
         ...option,
+        site_email: siteEmail,
+        site_url: siteUrl,
+        sub_title: subTitle,
         uid,
       }),
     );
@@ -26,8 +30,14 @@ export class OptionService {
 
   async updateOption(option: OptionDto) {
     const { uid } = await this.userService.findRoot();
-    const o = await this.optionEntity.findOne({ uid });
-    return this.optionEntity.save(this.optionEntity.merge(o, option));
+    const { siteEmail, siteUrl, subTitle } = option;
+    await this.optionEntity.update(uid, {
+      ...option,
+      site_email: siteEmail,
+      site_url: siteUrl,
+      sub_title: subTitle,
+    });
+    return '修改成功';
   }
 
   async findOption() {

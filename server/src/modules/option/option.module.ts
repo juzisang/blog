@@ -10,5 +10,6 @@ import { UserService } from '../user/user.service';
   imports: [TypeOrmModule.forFeature([OptionEntity])],
   controllers: [OptionController],
   providers: [OptionService, UserService],
+  exports: [OptionService],
 })
 export class OptionModule {}

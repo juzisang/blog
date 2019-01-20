@@ -21,47 +21,24 @@ export class ArticleService {
     private readonly userService: UserService,
   ) {}
 
-  private async createMetas(aid: number, dto: any) {
-    const metas = [];
-    // 添加Tags
-    if (dto.tags) {
-      metas.push(...dto.tags);
-    }
-    // 添加分类
-    if (dto.category) {
-      metas.push(dto.category);
-    }
-    if (metas.length === 0) {
-      return;
-    }
-    const metaEns = await this.metasEntity.findByIds(metas);
-    await this.relationshipsEntity.save(
-      metaEns.map(meta =>
-        this.relationshipsEntity.create({
-          mid: meta.mid,
-          aid,
-        }),
-      ),
-    );
-  }
-
-  private mapMetas(article: any) {
-    article.tags = article.metas.filter(meta => meta.type === 'tag');
-    const category = article.metas.filter(meta => meta.type === 'category');
-    article.category = category.length > 0 ? category[0] : null;
-    delete article.metas;
-    return article;
-  }
-
-  async create(uid: number, dto: CreateArticleDto) {
-    // 创建文章
-    const article = await this.articleEntity.save(
-      this.articleEntity.create({
-        ...dto,
-        uid,
-      }),
-    );
-    await this.createMetas(article.aid, dto);
+  async create(dto: CreateArticleDto) {
+    const { uid } = await this.userService.findRoot();
+    // 文章
+    const article = this.articleEntity.create({
+      ...dto,
+      uid,
+    });
+    const metas = await this.metasEntity.findByIds([...dto.tags, dto.category]);
+    const category = metas.filter(meta => meta.type === 'category');
+    const tags = metas.filter(meta => meta.type === 'tag');
+    // 开启事务
+    await this.articleEntity.manager.transaction(async entityManager => {
+      // 存储文章
+      const { aid } = await entityManager.save(article);
+      // metas
+      await entityManager.save(tags.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
+      await entityManager.save(category.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
+    });
     return '添加成功';
   }
 
@@ -70,47 +47,52 @@ export class ArticleService {
     if (!article) {
       throw new BadRequestException('文章不存在');
     }
-    if (dto.tags || dto.category) {
-      const metas = await this.relationshipsEntity
-        .createQueryBuilder('relationships')
-        .leftJoinAndMapOne('relationships.type', MetasEntity, 'metas', 'relationships.mid = metas.mid')
-        .where('relationships.aid = :aid', { aid })
-        .getMany();
-      const removeMetas = [];
-      // 删除tag
-      if (dto.tags) {
-        removeMetas.push(...metas.filter((item: any) => item.type.type === 'tag'));
+    // 新Meta
+    const newMetas = await this.metasEntity.findByIds([...dto.tags, dto.category]);
+    const newCategory = newMetas.filter(meta => meta.type === 'category').map(item => item.mid);
+    const newTags = newMetas.filter(meta => meta.type === 'tag').map(item => item.mid);
+
+    // 旧Meta
+    const oldMetas = await this.relationshipsEntity
+      .createQueryBuilder('relationships')
+      .select(['relationships.mid as mid', 'metas.type as type'])
+      .innerJoin(ArticleEntity, 'article', 'article.aid = relationships.aid')
+      .innerJoin(MetasEntity, 'metas', 'metas.mid = relationships.mid')
+      .where('article.aid = :aid', { aid })
+      .getRawMany();
+    const oldCategory = oldMetas.filter(meta => meta.type === 'category').map(item => item.mid);
+    const oldTags = oldMetas.filter(meta => meta.type === 'tag').map(item => item.mid);
+
+    // 判断是否有更改
+    const isUpdateMeta = type => {
+      const obj = { tag: { old: oldTags, new: newTags }, category: { old: oldCategory, new: newCategory } };
+      return obj[type].old.sort().join() !== obj[type].new.sort().join();
+    };
+
+    // 开启事务
+    return await this.metasEntity.manager.transaction(async entityManager => {
+      // 判断是否设置分类，以及是否改变
+      if (newCategory.length > 0 && isUpdateMeta('category')) {
+        await entityManager.delete(RelationshipsEntity, oldCategory.map(mid => ({ mid, aid })) as any);
+        await entityManager.save(newCategory.map(mid => this.relationshipsEntity.create({ aid, mid })));
       }
-      // 删除category
-      if (dto.category) {
-        removeMetas.push(...metas.filter((item: any) => item.type.type === 'category'));
+      if (newTags.length > 0 && isUpdateMeta('tag')) {
+        await entityManager.delete(RelationshipsEntity, oldTags.map(mid => ({ mid, aid })) as any);
+        await entityManager.save(newTags.map(mid => this.relationshipsEntity.create({ aid, mid })));
       }
-      // 删除
-      if (removeMetas.length > 0) {
-        await this.relationshipsEntity.remove(removeMetas);
-        // 重新生成
-        await this.createMetas(aid, dto);
-      }
-    }
-    // 更新
-    await this.articleEntity.update(article.aid, this.articleEntity.create(dto));
-    return '更新成功';
+      await entityManager.update(ArticleEntity, aid, { ...dto });
+    });
   }
 
   async findOne(aid: number) {
     const user = await this.userService.findRoot();
-
     if (!(await this.articleEntity.findOne(aid))) {
       throw new BadRequestException('文章不存在');
     }
-
     const article: any = await this.articleEntity
       .createQueryBuilder('article')
       .addSelect('article.content')
-      .where('article.uid = :uid AND article.aid = :aid', {
-        uid: user.uid,
-        aid,
-      })
+      .where('article.uid = :uid AND article.aid = :aid', { uid: user.uid, aid })
       .leftJoinAndSelect(RelationshipsEntity, 'relationships', 'article.aid = relationships.aid')
       .leftJoinAndMapMany('article.metas', MetasEntity, 'metas', 'relationships.mid = metas.mid')
       .getOne();
@@ -121,10 +103,7 @@ export class ArticleService {
     const { uid } = await this.userService.findRoot();
     const [list, count] = await this.articleEntity
       .createQueryBuilder('article')
-      .where('article.uid = :uid AND article.state = :state', {
-        uid,
-        state,
-      })
+      .where('article.uid = :uid AND article.state = :state', { uid, state })
       .leftJoinAndSelect(RelationshipsEntity, 'relationships', 'article.aid = relationships.aid')
       .leftJoinAndMapMany('article.metas', MetasEntity, 'metas', 'relationships.mid = metas.mid')
       .orderBy('article.create_time', 'DESC')
@@ -150,5 +129,15 @@ export class ArticleService {
       state: 'delete',
     });
     return '删除成功';
+  }
+
+  /**
+   * 分开 tags category
+   */
+  private mapMetas(article: any) {
+    article.tags = article.metas.filter(meta => meta.type === 'tag');
+    article.category = article.metas.filter(meta => meta.type === 'category').reduce((a, b) => b, null);
+    delete article.metas;
+    return article;
   }
 }

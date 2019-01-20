@@ -2,36 +2,45 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 
 @Entity('user')
 export class UserEntity {
-  @PrimaryGeneratedColumn()
+  /**
+   * 用户id
+   */
+  @PrimaryGeneratedColumn({ comment: '用户id' })
   uid: number;
 
   /**
    * 名字
    */
-  @Column({ unique: true })
+  @Column({ unique: true, comment: '账号' })
   name: string;
 
   /**
    * 密码
    */
-  @Column()
+  @Column({ comment: '密码' })
   password: string;
 
   /**
    * 签名
    */
-  @Column({ nullable: true })
+  @Column({ nullable: true, comment: '签名' })
   slogan: string;
 
   /**
    * 头像
    */
-  @Column({ nullable: true })
+  @Column({ nullable: true, comment: '头像' })
   avatar: string;
 
-  @CreateDateColumn()
+  /**
+   * 创建时间
+   */
+  @CreateDateColumn({ comment: '创建时间' })
   create_time: Date;
 
-  @UpdateDateColumn()
+  /**
+   * 修改时间
+   */
+  @UpdateDateColumn({ comment: '修改时间' })
   update_time: Date;
 }

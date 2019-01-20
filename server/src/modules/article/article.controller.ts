@@ -36,13 +36,14 @@ export class ArticleController {
    */
   @UseGuards(AuthGuard())
   @Post()
-  create(@User('uid') uid, @Body() dto: CreateArticleDto) {
-    return this.articleService.create(uid, dto);
+  create(@Body() dto: CreateArticleDto) {
+    return this.articleService.create(dto);
   }
 
   /**
    * 更新文章
    */
+  @ApiImplicitParam({ name: 'aid' })
   @UseGuards(AuthGuard())
   @Put(':aid')
   update(@Param('aid') aid, @Body() dto: UpdateArticleDto) {

@@ -2,7 +2,27 @@ import { ConnectionOptions } from 'typeorm';
 
 export const APP = {
   host: 3000,
-  origin: 'http://www.juzisang.top/',
+  origin: process.env.BLOG_APP_ORIGIN || 'http://localhost:3000/',
+};
+
+/**
+ * 初始化数据
+ */
+export const DEFAULT_DATA = {
+  // 用户
+  user: {
+    name: process.env.BLOG_USER_NAME || 'root',
+    password: process.env.BLOG_USER_PASSWORD || '123456',
+  },
+  // 配置
+  option: {
+    title: process.env.BLOG_OPTION_TITLE || '',
+    subTitle: process.env.BLOG_OPTION_SUBTITLE || '',
+    keywords: process.env.BLOG_OPTION_KEYWORDS || '',
+    description: process.env.BLOG_OPTION_DESCRIPTION || '',
+    siteUrl: process.env.BLOG_OPTION_SITEURL || '',
+    siteEmail: process.env.BLOG_OPTION_SITEEMAIL || '',
+  },
 };
 
 /**
@@ -35,14 +55,4 @@ export const DB: ConnectionOptions = {
  */
 export const JWT = {
   secretKey: process.env.BLOG_JWT_SECRETKEY || 'secretKey',
-};
-
-/**
- * 初始化数据
- */
-export const DEFAULT_DATA = {
-  user: {
-    name: process.env.BLOG_USER_NAME || 'root',
-    password: process.env.BLOG_USER_PASSWORD || '123456',
-  },
 };

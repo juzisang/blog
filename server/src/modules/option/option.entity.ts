@@ -2,24 +2,45 @@ import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('option')
 export class OptionEntity {
-  @PrimaryColumn()
+  /**
+   * 用户所属id
+   */
+  @PrimaryColumn({ comment: '用户id' })
   uid: number;
 
-  @Column()
+  /**
+   * 标题
+   */
+  @Column({ comment: '标题' })
   title: string;
 
-  @Column()
+  /**
+   * 副标题
+   */
+  @Column({ comment: '副标题' })
   sub_title: string;
 
-  @Column()
+  /**
+   * 搜索关键字
+   */
+  @Column({ comment: '关键字' })
   keywords: string;
 
-  @Column()
+  /**
+   * 描述
+   */
+  @Column({ comment: '描述' })
   description: string;
 
-  @Column()
+  /**
+   * 站点 URL
+   */
+  @Column({ comment: '站点URL' })
   site_url: string;
 
-  @Column()
+  /**
+   * 站点邮箱
+   */
+  @Column({ comment: '邮箱' })
   site_email: string;
 }

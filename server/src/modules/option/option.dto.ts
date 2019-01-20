@@ -25,10 +25,10 @@ export class OptionDto {
   @ApiModelProperty()
   @IsUrl()
   @IsNotEmpty()
-  site_url: string;
+  siteUrl: string;
 
   @ApiModelProperty()
   @IsEmail()
   @IsNotEmpty()
-  site_email: string;
+  siteEmail: string;
 }

@@ -1,6 +1,9 @@
-import { MinLength, IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
+import { MinLength, IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
+/**
+ * 创建用户
+ */
 export class CreateUserDto {
   @ApiModelProperty()
   @IsNotEmpty()
@@ -12,6 +15,9 @@ export class CreateUserDto {
   password: string;
 }
 
+/**
+ * 更新用户
+ */
 export class UpdateUserDto {
   @ApiModelProperty({ required: false })
   @IsOptional()
@@ -31,6 +37,9 @@ export class UpdateUserDto {
   avatar: string;
 }
 
+/**
+ * 修改密码
+ */
 export class UpdatePasswordDto {
   @ApiModelProperty()
   @IsNotEmpty()

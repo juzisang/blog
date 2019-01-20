@@ -36,23 +36,23 @@ export class UserService {
    * 新建root用户
    */
   async created(dto: CreateUserDto) {
-    const user = await this.findRoot();
-    if (user) {
-      throw new BadRequestException('用户已存在');
+    if (this.IsEmptyUsers()) {
+      return await this.userRepository.save(
+        this.userRepository.create({
+          ...dto,
+          password: encryptPwd(dto.password),
+        }),
+      );
     }
-    return await this.userRepository.save(
-      this.userRepository.create({
-        ...dto,
-        password: encryptPwd(dto.password),
-      }),
-    );
+    throw new BadRequestException('用户已存在');
   }
 
   /**
    * 更新用户数据
    */
-  async update(id: number, date: UpdateUserDto) {
-    return await this.userRepository.update(id, {
+  async update(date: UpdateUserDto) {
+    const { uid } = await this.findRoot();
+    return await this.userRepository.update(uid, {
       name: date.name,
       avatar: date.avatar,
       slogan: date.slogan,
@@ -63,13 +63,13 @@ export class UserService {
    * 修改密码
    */
   async updatePwd(dto: UpdatePasswordDto) {
-    const user = await this.findRoot();
-    if (user.password !== encryptPwd(dto.oldPassword)) {
+    const { password, uid } = await this.findRoot();
+    if (password !== encryptPwd(dto.oldPassword)) {
       throw new BadRequestException('密码错误');
     }
-    if (user.password === encryptPwd(dto.newPassword)) {
+    if (password === encryptPwd(dto.newPassword)) {
       throw new BadRequestException('新旧密码不能一样');
     }
-    return await this.userRepository.update({ name: dto.name }, { password: encryptPwd(dto.newPassword) });
+    return await this.userRepository.update(uid, { password: encryptPwd(dto.newPassword) });
   }
 }

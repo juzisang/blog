@@ -43,14 +43,8 @@ export class AuthService {
     if (user.password !== encryptPwd(dto.password)) {
       throw new NotFoundException('用户名或密码错误');
     }
-    const token = this.createToken({
+    return this.createToken({
       uid: user.uid,
     });
-    const data = {
-      ...user,
-      token,
-    };
-    delete data.password;
-    return data;
   }
 }

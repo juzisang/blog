@@ -2,24 +2,45 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 
 @Entity('metas')
 export class MetasEntity {
-  @PrimaryGeneratedColumn()
+  /**
+   * 类型ID
+   */
+  @PrimaryGeneratedColumn({ comment: '类型id' })
   mid: number;
 
-  @Column()
+  /**
+   * 类型名字
+   */
+  @Column({ comment: '名字' })
   name: string;
 
-  @Column()
+  /**
+   * 类型别名
+   */
+  @Column({ comment: '别名' })
   slug: string;
 
-  @Column({ nullable: true })
+  /**
+   * 描述
+   */
+  @Column({ nullable: true, comment: '描述' })
   description: string;
 
-  @Column({ type: 'enum', enum: ['tag', 'category'] })
+  /**
+   * 类型
+   */
+  @Column({ type: 'enum', enum: ['tag', 'category'], comment: '类型' })
   type: string;
 
-  @CreateDateColumn({ select: false })
+  /**
+   * 创建时间
+   */
+  @CreateDateColumn({ comment: '创建时间' })
   create_time: Date;
 
-  @UpdateDateColumn({ select: false })
+  /**
+   * 修改时间
+   */
+  @UpdateDateColumn({ comment: '修改时间' })
   update_time: Date;
 }

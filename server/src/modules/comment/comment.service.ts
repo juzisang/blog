@@ -49,14 +49,19 @@ export class CommentService {
       }
     }
 
-    const commentObj = this.commentEntity.create({
-      aid,
-      ...comment,
-    });
-    return this.commentEntity.save(commentObj);
+    return this.commentEntity.save(
+      this.commentEntity.create({
+        aid,
+        ...comment,
+      }),
+    );
   }
 
   async update(cid: number, state) {
-    return this.commentEntity.update(cid, { state });
+    if (!(await this.commentEntity.findOne(cid))) {
+      throw new BadRequestException('评论不存在');
+    }
+    await this.commentEntity.update(cid, { state });
+    return '修改成功';
   }
 }

@@ -2,7 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MetasEntity } from './metas.entity';
 import { Repository } from 'typeorm';
-import { MetasDto } from './metas.dto';
+import { CreateMetasDto, QueryMetasDto, UpdateMetasDto, DeleteQueryMetasDto } from './metas.dto';
 import { RelationshipsEntity } from './relationships.entity';
 import { ArticleEntity } from '../article/article.entity';
 
@@ -13,37 +13,29 @@ export class MetasService {
     private readonly metasEntity: Repository<MetasEntity>,
   ) {}
 
-  findOne(type: 'tag' | 'category', data: { name?: string; mid?: number }) {
+  findOne(type: 'tag' | 'category', data: QueryMetasDto) {
     return this.metasEntity
       .createQueryBuilder('metas')
-      .leftJoinAndSelect(RelationshipsEntity, 'relationships', 'metas.mid = relationships.mid')
+      .leftJoin(RelationshipsEntity, 'relationships', 'metas.mid = relationships.mid')
       .leftJoinAndMapMany('metas.articles', ArticleEntity, 'article', 'relationships.aid = article.aid')
       .where('type = :type', { type })
-      .andWhere('metas.name = :name OR metas.mid = :mid', {
-        name: data.name,
-        mid: data.mid,
-      })
-      .getMany();
+      .andWhere('metas.name = :name OR metas.mid = :mid', { name: data.name, mid: data.mid })
+      .getOne();
   }
 
   async findAll(type: 'tag' | 'category') {
-    const metas = await this.metasEntity
+    return this.metasEntity
       .createQueryBuilder('metas')
       .select(['metas.mid as mid', 'metas.name as name', 'metas.slug as slug', 'metas.description as description', 'metas.type as type'])
       .addSelect('COUNT(relationships.aid)', 'articleNum')
-      .addFrom(RelationshipsEntity, 'relationships')
-      .where('metas.mid = relationships.mid')
-      .andWhere('metas.type = :type', { type })
-      .groupBy('relationships.mid')
+      .leftJoin(RelationshipsEntity, 'relationships', 'metas.mid = relationships.mid')
+      .where('type = :type', { type })
+      .groupBy('metas.mid')
       .orderBy('articleNum', 'DESC')
       .getRawMany();
-    return metas.map((item: any) => {
-      item.articleNum = parseInt(item.articleNum, 0);
-      return item;
-    });
   }
 
-  async create(type: 'tag' | 'category', dto: MetasDto) {
+  async create(type: 'tag' | 'category', dto: CreateMetasDto) {
     const meta = await this.metasEntity.findOne({ type, name: dto.name });
     if (meta) {
       throw new BadRequestException(`${type} 已经存在`);
@@ -51,19 +43,21 @@ export class MetasService {
     return await this.metasEntity.save(this.metasEntity.create({ ...dto, type }));
   }
 
-  async update(type: 'tag' | 'category', dto: MetasDto) {
-    const meta = await this.metasEntity.findOne({ type, name: dto.name });
+  async update(type: 'tag' | 'category', dto: UpdateMetasDto) {
+    const meta = await this.metasEntity.findOne(dto.mid);
     if (!meta) {
       throw new BadRequestException(`${type} 不存在`);
     }
-    return await this.metasEntity.update(meta, dto);
+    await this.metasEntity.update(dto.mid, dto);
+    return '修改成功';
   }
 
-  async delete(type: 'tag' | 'category', mid: number) {
-    const meta = await this.metasEntity.findOne({ type, mid });
+  async delete(type: 'tag' | 'category', dto: DeleteQueryMetasDto) {
+    const meta = await this.metasEntity.findOne(dto.mid);
     if (!meta) {
       throw new BadRequestException(`${type} 不存在`);
     }
-    return this.metasEntity.delete(mid);
+    await this.metasEntity.delete(dto.mid);
+    return '删除成功';
   }
 }
