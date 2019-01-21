@@ -1,5 +1,6 @@
 import router from "./router";
 import store from "./store";
+
 router.beforeEach((to, from, next) => {
   // 没有Token
   if (!store.getters.token) {
