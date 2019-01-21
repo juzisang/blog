@@ -15,5 +15,7 @@ export * from "./MuTextField";
 export * from "./MuSelect";
 export * from "./MuForm";
 export * from "./MuIcon";
+export * from "./MuSnackbar";
+export * from "./MuToast";
 
 import "muse-ui/lib/styles/theme.less";
