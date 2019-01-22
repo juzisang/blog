@@ -7,7 +7,7 @@ import { MetasEntity } from '../metas/metas.entity';
 import { RelationshipsEntity } from '../metas/relationships.entity';
 import { UserService } from '../user/user.service';
 import { PaginationDto } from './pagination.dto';
-import { CreateArticleDto, UpdateArticleDto } from './article.dto';
+import { SaveArticleDto } from './article.dto';
 
 @Injectable()
 export class ArticleService {
@@ -21,7 +21,10 @@ export class ArticleService {
     private readonly userService: UserService,
   ) {}
 
-  async create(dto: CreateArticleDto) {
+  /**
+   * 创建文章
+   */
+  async create(dto: SaveArticleDto) {
     const { uid } = await this.userService.findRoot();
     // 文章
     const article = this.articleEntity.create({
@@ -39,10 +42,12 @@ export class ArticleService {
       await entityManager.save(tags.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
       await entityManager.save(category.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
     });
-    return '添加成功';
   }
 
-  async update(aid: number, dto: UpdateArticleDto) {
+  /**
+   * 更新文章
+   */
+  async update(aid: number, dto: SaveArticleDto) {
     const article = await this.articleEntity.findOne(aid);
     if (!article) {
       throw new BadRequestException('文章不存在');
@@ -70,7 +75,7 @@ export class ArticleService {
     };
 
     // 开启事务
-    return await this.metasEntity.manager.transaction(async entityManager => {
+    await this.metasEntity.manager.transaction(async entityManager => {
       // 判断是否设置分类，以及是否改变
       if (newCategory.length > 0 && isUpdateMeta('category')) {
         await entityManager.delete(RelationshipsEntity, oldCategory.map(mid => ({ mid, aid })) as any);
@@ -84,6 +89,9 @@ export class ArticleService {
     });
   }
 
+  /**
+   * 获取文章详情
+   */
   async findOne(aid: number) {
     const user = await this.userService.findRoot();
     if (!(await this.articleEntity.findOne(aid))) {
@@ -99,6 +107,9 @@ export class ArticleService {
     return this.mapMetas(article);
   }
 
+  /**
+   * 获取文章列表
+   */
   async findList(state, dto: PaginationDto) {
     const { uid } = await this.userService.findRoot();
     const [list, count] = await this.articleEntity
@@ -120,6 +131,9 @@ export class ArticleService {
     };
   }
 
+  /**
+   * 删除文章
+   */
   async delete(aid: number) {
     const article = await this.articleEntity.findOne(aid);
     if (!article) {
@@ -128,7 +142,6 @@ export class ArticleService {
     await this.articleEntity.update(article.aid, {
       state: 'delete',
     });
-    return '删除成功';
   }
 
   /**

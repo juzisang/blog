@@ -2,21 +2,22 @@ import request from "@/utils/request";
 
 export function getCategorys() {
   return request({
-    url: "/metas/tags",
+    url: "/metas/categorys",
     method: "get"
   });
 }
 
-export function getCategory(id: number) {
+export function getCategory(params: IQueryMeta) {
   return request({
-    url: `/metas/tag/${id}`,
-    method: "get"
+    url: `/metas/category`,
+    method: "get",
+    params
   });
 }
 
 export function updateCategory(data: ISaveMeta) {
   return request({
-    url: `/metas/tag/${data.id}`,
+    url: `/metas/category/${data.id}`,
     method: "put",
     data
   });
@@ -24,14 +25,14 @@ export function updateCategory(data: ISaveMeta) {
 
 export function deleteCategory(id: number) {
   return request({
-    url: `/metas/tag/${id}`,
+    url: `/metas/category/${id}`,
     method: "delete"
   });
 }
 
 export function addCategory(data: ISaveMeta) {
   return request({
-    url: `/metas/tag`,
+    url: `/metas/category`,
     method: "post",
     data
   });

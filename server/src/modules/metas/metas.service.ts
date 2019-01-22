@@ -2,7 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MetasEntity } from './metas.entity';
 import { Repository } from 'typeorm';
-import { CreateMetasDto, QueryMetasDto, UpdateMetasDto, DeleteQueryMetasDto } from './metas.dto';
+import { SaveMetasDto, QueryMetasDto } from './metas.dto';
 import { RelationshipsEntity } from './relationships.entity';
 import { ArticleEntity } from '../article/article.entity';
 
@@ -13,6 +13,9 @@ export class MetasService {
     private readonly metasEntity: Repository<MetasEntity>,
   ) {}
 
+  /**
+   * 返货 tag category，及其所属文章
+   */
   findOne(type: 'tag' | 'category', data: QueryMetasDto) {
     return this.metasEntity
       .createQueryBuilder('metas')
@@ -23,6 +26,9 @@ export class MetasService {
       .getOne();
   }
 
+  /**
+   * 返回 tag category 列表，及其文章数
+   */
   async findAll(type: 'tag' | 'category') {
     return this.metasEntity
       .createQueryBuilder('metas')
@@ -35,29 +41,45 @@ export class MetasService {
       .getRawMany();
   }
 
-  async create(type: 'tag' | 'category', dto: CreateMetasDto) {
+  /**
+   * 创建 tag category
+   */
+  async create(type: 'tag' | 'category', dto: SaveMetasDto) {
     const meta = await this.metasEntity.findOne({ type, name: dto.name });
     if (meta) {
       throw new BadRequestException(`${type} 已经存在`);
     }
-    return await this.metasEntity.save(this.metasEntity.create({ ...dto, type }));
+    await this.metasEntity.save(this.metasEntity.create({ ...dto, type }));
   }
 
-  async update(type: 'tag' | 'category', dto: UpdateMetasDto) {
-    const meta = await this.metasEntity.findOne(dto.mid);
+  /**
+   * 更新 tag category
+   */
+  async update(type: 'tag' | 'category', mid: number, dto: SaveMetasDto) {
+    await this.findOneOrFail(type, mid);
+    await this.metasEntity.update(mid, dto);
+  }
+
+  /**
+   * 删除 tag category
+   */
+  async delete(type: 'tag' | 'category', mid) {
+    await this.findOneOrFail(type, mid);
+    await this.metasEntity.manager.transaction(async entityManager => {
+      // 删除文章与meta关系
+      await entityManager.delete(RelationshipsEntity, { mid });
+      // 删除meta
+      await entityManager.delete(MetasEntity, { mid });
+    });
+  }
+
+  /**
+   * 不存在，即报错
+   */
+  private async findOneOrFail(type: string, mid: number) {
+    const meta = await this.metasEntity.findOne(mid);
     if (!meta) {
       throw new BadRequestException(`${type} 不存在`);
     }
-    await this.metasEntity.update(dto.mid, dto);
-    return '修改成功';
-  }
-
-  async delete(type: 'tag' | 'category', dto: DeleteQueryMetasDto) {
-    const meta = await this.metasEntity.findOne(dto.mid);
-    if (!meta) {
-      throw new BadRequestException(`${type} 不存在`);
-    }
-    await this.metasEntity.delete(dto.mid);
-    return '删除成功';
   }
 }

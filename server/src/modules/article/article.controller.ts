@@ -5,7 +5,7 @@ import { ApiUseTags, ApiBearerAuth, ApiImplicitParam } from '@nestjs/swagger';
 import { User } from '@app/decorators/user.decorator';
 
 import { ArticleService } from './article.service';
-import { UpdateArticleDto, CreateArticleDto } from './article.dto';
+import { SaveArticleDto } from './article.dto';
 import { PaginationDto } from './pagination.dto';
 
 @ApiBearerAuth()
@@ -36,7 +36,7 @@ export class ArticleController {
    */
   @UseGuards(AuthGuard())
   @Post()
-  create(@Body() dto: CreateArticleDto) {
+  create(@Body() dto: SaveArticleDto) {
     return this.articleService.create(dto);
   }
 
@@ -46,7 +46,7 @@ export class ArticleController {
   @ApiImplicitParam({ name: 'aid' })
   @UseGuards(AuthGuard())
   @Put(':aid')
-  update(@Param('aid') aid, @Body() dto: UpdateArticleDto) {
+  update(@Param('aid') aid, @Body() dto: SaveArticleDto) {
     return this.articleService.update(aid, dto);
   }
 

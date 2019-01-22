@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Put, Delete, UseGuards, Body, Param, Query } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateMetasDto, QueryMetasDto, UpdateMetasDto, DeleteQueryMetasDto } from './metas.dto';
+import { SaveMetasDto, QueryMetasDto } from './metas.dto';
 import { MetasService } from './metas.service';
-import { ApiUseTags, ApiImplicitParam, ApiBearerAuth, ApiImplicitQuery, ApiImplicitBody } from '@nestjs/swagger';
+import { ApiUseTags, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiUseTags('metas')
@@ -47,7 +47,7 @@ export class MetasController {
    */
   @UseGuards(AuthGuard())
   @Post('tag')
-  createTag(@Body() dto: CreateMetasDto) {
+  createTag(@Body() dto: SaveMetasDto) {
     return this.metasService.create('tag', dto);
   }
 
@@ -56,43 +56,47 @@ export class MetasController {
    */
   @UseGuards(AuthGuard())
   @Post('category')
-  createCategory(@Body() dto: CreateMetasDto) {
+  createCategory(@Body() dto: SaveMetasDto) {
     return this.metasService.create('category', dto);
   }
 
   /**
    * 修改 Tag
    */
+  @ApiImplicitParam({ name: 'mid' })
   @UseGuards(AuthGuard())
-  @Put('tag')
-  updateTag(@Body() dto: UpdateMetasDto) {
-    return this.metasService.update('tag', dto);
+  @Put('tag/:mid')
+  updateTag(@Param('mid') mid, @Body() dto: SaveMetasDto) {
+    return this.metasService.update('tag', mid, dto);
   }
 
   /**
    * 修改分类
    */
+  @ApiImplicitParam({ name: 'mid' })
   @UseGuards(AuthGuard())
-  @Put('category')
-  updateCategory(@Body() dto: UpdateMetasDto) {
-    return this.metasService.update('category', dto);
+  @Put('category/:mid')
+  updateCategory(@Param('mid') mid, @Body() dto: SaveMetasDto) {
+    return this.metasService.update('category', mid, dto);
   }
 
   /**
    * 删除 Tag
    */
+  @ApiImplicitParam({ name: 'mid' })
   @UseGuards(AuthGuard())
-  @Delete('tag')
-  async deleteTag(@Query() body: DeleteQueryMetasDto) {
-    return this.metasService.delete('tag', body);
+  @Delete('tag/:mid')
+  async deleteTag(@Param('mid') mid) {
+    return this.metasService.delete('tag', mid);
   }
 
   /**
    * 删除分类
    */
+  @ApiImplicitParam({ name: 'mid' })
   @UseGuards(AuthGuard())
-  @Delete('category')
-  async deleteCategory(@Query() body: DeleteQueryMetasDto) {
-    return this.metasService.delete('category', body);
+  @Delete('category/:mid')
+  async deleteCategory(@Param('mid') mid) {
+    return this.metasService.delete('category', mid);
   }
 }

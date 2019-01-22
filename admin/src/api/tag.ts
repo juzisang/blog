@@ -7,24 +7,25 @@ export function getTags() {
   });
 }
 
-export function getTag(id: number) {
+export function getTag(params: IQueryMeta) {
   return request({
-    url: `/metas/tag/${id}`,
-    method: "get"
+    url: `/metas/tag`,
+    method: "get",
+    params
   });
 }
 
 export function updateTag(data: ISaveMeta) {
   return request({
-    url: `/metas/tag/${data.id}`,
+    url: `/metas/tag/${data.aid}`,
     method: "put",
     data
   });
 }
 
-export function deleteTag(id: number) {
+export function deleteTag(mid: number) {
   return request({
-    url: `/metas/tag/${id}`,
+    url: `/metas/tag/${mid}`,
     method: "delete"
   });
 }

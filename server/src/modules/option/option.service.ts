@@ -14,10 +14,13 @@ export class OptionService {
     private readonly userService: UserService,
   ) {}
 
+  /**
+   * 保存配置
+   */
   async saveOption(option: OptionDto) {
     const { uid } = await this.userService.findRoot();
     const { siteEmail, siteUrl, subTitle } = option;
-    return this.optionEntity.save(
+    await this.optionEntity.save(
       this.optionEntity.create({
         ...option,
         site_email: siteEmail,
@@ -28,6 +31,9 @@ export class OptionService {
     );
   }
 
+  /**
+   * 更新配置
+   */
   async updateOption(option: OptionDto) {
     const { uid } = await this.userService.findRoot();
     const { siteEmail, siteUrl, subTitle } = option;
@@ -37,9 +43,11 @@ export class OptionService {
       site_url: siteUrl,
       sub_title: subTitle,
     });
-    return '修改成功';
   }
 
+  /**
+   * 获取配置
+   */
   async findOption() {
     const { uid } = await this.userService.findRoot();
     return this.optionEntity.findOne({ uid });
