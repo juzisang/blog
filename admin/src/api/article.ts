@@ -8,9 +8,9 @@ export function getArticles(params: IPage) {
   });
 }
 
-export function getArticle(id: number) {
+export function getArticle(aid: number) {
   return request({
-    url: `/article/${id}`,
+    url: `/article/${aid}`,
     method: "get"
   });
 }
@@ -23,17 +23,17 @@ export function saveArticle(data: ISaveArticle) {
   });
 }
 
-export function updateArticle(data: ISaveArticle) {
+export function updateArticle(aid: number, data: ISaveArticle) {
   return request({
-    url: `/article/${data.id}`,
+    url: `/article/${aid}`,
     method: "put",
     data
   });
 }
 
-export function deleteArticle(id: number) {
+export function deleteArticle(aid: number) {
   return request({
-    url: `/article/${id}`,
+    url: `/article/${aid}`,
     method: "delete"
   });
 }

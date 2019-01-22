@@ -1,5 +1,4 @@
 interface ISaveArticle {
-  id?: number;
   title: string;
   keywords: string;
   description: string;

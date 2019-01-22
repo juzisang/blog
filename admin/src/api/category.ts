@@ -15,17 +15,17 @@ export function getCategory(params: IQueryMeta) {
   });
 }
 
-export function updateCategory(data: ISaveMeta) {
+export function updateCategory(mid: number, data: ISaveMeta) {
   return request({
-    url: `/metas/category/${data.id}`,
+    url: `/metas/category/${mid}`,
     method: "put",
     data
   });
 }
 
-export function deleteCategory(id: number) {
+export function deleteCategory(mid: number) {
   return request({
-    url: `/metas/category/${id}`,
+    url: `/metas/category/${mid}`,
     method: "delete"
   });
 }

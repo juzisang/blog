@@ -15,9 +15,9 @@ export function getTag(params: IQueryMeta) {
   });
 }
 
-export function updateTag(data: ISaveMeta) {
+export function updateTag(mid: number, data: ISaveMeta) {
   return request({
-    url: `/metas/tag/${data.aid}`,
+    url: `/metas/tag/${mid}`,
     method: "put",
     data
   });
