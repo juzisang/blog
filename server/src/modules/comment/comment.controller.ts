@@ -27,7 +27,7 @@ export class CommentController {
   @ApiImplicitParam({ name: 'aid' })
   @Post(':aid')
   create(@Req() req, @Param('aid') aid, @Body() dto: CommentDto) {
-    const ip = (req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress || req.ip || req.ips[0]).replace('::ffff:', '');
+    const ip = req.ip.match(/\d+\.\d+\.\d+\.\d+/)[0];
     const agent = req.headers['user-agent'];
     return this.commentService.create(aid, {
       ip,
