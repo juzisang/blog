@@ -1,6 +1,8 @@
 import * as Tsx from "vue-tsx-support";
 import { Pagination } from "muse-ui";
 
+export const MuPagination = Tsx.ofType<Props, Events>().convert(Pagination as any);
+
 type Props = {
   total?: number;
   current?: number;
@@ -11,7 +13,3 @@ type Props = {
 type Events = {
   change: any;
 };
-
-export const MuPagination = Tsx.ofType<Props, Events>().convert(
-  Pagination as any
-);

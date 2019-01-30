@@ -1,6 +1,8 @@
 import * as Tsx from "vue-tsx-support";
 import { Icon } from "muse-ui";
 
+export const MuIcon = Tsx.ofType<Props>().convert(Icon as any);
+
 type Props = {
   value?: string;
   size?: string | number;
@@ -8,5 +10,3 @@ type Props = {
   right?: boolean;
   color?: string;
 };
-
-export const MuIcon = Tsx.ofType<Props>().convert(Icon as any);

@@ -1,13 +1,4 @@
-const {
-  FadeTransition,
-  SlideTopTransition,
-  SlideBottomTransition,
-  SlideLeftTransition,
-  SlideRightTransition,
-  PopoverTransiton,
-  BottomSheetTransition,
-  ScaleTransition
-} = require("muse-ui/lib/internal/transitions");
+const { FadeTransition, SlideTopTransition, SlideBottomTransition, SlideLeftTransition, SlideRightTransition, PopoverTransiton, BottomSheetTransition, ScaleTransition } = require("muse-ui/lib/internal/transitions");
 
 export const MuFadeTransition = FadeTransition;
 export const MuSlideTopTransition = SlideTopTransition;

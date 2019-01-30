@@ -1,6 +1,8 @@
 import * as Tsx from "vue-tsx-support";
 import { Dialog } from "muse-ui";
 
+export const MuDialog = Tsx.ofType<Props, Events>().convert(Dialog as any);
+
 type Props = {
   open?: boolean;
   title?: string;
@@ -23,5 +25,3 @@ type Props = {
 type Events = {
   close: any;
 };
-
-export const MuDialog = Tsx.ofType<Props, Events>().convert(Dialog as any);

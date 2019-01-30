@@ -2,6 +2,8 @@ import * as Tsx from "vue-tsx-support";
 import { Button } from "muse-ui";
 import { Colors } from "./types";
 
+export const MuButton = Tsx.ofType<Props, Events>().convert(Button as any);
+
 type Props = Colors & {
   textColor?: string;
   ripple?: boolean;
@@ -29,5 +31,3 @@ type Props = Colors & {
 type Events = {
   onClick: any;
 };
-
-export const MuButton = Tsx.ofType<Props, Events>().convert(Button as any);

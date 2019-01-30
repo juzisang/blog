@@ -1,5 +1,6 @@
 import * as Tsx from "vue-tsx-support";
-import { Badge } from "muse-ui";
+
+export const MuBadge = Tsx.ofType<Props, any, Slots>().convert(require("muse-ui/lib/Badge").default);
 
 type Props = {
   color?: string;
@@ -12,5 +13,3 @@ type Slots = {
   content?: string;
   default?: any;
 };
-
-export const MuBadge = Tsx.ofType<Props, any, Slots>().convert(Badge as any);

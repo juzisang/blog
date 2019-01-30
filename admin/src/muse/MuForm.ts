@@ -1,5 +1,9 @@
 import * as Tsx from "vue-tsx-support";
 
+export const MuForm = Tsx.ofType<MuFormProps>().convert(require("muse-ui/lib/Form").Form);
+
+export const MuFormItem = Tsx.ofType<FormItemProps>().convert(require("muse-ui/lib/Form").FormItem);
+
 type MuFormProps = {
   model: object;
   inline?: boolean;
@@ -24,11 +28,3 @@ type MuFormRules = {
   validate?: (val: any) => any;
   message?: string;
 };
-
-export const MuForm = Tsx.ofType<MuFormProps>().convert(
-  require("muse-ui/lib/Form").Form
-);
-
-export const MuFormItem = Tsx.ofType<FormItemProps>().convert(
-  require("muse-ui/lib/Form").FormItem
-);

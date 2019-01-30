@@ -1,5 +1,9 @@
 import * as Tsx from "vue-tsx-support";
 
+export const Breadcrumbs = Tsx.ofType<BreadcrumbsProps, any, BreadcrumbsSlots>().convert(require("muse-ui/lib/index").Breadcrumbs);
+
+export const BreadcrumbsItem = Tsx.ofType<BreadcrumbsItemProps, any>().convert(require("muse-ui/lib/index").BreadcrumbsItem);
+
 type BreadcrumbsProps = {
   disabled?: boolean;
   href?: string;
@@ -21,13 +25,3 @@ type BreadcrumbsSlots = {
 type BreadcrumbsItemProps = {
   divider: string;
 };
-
-export const Breadcrumbs = Tsx.ofType<
-  BreadcrumbsProps,
-  any,
-  BreadcrumbsSlots
->().convert(require("muse-ui/lib/index").Breadcrumbs);
-
-export const BreadcrumbsItem = Tsx.ofType<BreadcrumbsItemProps, any>().convert(
-  require("muse-ui/lib/index").BreadcrumbsItem
-);
