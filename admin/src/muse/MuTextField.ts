@@ -1,7 +1,6 @@
 import * as Tsx from 'vue-tsx-support';
-import { TextField } from 'muse-ui';
 
-export const MuTextField = Tsx.ofType<Props, Events, Slots>().convert(TextField as any);
+export const MuTextField = Tsx.ofType<Props, Events, Slots>().convert(require('muse-ui/lib/TextField').default);
 
 type Props = {
   color?: string;

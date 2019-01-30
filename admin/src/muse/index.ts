@@ -25,5 +25,6 @@ export * from './MuTransition';
 export * from './MuDrawer';
 export * from './MuTheme';
 export * from './MuAvatar';
+export * from './MuList';
 
 import 'muse-ui/lib/styles/theme.less';

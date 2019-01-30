@@ -1,7 +1,6 @@
 import * as Tsx from 'vue-tsx-support';
-import { Snackbar } from 'muse-ui';
 
-export const MuSnackbar = Tsx.ofType<Props>().convert(Snackbar as any);
+export const MuSnackbar = Tsx.ofType<Props>().convert(require('muse-ui/lib/Snackbar').default);
 
 type Props = {
   color?: string;

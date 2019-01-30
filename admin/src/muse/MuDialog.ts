@@ -1,7 +1,6 @@
 import * as Tsx from 'vue-tsx-support';
-import { Dialog } from 'muse-ui';
 
-export const MuDialog = Tsx.ofType<Props, Events>().convert(Dialog as any);
+export const MuDialog = Tsx.ofType<Props, Events>().convert(require('muse-ui/lib/Dialog').default);
 
 type Props = {
   open?: boolean;

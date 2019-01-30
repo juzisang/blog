@@ -1,8 +1,7 @@
 import * as Tsx from 'vue-tsx-support';
-import { Button } from 'muse-ui';
 import { Colors } from './types';
 
-export const MuButton = Tsx.ofType<Props, Events>().convert(Button as any);
+export const MuButton = Tsx.ofType<Props, Events>().convert(require('muse-ui/lib/Button').default);
 
 type Props = Colors & {
   textColor?: string;

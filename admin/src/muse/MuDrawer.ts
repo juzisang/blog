@@ -1,7 +1,6 @@
 import * as Tsx from 'vue-tsx-support';
-import { Drawer } from 'muse-ui';
 
-export const MuDrawer = Tsx.ofType<Props>().convert(Drawer as any);
+export const MuDrawer = Tsx.ofType<Props>().convert(require('muse-ui/lib/Drawer').default);
 
 type Props = {
   open?: boolean;

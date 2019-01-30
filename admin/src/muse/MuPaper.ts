@@ -1,7 +1,6 @@
 import * as Tsx from 'vue-tsx-support';
-import { Paper } from 'muse-ui';
 
-export const MuPaper = Tsx.ofType<Props>().convert(Paper as any);
+export const MuPaper = Tsx.ofType<Props>().convert(require('muse-ui/lib/Paper').default);
 
 type Props = {
   zDepth?: number;

@@ -1,7 +1,6 @@
 import * as Tsx from 'vue-tsx-support';
-import { Divider } from 'muse-ui';
 
-export const MuDivider = Tsx.ofType<Props>().convert(Divider as any);
+export const MuDivider = Tsx.ofType<Props>().convert(require('muse-ui/lib/Divider').default);
 
 type Props = {
   inset?: boolean;
