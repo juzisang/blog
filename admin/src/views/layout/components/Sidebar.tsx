@@ -23,8 +23,8 @@ export default class SideBar extends Tsx.Component<SideBarProps> {
   render() {
     return (
       <MuDrawer open$sync={this._open} zDepth={1} width={260} docked>
-        <MuAppBar zDepth={2} color="#3949ab" title="Blog Admin">
-          <MuAvatar class={style.avatar} slot="left" size={32}>
+        <MuAppBar zDepth={2} title="Blog Admin">
+          <MuAvatar class="margin-left-16" slot="left" size={32}>
             <img src="https://avatars2.githubusercontent.com/u/14973323?s=460&v=4" />
           </MuAvatar>
           <span>Blog Admin</span>

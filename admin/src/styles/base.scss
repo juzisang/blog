@@ -65,3 +65,12 @@ p {
   font-size: 14px;
   font-weight: 400;
 }
+@each $mp in margin padding {
+  @each $dc in top right bottom left {
+    @each $size in 4 8 16 24 {
+      .#{$mp}-#{$dc}-#{$size} {
+        #{$mp}-#{$dc}: #{$size}px;
+      }
+    }
+  }
+}

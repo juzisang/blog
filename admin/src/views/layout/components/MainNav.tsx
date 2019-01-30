@@ -14,21 +14,13 @@ export default class MainNav extends Tsx.Component<MainNavProps> {
 
   private get appBarStyle(): object {
     return {
-      position: "fixed",
-      left: this.open ? "260px" : 0,
-      right: 0,
-      top: 0
+      left: this.open ? "260px" : 0
     };
   }
 
   render() {
     return (
-      <MuAppBar
-        class={style.appBar}
-        style={this.appBarStyle}
-        zDepth={2}
-        color="#5c6bc0"
-      >
+      <MuAppBar class={style.appBar} style={this.appBarStyle} zDepth={2}>
         <MuButton
           icon
           slot="left"
