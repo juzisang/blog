@@ -1,14 +1,14 @@
-const Theme = require("muse-ui/lib/theme").default as any;
+const Theme = require('muse-ui/lib/theme').default as any;
 
 Theme.add(
-  "app-light",
+  'app-light',
   {
-    primary: "#009688",
-    secondary: "#ff4081",
-    success: "#4caf50",
-    warning: "#ffeb3b",
+    primary: '#009688',
+    secondary: '#ff4081',
+    success: '#4caf50',
+    warning: '#ffeb3b',
   },
-  "light",
+  'light',
 );
 
 export class MuTheme {

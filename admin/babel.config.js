@@ -1,15 +1,15 @@
 module.exports = {
-  presets: ["@vue/app"],
+  presets: ['@vue/app'],
   plugins: [
-    "vue-jsx-sync",
-    "jsx-v-model",
+    'vue-jsx-sync',
+    'jsx-v-model',
     [
-      "import",
+      'import',
       {
-        libraryName: "muse-ui",
-        libraryDirectory: "lib",
-        camel2DashComponentName: false
-      }
-    ]
-  ]
+        libraryName: 'muse-ui',
+        libraryDirectory: 'lib',
+        camel2DashComponentName: false,
+      },
+    ],
+  ],
 };

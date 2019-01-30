@@ -1,8 +1,8 @@
-import * as Tsx from "vue-tsx-support";
-import { Vue, Component } from "vue-property-decorator";
-import Sidebar from "./components/Sidebar";
-import MainNav from "./components/MainNav";
-import Dashboard from "./components/Dashboard";
+import * as Tsx from 'vue-tsx-support';
+import { Vue, Component } from 'vue-property-decorator';
+import Sidebar from './components/Sidebar';
+import MainNav from './components/MainNav';
+import Dashboard from './components/Dashboard';
 
 @Component({})
 export default class Layout extends Vue {

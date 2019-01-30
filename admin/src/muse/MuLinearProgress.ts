@@ -1,9 +1,9 @@
-import * as Tsx from "vue-tsx-support";
+import * as Tsx from 'vue-tsx-support';
 
-export const MuLinearProgress = Tsx.ofType<Props>().convert(require("muse-ui/lib/Progress").LinearProgress);
+export const MuLinearProgress = Tsx.ofType<Props>().convert(require('muse-ui/lib/Progress').LinearProgress);
 
 type Props = {
-  mode?: "indeterminate" | "determinate";
+  mode?: 'indeterminate' | 'determinate';
   max?: number;
   min?: number;
   value?: number;

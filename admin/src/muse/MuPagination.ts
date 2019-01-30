@@ -1,5 +1,5 @@
-import * as Tsx from "vue-tsx-support";
-import { Pagination } from "muse-ui";
+import * as Tsx from 'vue-tsx-support';
+import { Pagination } from 'muse-ui';
 
 export const MuPagination = Tsx.ofType<Props, Events>().convert(Pagination as any);
 

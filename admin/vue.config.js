@@ -1,10 +1,10 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = {
   productionSourceMap: false,
   chainWebpack(config) {
     setAlias(config);
-    if (process.env.NODE_ENV !== "production") {
+    if (process.env.NODE_ENV !== 'production') {
       hotReload(config);
     }
     if (process.env.npm_config_report) {
@@ -15,16 +15,16 @@ module.exports = {
   },
   devServer: {
     proxy: {
-      "/api": {
-        target: "http://localhost:3000",
+      '/api': {
+        target: 'http://localhost:3000',
         changeOrigin: true,
         secure: false,
         pathRewrite: {
-          "^/api": "/"
-        }
-      }
-    }
-  }
+          '^/api': '/',
+        },
+      },
+    },
+  },
 };
 
 /**
@@ -38,20 +38,18 @@ function ignoreCssWarnings(config) {
     }
 
     apply(compiler) {
-      compiler.hooks.afterEmit.tap("FilterPlugin", compilation => {
-        compilation.warnings = compilation.warnings.filter(
-          warning => !this.options.filter.test(warning.message)
-        );
+      compiler.hooks.afterEmit.tap('FilterPlugin', compilation => {
+        compilation.warnings = compilation.warnings.filter(warning => !this.options.filter.test(warning.message));
       });
     }
   }
 
   config
-    .plugin("filter-css-warnings-plugin")
+    .plugin('filter-css-warnings-plugin')
     .use(
       new FilterPlugin({
-        filter: /Conflicting order between:/
-      })
+        filter: /Conflicting order between:/,
+      }),
     )
     .end();
 }
@@ -67,9 +65,7 @@ function setAlias(config) {
  * 启动webpack-bundle-analyzer
  */
 function openBundleAnalyzer(config) {
-  config
-    .plugin("webpack-bundle-analyzer")
-    .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin);
+  config.plugin('webpack-bundle-analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin);
 }
 
 /**
@@ -77,38 +73,35 @@ function openBundleAnalyzer(config) {
  */
 function hotReload(config) {
   config.module
-    .rule("tsx")
+    .rule('tsx')
     .test(/\.tsx$/)
-    .use("vue-jsx-hot-loader")
-    .before("babel-loader")
-    .loader("vue-jsx-hot-loader");
+    .use('vue-jsx-hot-loader')
+    .before('babel-loader')
+    .loader('vue-jsx-hot-loader');
 }
 
 /**
  * 自动生成 css.d.ts
  */
 function cssModules(config) {
-  ["css", "less", "scss", "sass", "stylus", "postcss"].forEach(rule => {
-    ["normal-modules"].forEach(oneOf => {
+  ['css', 'less', 'scss', 'sass', 'stylus', 'postcss'].forEach(rule => {
+    ['normal-modules'].forEach(oneOf => {
       config.module
         .rule(rule)
         .oneOf(oneOf)
-        .uses.delete("css-loader");
+        .uses.delete('css-loader');
       config.module
         .rule(rule)
         .oneOf(oneOf)
-        .use("typings-for-css-modules-loader")
-        .before("postcss-loader")
-        .loader("typings-for-css-modules-loader")
+        .use('typings-for-css-modules-loader')
+        .before('postcss-loader')
+        .loader('typings-for-css-modules-loader')
         .options({
           modules: true,
           namedExport: true,
           camelCase: true,
           importLoaders: 2,
-          localIdentName:
-            process.env.NODE_ENV !== "production"
-              ? "[local]-[hash:base64:5]"
-              : "[hash:base64:5]"
+          localIdentName: process.env.NODE_ENV !== 'production' ? '[local]-[hash:base64:5]' : '[hash:base64:5]',
         });
     });
   });

@@ -1,5 +1,5 @@
-import * as Tsx from "vue-tsx-support";
-import { TextField } from "muse-ui";
+import * as Tsx from 'vue-tsx-support';
+import { TextField } from 'muse-ui';
 
 export const MuTextField = Tsx.ofType<Props, Events, Slots>().convert(TextField as any);
 

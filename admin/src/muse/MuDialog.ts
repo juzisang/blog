@@ -1,5 +1,5 @@
-import * as Tsx from "vue-tsx-support";
-import { Dialog } from "muse-ui";
+import * as Tsx from 'vue-tsx-support';
+import { Dialog } from 'muse-ui';
 
 export const MuDialog = Tsx.ofType<Props, Events>().convert(Dialog as any);
 

@@ -1,7 +1,7 @@
-import * as Tsx from "vue-tsx-support";
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { MuDrawer, MuAppBar, MuAvatar } from "@/muse";
-import * as style from "@/styles/views/layout.module.scss";
+import * as Tsx from 'vue-tsx-support';
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import { MuDrawer, MuAppBar, MuAvatar } from '@/muse';
+import * as style from '@/styles/views/layout.module.scss';
 
 export interface SideBarProps {
   open?: boolean;
@@ -17,7 +17,7 @@ export default class SideBar extends Tsx.Component<SideBarProps> {
   }
 
   private set _open(value) {
-    this.$emit("update:open", value);
+    this.$emit('update:open', value);
   }
 
   render() {

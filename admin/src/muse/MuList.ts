@@ -1,6 +1,6 @@
-import * as Tsx from "vue-tsx-support";
+import * as Tsx from 'vue-tsx-support';
 
-const _List = require("muse-ui/lib/List");
+const _List = require('muse-ui/lib/List');
 
 export const MuList = Tsx.ofType<ListProps>().convert(_List.List);
 export const MuListItem = Tsx.ofType<ListProps>().convert(_List.ListItem);

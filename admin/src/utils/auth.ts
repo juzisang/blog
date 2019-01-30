@@ -1,4 +1,4 @@
-const TokenKey = "Token";
+const TokenKey = 'Token';
 
 export function getToken(): string | null {
   const token = window.localStorage.getItem(TokenKey);

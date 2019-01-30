@@ -1,14 +1,14 @@
-import * as Tsx from "vue-tsx-support";
+import * as Tsx from 'vue-tsx-support';
 
-export const MuForm = Tsx.ofType<MuFormProps>().convert(require("muse-ui/lib/Form").Form);
+export const MuForm = Tsx.ofType<MuFormProps>().convert(require('muse-ui/lib/Form').Form);
 
-export const MuFormItem = Tsx.ofType<FormItemProps>().convert(require("muse-ui/lib/Form").FormItem);
+export const MuFormItem = Tsx.ofType<FormItemProps>().convert(require('muse-ui/lib/Form').FormItem);
 
 type MuFormProps = {
   model: object;
   inline?: boolean;
   labelWidth?: string | number;
-  labelPosition?: "top" | "left" | "right";
+  labelPosition?: 'top' | 'left' | 'right';
   autoValidate?: boolean;
 };
 
@@ -18,7 +18,7 @@ type FormItemProps = {
   label?: string;
   labelFloat?: boolean;
   labelWidth?: string | number;
-  labelPosition?: "top" | "left" | "right";
+  labelPosition?: 'top' | 'left' | 'right';
   rules?: Array<MuFormRules>;
   helpText?: string;
   errorText?: string;

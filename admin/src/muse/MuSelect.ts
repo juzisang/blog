@@ -1,8 +1,8 @@
-import * as Tsx from "vue-tsx-support";
+import * as Tsx from 'vue-tsx-support';
 
-export const MuSelect = Tsx.ofType<MuSelectProps, MuSelectEvents, MuSelectSlots>().convert(require("muse-ui/lib/Select").Select);
+export const MuSelect = Tsx.ofType<MuSelectProps, MuSelectEvents, MuSelectSlots>().convert(require('muse-ui/lib/Select').Select);
 
-export const MuOption = Tsx.ofType<MuOptionProps>().convert(require("muse-ui/lib/Select").Option);
+export const MuOption = Tsx.ofType<MuOptionProps>().convert(require('muse-ui/lib/Select').Option);
 
 type MuSelectProps = {
   multiple?: boolean;
@@ -12,7 +12,7 @@ type MuSelectProps = {
   separator?: string;
   popoverClass?: string;
   noDataText?: string;
-  textline?: "two-line" | "three-line";
+  textline?: 'two-line' | 'three-line';
   dense?: boolean;
   value?: any;
   color?: string;
