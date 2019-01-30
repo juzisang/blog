@@ -5,7 +5,7 @@ type Props = {
   color?: string;
   textColor?: string;
   title?: string;
-  zDepth?: string;
+  zDepth?: number;
 };
 
 type Slots = {

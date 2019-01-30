@@ -3,7 +3,7 @@ import "typeface-roboto";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import "muse-ui/lib/Helpers";
 
-export * from "./MuAppbar";
+export * from "./MuAppBar";
 export * from "./MuBadge";
 export * from "./MuBreadcrumbs";
 export * from "./MuButton";
@@ -22,5 +22,8 @@ export * from "./MuProgress";
 export * from "./MuCircularProgress";
 export * from "./MuLinearProgress";
 export * from "./MuTransition";
+export * from "./MuDrawer";
+export * from "./MuTheme";
+export * from "./MuAvatar";
 
 import "muse-ui/lib/styles/theme.less";

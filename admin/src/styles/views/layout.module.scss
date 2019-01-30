@@ -1,0 +1,12 @@
+@import "../import.scss";
+
+.appBar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  transition: left 0.45s $easeOutFunction;
+}
+
+.avatar {
+  margin-left: 12px;
+}

@@ -10,9 +10,7 @@ import {
 import * as style from "./Login.module.scss";
 import { Action } from "vuex-class";
 
-@Component({
-  name: "Login"
-})
+@Component({})
 export default class Login extends Vue {
   @Action("Login")
   private readonly userLogin!: (payload: any) => Promise<any>;

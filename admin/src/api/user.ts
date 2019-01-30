@@ -3,7 +3,7 @@ import request from "@/utils/request";
 export function login(data: {
   name: string;
   password: string;
-}): Promise<IUserInfo> {
+}): Promise<string> {
   return request({
     url: "/auth/login",
     method: "post",

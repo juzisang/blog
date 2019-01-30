@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Layout from "./views/layout/Layout";
 
 Vue.use(Router);
 
@@ -13,9 +14,13 @@ export default new Router({
       component: () => import("@/views/login/Login")
     },
     {
+      path: "/",
+      redirect: "/home"
+    },
+    {
       name: "Home",
       path: "/home",
-      component: () => import("@/views/home/Home")
+      component: Layout
     }
   ]
 });
