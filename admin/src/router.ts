@@ -18,6 +18,15 @@ export const globalRouter: RouteConfig[] = [
 
 export const homeRouter: RouteConfig[] = [
   {
+    name: 'Home',
+    path: 'home',
+    meta: {
+      title: '仪表盘',
+      icon: 'home',
+    },
+    component: () => import('@/views/Home'),
+  },
+  {
     name: 'Articles',
     path: 'articles',
     meta: {
@@ -36,8 +45,8 @@ export const homeRouter: RouteConfig[] = [
         component: () => import('@/views/article/ArticleList'),
       },
       {
-        name: 'ArticleList',
-        path: 'articleList',
+        name: 'ArticleEdit',
+        path: 'articleEdit',
         meta: {
           title: '发布文章',
           icon: 'create',

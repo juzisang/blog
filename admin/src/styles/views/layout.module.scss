@@ -1,14 +1,33 @@
 @import '../import.scss';
 
-.appBar {
+.layout {
+  .appContent {
+    padding-top: 64px + 16px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    padding-left: 16px;
+    transition: padding-left 0.45s $easeOutFunction;
+  }
+}
+
+.mainNav {
   position: fixed;
   right: 0;
   top: 0;
   transition: left 0.45s $easeOutFunction;
 }
 
-.avatar {
-  margin-left: 12px;
+.dashboard {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .breadcrumbsItem {
+    font-size: 20px;
+  }
+  .title {
+    color: #000000;
+  }
 }
 
 :global {

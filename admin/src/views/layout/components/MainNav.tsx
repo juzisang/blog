@@ -20,7 +20,7 @@ export default class MainNav extends Tsx.Component<MainNavProps> {
 
   render() {
     return (
-      <MuAppBar class={style.appBar} style={this.appBarStyle} zDepth={2}>
+      <MuAppBar class={style.mainNav} style={this.appBarStyle} zDepth={2}>
         <MuButton icon slot="left" onClick={() => this.$emit('update:open', !this.open)}>
           <MuIcon value="menu" />
         </MuButton>

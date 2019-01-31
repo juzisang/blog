@@ -1,10 +1,19 @@
 import * as Tsx from 'vue-tsx-support';
 
-export const Breadcrumbs = Tsx.ofType<BreadcrumbsProps, any, BreadcrumbsSlots>().convert(require('muse-ui/lib/index').Breadcrumbs);
+export const MuBreadcrumbs = Tsx.ofType<BreadcrumbsProps, any, BreadcrumbsSlots>().convert(require('muse-ui/lib/Breadcrumbs').Breadcrumbs);
 
-export const BreadcrumbsItem = Tsx.ofType<BreadcrumbsItemProps, any>().convert(require('muse-ui/lib/index').BreadcrumbsItem);
+export const MuBreadcrumbsItem = Tsx.ofType<BreadcrumbsItemProps>().convert(require('muse-ui/lib/Breadcrumbs').BreadcrumbsItem);
 
 type BreadcrumbsProps = {
+  divider?: string;
+};
+
+type BreadcrumbsSlots = {
+  divider?: any;
+  default?: any;
+};
+
+type BreadcrumbsItemProps = {
   disabled?: boolean;
   href?: string;
   to?: string | object;
@@ -15,13 +24,4 @@ type BreadcrumbsProps = {
   exactActiveClass?: string;
   append?: boolean;
   replace?: boolean;
-};
-
-type BreadcrumbsSlots = {
-  divider?: any;
-  default?: any;
-};
-
-type BreadcrumbsItemProps = {
-  divider: string;
 };

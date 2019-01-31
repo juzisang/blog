@@ -25,10 +25,22 @@ export default class SideBar extends Tsx.Component<SideBarProps> {
     return homeRouter;
   }
 
+  routerPath(path: string, parentRouters: RouteConfig[], childRouter: RouteConfig): string {
+    for (let router of parentRouters) {
+      if (router === childRouter) {
+        return `${path}/${router.path}`;
+      } else if (router.children && router.children.length > 0) {
+        const str = this.routerPath(`${path}/${router.path}`, router.children, childRouter);
+        if (str) return str;
+      }
+    }
+    return '';
+  }
+
   renderChildren(item: RouteConfig) {
     if (!item.children) {
       return (
-        <MuListItem to={item.path} button>
+        <MuListItem to={this.routerPath('', this.routes, item)} button>
           <MuListAction>
             <MuIcon size={22} value={item.meta.icon} />
           </MuListAction>
@@ -36,23 +48,28 @@ export default class SideBar extends Tsx.Component<SideBarProps> {
         </MuListItem>
       );
     }
+
     return (
       <MuListItem nested button>
         <MuListAction>
           <MuIcon size={22} value={item.meta.icon} />
         </MuListAction>
         <MuListItemTitle>{item.meta.title}</MuListItemTitle>
+        {/* 子路由，显示icon */}
         <MuListAction>
           <MuIcon class="toggle-icon" size="24" value="keyboard_arrow_down" />
         </MuListAction>
-        {item.children.map(childrenItem => (
-          <MuListItem to={'/' + item.path + '/' + childrenItem.path} button slot="nested">
-            <MuListAction>
-              <MuIcon size={22} value={childrenItem.meta.icon} />
-            </MuListAction>
-            <MuListItemTitle>{childrenItem.meta.title}</MuListItemTitle>
-          </MuListItem>
-        ))}
+        {/* 子路由 */}
+        {item.children.map(childrenItem => {
+          return (
+            <MuListItem to={this.routerPath('', this.routes, childrenItem)} button slot="nested">
+              <MuListAction>
+                <MuIcon size={22} value={childrenItem.meta.icon} />
+              </MuListAction>
+              <MuListItemTitle>{childrenItem.meta.title}</MuListItemTitle>
+            </MuListItem>
+          );
+        })}
       </MuListItem>
     );
   }
