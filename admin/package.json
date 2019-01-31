@@ -39,6 +39,7 @@
     "typescript": "^3.0.0",
     "typings-for-css-modules-loader": "^1.7.0",
     "vue-jsx-hot-loader": "^1.4.0",
+    "vue-svg-loader": "^0.11.0",
     "vue-template-compiler": "^2.5.17",
     "webpack-bundle-analyzer": "^3.0.3"
   }

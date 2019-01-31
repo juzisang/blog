@@ -6819,7 +6819,16 @@ svg-tags@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/svg-tags/download/svg-tags-1.0.0.tgz#58f71cee3bd519b59d4b2a843b6c7de64ac04764"
 
-svgo@^1.0.0:
+svg-to-vue@^0.3.0:
+  version "0.3.0"
+  resolved "http://registry.npm.taobao.org/svg-to-vue/download/svg-to-vue-0.3.0.tgz#03f69bac4824bf5e32069ceca15779cd74100b24"
+  integrity sha1-A/abrEgkv14yBpzsoVd5zXQQCyQ=
+  dependencies:
+    svgo "^1.1.1"
+    vue-template-compiler "^2.5.17"
+    vue-template-es2015-compiler "^1.6.0"
+
+svgo@^1.0.0, svgo@^1.1.1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/svgo/download/svgo-1.1.1.tgz#12384b03335bcecd85cfa5f4e3375fed671cb985"
   dependencies:
@@ -7338,6 +7347,14 @@ vue-style-loader@^4.1.0:
   dependencies:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
+
+vue-svg-loader@^0.11.0:
+  version "0.11.0"
+  resolved "http://registry.npm.taobao.org/vue-svg-loader/download/vue-svg-loader-0.11.0.tgz#1c1b6cbd6ef852ae1b26a2de7f63faa95a6b80c1"
+  integrity sha1-HBtsvW74Uq4bJqLef2P6qVprgME=
+  dependencies:
+    loader-utils "^1.1.0"
+    svg-to-vue "^0.3.0"
 
 vue-template-compiler@^2.5.17:
   version "2.5.17"

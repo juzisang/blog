@@ -17,29 +17,30 @@ module.exports = {
     if (process.env.npm_config_report) {
       config.plugin('webpack-bundle-analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin);
     }
+    // 忽略提示
     ignoreCssWarnings(config);
-    // 生成 css.d.ts
+    // css to typings-for-css-modules-loader
     ['css', 'less', 'scss', 'sass', 'stylus', 'postcss'].forEach(rule => {
-      ['normal-modules'].forEach(oneOf => {
-        config.module
-          .rule(rule)
-          .oneOf(oneOf)
-          .uses.delete('css-loader');
-        config.module
-          .rule(rule)
-          .oneOf(oneOf)
-          .use('typings-for-css-modules-loader')
-          .before('postcss-loader')
-          .loader('typings-for-css-modules-loader')
-          .options({
-            modules: true,
-            namedExport: true,
-            camelCase: true,
-            importLoaders: 2,
-            localIdentName: process.env.NODE_ENV !== 'production' ? '[local]-[hash:base64:5]' : '[hash:base64:5]',
-          });
-      });
+      // rules for *.module.* files
+      const cssRule = config.module
+        .rule(rule)
+        .oneOf('normal-modules')
+        .uses.get('css-loader')
+        .set('loader', 'typings-for-css-modules-loader');
     });
+    // svg loader
+    const svgRule = config.module.rule('svg');
+    svgRule.uses.clear();
+    svgRule.use('vue-svg-loader').loader('vue-svg-loader');
+  },
+  css: {
+    loaderOptions: {
+      css: {
+        namedExport: true,
+        camelCase: true,
+        localIdentName: process.env.NODE_ENV !== 'production' ? '[local]-[hash:base64:5]' : '[hash:base64:5]',
+      },
+    },
   },
   devServer: {
     proxy: {
