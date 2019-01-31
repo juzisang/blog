@@ -1,6 +1,6 @@
 import 'muse-ui/lib/styles/base.less';
 // import "typeface-roboto";
-import 'material-design-icons-iconfont/dist/material-design-icons.css';
+// import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import 'muse-ui/lib/Helpers';
 import * as MuColors from './MuColors';
 
@@ -28,5 +28,6 @@ export * from './MuDrawer';
 export * from './MuTheme';
 export * from './MuAvatar';
 export * from './MuList';
+export * from './MuSubHeader';
 
 import 'muse-ui/lib/styles/theme.less';

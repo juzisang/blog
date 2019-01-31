@@ -1,6 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { MuPaper, MuFlex, MuForm, MuFormItem, MuTextField, MuButton } from '@/muse';
-import * as style from './Login.module.scss';
+import * as style from '@/styles/views/Login.module.scss';
 import { Action } from 'vuex-class';
 
 @Component({})

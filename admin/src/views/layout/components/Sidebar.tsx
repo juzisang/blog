@@ -1,8 +1,9 @@
 import * as Tsx from 'vue-tsx-support';
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import { MuDrawer, MuAppBar, MuAvatar } from '@/muse';
-import * as style from '@/styles/views/layout.module.scss';
-
+import { Component, Prop } from 'vue-property-decorator';
+import { RouteConfig } from 'vue-router';
+import { MuDrawer, MuAppBar, MuAvatar, MuList, MuListItem, MuListAction, MuIcon, MuListItemTitle, MuDivider } from '@/muse';
+import { homeRouter } from '@/router';
+import * as style from '@/styles/views/Layout.module.scss';
 export interface SideBarProps {
   open?: boolean;
 }
@@ -20,6 +21,42 @@ export default class SideBar extends Tsx.Component<SideBarProps> {
     this.$emit('update:open', value);
   }
 
+  get routes(): RouteConfig[] {
+    return homeRouter;
+  }
+
+  renderChildren(item: RouteConfig) {
+    if (!item.children) {
+      return (
+        <MuListItem to={item.path} button>
+          <MuListAction>
+            <MuIcon size={22} value={item.meta.icon} />
+          </MuListAction>
+          <MuListItemTitle>{item.meta.title}</MuListItemTitle>
+        </MuListItem>
+      );
+    }
+    return (
+      <MuListItem nested button>
+        <MuListAction>
+          <MuIcon size={22} value={item.meta.icon} />
+        </MuListAction>
+        <MuListItemTitle>{item.meta.title}</MuListItemTitle>
+        <MuListAction>
+          <MuIcon class="toggle-icon" size="24" value="keyboard_arrow_down" />
+        </MuListAction>
+        {item.children.map(childrenItem => (
+          <MuListItem to={'/' + item.path + '/' + childrenItem.path} button slot="nested">
+            <MuListAction>
+              <MuIcon size={22} value={childrenItem.meta.icon} />
+            </MuListAction>
+            <MuListItemTitle>{childrenItem.meta.title}</MuListItemTitle>
+          </MuListItem>
+        ))}
+      </MuListItem>
+    );
+  }
+
   render() {
     return (
       <MuDrawer open$sync={this._open} zDepth={1} width={260} docked>
@@ -29,6 +66,7 @@ export default class SideBar extends Tsx.Component<SideBarProps> {
           </MuAvatar>
           <span>Blog Admin</span>
         </MuAppBar>
+        <MuList toggleNested>{this.routes.map(item => this.renderChildren(item))}</MuList>
       </MuDrawer>
     );
   }

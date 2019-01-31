@@ -18,7 +18,7 @@ module.exports = {
       config.plugin('webpack-bundle-analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin);
     }
     // 忽略提示
-    ignoreCssWarnings(config);
+    // ignoreCssWarnings(config);
     // css to typings-for-css-modules-loader
     ['css', 'less', 'scss', 'sass', 'stylus', 'postcss'].forEach(rule => {
       // rules for *.module.* files

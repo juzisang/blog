@@ -1,4 +1,4 @@
-@import "../import.scss";
+@import '../import.scss';
 
 .appBar {
   position: fixed;
@@ -9,4 +9,17 @@
 
 .avatar {
   margin-left: 12px;
+}
+
+:global {
+  .mu-item {
+    .toggle-icon {
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+  }
+  .mu-item__open {
+    .toggle-icon {
+      transform: rotate(180deg);
+    }
+  }
 }

@@ -1,4 +1,3 @@
-import * as Tsx from 'vue-tsx-support';
 import { Vue, Component } from 'vue-property-decorator';
 import Sidebar from './components/Sidebar';
 import MainNav from './components/MainNav';

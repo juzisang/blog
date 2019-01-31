@@ -1,7 +1,7 @@
 import * as Tsx from 'vue-tsx-support';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { MuAppBar, MuButton, MuIcon } from '@/muse';
-import * as style from '@/styles/views/layout.module.scss';
+import * as style from '@/styles/views/Layout.module.scss';
 
 export interface MainNavProps {
   open?: boolean;
