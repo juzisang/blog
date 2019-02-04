@@ -39,8 +39,9 @@ export default class SideBar extends Tsx.Component<SideBarProps> {
 
   renderChildren(item: RouteConfig) {
     if (!item.children) {
+      const path = this.routerPath('', this.routes, item);
       return (
-        <MuListItem to={this.routerPath('', this.routes, item)} button>
+        <MuListItem exact exactActiveClass="hover" to={path} button>
           <MuListAction>
             <MuIcon size={22} value={item.meta.icon} />
           </MuListAction>
@@ -61,8 +62,9 @@ export default class SideBar extends Tsx.Component<SideBarProps> {
         </MuListAction>
         {/* 子路由 */}
         {item.children.map(childrenItem => {
+          const path = this.routerPath('', this.routes, childrenItem);
           return (
-            <MuListItem to={this.routerPath('', this.routes, childrenItem)} button slot="nested">
+            <MuListItem exact exactActiveClass="hover" to={path} button slot="nested">
               <MuListAction>
                 <MuIcon size={22} value={childrenItem.meta.icon} />
               </MuListAction>
@@ -76,7 +78,7 @@ export default class SideBar extends Tsx.Component<SideBarProps> {
 
   render() {
     return (
-      <MuDrawer open$sync={this._open} zDepth={1} width={260} docked>
+      <MuDrawer class={style.sidebar} open$sync={this._open} zDepth={1} width={260} docked>
         <MuAppBar zDepth={2} title="Blog Admin">
           <MuAvatar class="margin-left-16" slot="left" size={32}>
             <img src="https://avatars2.githubusercontent.com/u/14973323?s=460&v=4" />

@@ -1,0 +1,17 @@
+.panel {
+  overflow: hidden;
+}
+.header {
+  height: 48px;
+  line-height: 48px;
+  font-size: 18px;
+  padding: 0 16px;
+}
+
+.content {
+  width: 100%;
+  margin-top: 2px;
+  > form {
+    padding: 16px 16px 0px 16px;
+  }
+}

@@ -11,7 +11,7 @@ type MuTextFieldProps = {
   helpText?: string;
   fullWidth?: boolean;
   disabled?: boolean;
-  multiLine?: string;
+  multiLine?: boolean;
   maxLength?: number;
   rows?: number;
   rowsMax?: number;

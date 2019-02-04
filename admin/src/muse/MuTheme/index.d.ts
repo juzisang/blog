@@ -1,8 +1,8 @@
-import { ThemeOptions } from 'muse-ui/types/theme';
+import { ThemeOptions as MuThemeOptions } from 'muse-ui/types/theme';
 
 interface Theme {
-  addCreateTheme(theme: ThemeOptions): void;
-  add(name: string, theme: ThemeOptions, extendName: string): void;
+  addCreateTheme(theme: MuThemeOptions): void;
+  add(name: string, theme: MuThemeOptions, extendName: string): void;
   use(name: string): void;
   generate(name: string): void;
 }
