@@ -1,8 +1,8 @@
 import * as Tsx from 'vue-tsx-support';
 
-export const MuCircularProgress = Tsx.ofType<Props>().convert(require('muse-ui/lib/Progress').CircularProgress);
+export const MuCircularProgress = Tsx.ofType<MuCircularProgressProps>().convert(require('muse-ui/lib/Progress').CircularProgress);
 
-type Props = {
+type MuCircularProgressProps = {
   mode?: 'indeterminate' | 'determinate';
   max?: number;
   min?: number;

@@ -1,8 +1,8 @@
 import * as Tsx from 'vue-tsx-support';
 
-export const MuTextField = Tsx.ofType<Props, Events, Slots>().convert(require('muse-ui/lib/TextField').default);
+export const MuTextField = Tsx.ofType<MuTextFieldProps, MuTextFieldEvents, MuTextFieldSlots>().convert(require('muse-ui/lib/TextField').default);
 
-type Props = {
+type MuTextFieldProps = {
   color?: string;
   icon?: string;
   label?: string;
@@ -25,11 +25,11 @@ type Props = {
   type?: string;
 };
 
-type Events = {
+type MuTextFieldEvents = {
   change: any;
 };
 
-type Slots = {
+type MuTextFieldSlots = {
   prepend: any;
   append: any;
   default: any;

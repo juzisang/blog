@@ -1,8 +1,8 @@
 import * as Tsx from 'vue-tsx-support';
 
-export const MuDialog = Tsx.ofType<Props, Events>().convert(require('muse-ui/lib/Dialog').default);
+export const MuDialog = Tsx.ofType<MuDialogProps, MuDialogEvents>().convert(require('muse-ui/lib/Dialog').default);
 
-type Props = {
+type MuDialogProps = {
   open?: boolean;
   title?: string;
   width?: string | number;
@@ -21,6 +21,6 @@ type Props = {
   appendBody?: boolean;
 };
 
-type Events = {
+type MuDialogEvents = {
   close: any;
 };

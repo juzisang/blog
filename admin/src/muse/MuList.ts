@@ -1,14 +1,14 @@
 import * as Tsx from 'vue-tsx-support';
 
-export const MuList = Tsx.ofType<ListProps, ListEvents>().convert(require('muse-ui/lib/List').List);
-export const MuListItem = Tsx.ofType<ListItemProps>().convert(require('muse-ui/lib/List').ListItem);
+export const MuList = Tsx.ofType<MuListProps, MuListEvents>().convert(require('muse-ui/lib/List').List);
+export const MuListItem = Tsx.ofType<MuListItemProps>().convert(require('muse-ui/lib/List').ListItem);
 export const MuListAction = Tsx.ofType().convert(require('muse-ui/lib/List').ListAction);
 export const MuListItemContent = Tsx.ofType().convert(require('muse-ui/lib/List').ListItemContent);
 export const MuListItemTitle = Tsx.ofType().convert(require('muse-ui/lib/List').ListItemTitle);
 export const MuListItemSubTitle = Tsx.ofType().convert(require('muse-ui/lib/List').ListItemSubTitle);
 export const MuListItemAfterText = Tsx.ofType().convert(require('muse-ui/lib/List').ListItemAfterText);
 
-type ListProps = {
+type MuListProps = {
   textline?: 'two-line' | 'three-line';
   dense?: boolean;
   nestedIndent?: boolean;
@@ -17,11 +17,11 @@ type ListProps = {
   value?: any;
 };
 
-type ListEvents = {
+type MuListEvents = {
   change: any;
 };
 
-type ListItemProps = {
+type MuListItemProps = {
   button?: boolean;
   avatar?: boolean;
   nested?: boolean;

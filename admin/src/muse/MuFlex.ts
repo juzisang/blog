@@ -1,8 +1,8 @@
 import * as Tsx from 'vue-tsx-support';
 
-export const MuFlex = Tsx.ofType<Props>().convert(require('muse-ui/lib/Grid/Flex').default);
+export const MuFlex = Tsx.ofType<MuFlexProps>().convert(require('muse-ui/lib/Grid/Flex').default);
 
-type Props = {
+type MuFlexProps = {
   tag?: string;
   inline?: boolean;
   direction?: string;

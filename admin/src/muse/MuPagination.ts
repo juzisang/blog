@@ -1,14 +1,14 @@
 import * as Tsx from 'vue-tsx-support';
 
-export const MuPagination = Tsx.ofType<Props, Events>().convert(require('muse-ui/lib/Pagination').default);
+export const MuPagination = Tsx.ofType<MuPaginationProps, MuPaginationEvents>().convert(require('muse-ui/lib/Pagination').default);
 
-type Props = {
+type MuPaginationProps = {
   total?: number;
   current?: number;
   pageSize?: number;
   pageCount?: number;
 };
 
-type Events = {
+type MuPaginationEvents = {
   change: any;
 };

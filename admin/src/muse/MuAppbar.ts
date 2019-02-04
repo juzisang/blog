@@ -1,15 +1,15 @@
 import * as Tsx from 'vue-tsx-support';
 
-export const MuAppBar = Tsx.ofType<Props, any, Slots>().convert(require('muse-ui/lib/AppBar').default);
+export const MuAppBar = Tsx.ofType<MuAppBarProps, any, MuAppBarSlots>().convert(require('muse-ui/lib/AppBar').default);
 
-type Props = {
+type MuAppBarProps = {
   color?: string;
   textColor?: string;
   title?: string;
   zDepth?: number;
 };
 
-type Slots = {
+type MuAppBarSlots = {
   left?: any;
   right?: any;
   default?: any;

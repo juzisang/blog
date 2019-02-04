@@ -1,7 +1,7 @@
 import { ofType } from 'vue-tsx-support';
 
-export const MuSubHeader = ofType<Props>().convert(require('muse-ui/lib/SubHeader').default);
+export const MuSubHeader = ofType<MuSubHeaderProps>().convert(require('muse-ui/lib/SubHeader').default);
 
-type Props = {
+type MuSubHeaderProps = {
   inset?: boolean;
 };
