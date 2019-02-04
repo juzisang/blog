@@ -14,7 +14,6 @@ export const userModule: Module<UserState, RootState> = {
   },
   mutations: {
     SET_USER_INFO(state: UserState, user: IUserInfo) {
-      state.token = user.token as string;
       state.name = user.name;
       state.email = user.email;
       state.avatar = user.avatar;

@@ -3,10 +3,18 @@ import Sidebar from './components/Sidebar';
 import MainNav from './components/MainNav';
 import Dashboard from './components/Dashboard';
 import * as style from '@/styles/views/Layout.module.scss';
+import { Action } from 'vuex-class';
 
 @Component({})
 export default class Layout extends Vue {
+  @Action('AppInit')
+  private readonly getInit!: () => Promise<any>;
+
   private sideOpen: boolean = true;
+
+  async created() {
+    await this.getInit();
+  }
 
   get layoutStyle() {
     return {

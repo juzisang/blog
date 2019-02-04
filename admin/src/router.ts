@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
 import Layout from './views/layout/Layout';
-import EmptyRouter from '@/components/EmptyRouter/EmptyRouter';
+import EmptyRouter from '@/components/EmptyRouter';
 
 Vue.use(Router);
 

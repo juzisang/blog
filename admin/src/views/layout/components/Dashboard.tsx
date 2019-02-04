@@ -1,9 +1,9 @@
-import * as Tsx from 'vue-tsx-support';
 import { Vue, Component } from 'vue-property-decorator';
 import * as style from '@/styles/views/Layout.module.scss';
-import { MuBreadcrumbs, MuBreadcrumbsItem, MuIcon } from '@/muse';
+import { MuBreadcrumbs, MuBreadcrumbsItem } from '@/muse';
 import { homeRouter } from '@/router';
 import { RouteConfig } from 'vue-router';
+import { State } from 'vuex-class';
 
 @Component({
   components: {
@@ -11,6 +11,9 @@ import { RouteConfig } from 'vue-router';
   },
 })
 export default class Dashboard extends Vue {
+  @State(state => state.theme.text)
+  private readonly textColor!: any;
+
   get dashboard(): RouteConfig[] {
     const home = homeRouter.find(item => item.name === 'Home') as any;
     const current = this.$route.matched[this.$route.matched.length - 1];
@@ -21,12 +24,16 @@ export default class Dashboard extends Vue {
     return router as any;
   }
 
+  get colors(): string[] {
+    return this.dashboard.length === 1 ? [this.textColor.primary] : [this.textColor.primary, this.textColor.disabled];
+  }
+
   render() {
     return (
       <div class={style.dashboard}>
         <MuBreadcrumbs>
           {this.dashboard.map((item, index) => (
-            <mu-breadcrumbs-item class={[style.breadcrumbsItem, this.dashboard.length === 1 ? style.title : '']} to={{ name: item.name }} key={item.path} disabled={this.dashboard.length - 1 === index}>
+            <mu-breadcrumbs-item class={[style.breadcrumbsItem]} style={{ color: this.colors[index] }} to={{ name: item.name }} key={item.path} disabled={this.dashboard.length - 1 === index}>
               {item.meta.title}
             </mu-breadcrumbs-item>
           ))}

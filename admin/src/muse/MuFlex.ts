@@ -1,4 +1,5 @@
 import * as Tsx from 'vue-tsx-support';
+import 'muse-ui/lib/styles/components/bootstrap-grid.less';
 
 export const MuFlex = Tsx.ofType<MuFlexProps>().convert(require('muse-ui/lib/Grid/Flex').default);
 
