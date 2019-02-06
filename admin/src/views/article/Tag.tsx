@@ -21,10 +21,10 @@ export default class Tag extends Vue {
     return (
       <div class="app-container ">
         <MuRow gutter>
-          <MuCol span={4}>
+          <MuCol xl={4} lg={4} md={12} sm={12} span={4}>
             <TagSave />
           </MuCol>
-          <MuCol span={8}>
+          <MuCol xl={8} lg={8} md={12} sm={12} span={8}>
             <TagList />
           </MuCol>
         </MuRow>
@@ -132,6 +132,7 @@ class TagList extends Vue {
       name: 'mid',
       align: 'center',
       cellAlign: 'center',
+      width: 120,
     },
     {
       title: '名称',
@@ -147,7 +148,6 @@ class TagList extends Vue {
     },
     {
       title: '描述',
-      width: 120,
       name: 'description',
       align: 'center',
       cellAlign: 'center',
@@ -160,7 +160,7 @@ class TagList extends Vue {
     },
     {
       title: '操作',
-      width: 320,
+      width: 225,
       align: 'center',
       cellAlign: 'center',
     },
@@ -219,14 +219,11 @@ class TagList extends Vue {
                 <td class="is-center">{ellipsis(row.description, 6)}</td>,
                 <td class="is-center">{row.articleNum}</td>,
                 <td class="is-center">
-                  <MuButton type="text" color="primary" onClick={() => this.handleUpdate(row)} flat>
+                  <MuButton type="text" color="primary" onClick={() => this.handleUpdate(row)} small flat>
                     编辑标签
                   </MuButton>
-                  <MuButton type="text" color="error" onClick={() => this.handleDelete(row.mid)} flat>
+                  <MuButton type="text" color="error" onClick={() => this.handleDelete(row.mid)} small flat>
                     删除标签
-                  </MuButton>
-                  <MuButton type="text" color="success" onClick={() => this.handleUpdate(row)} flat>
-                    查看标签
                   </MuButton>
                 </td>,
               ];

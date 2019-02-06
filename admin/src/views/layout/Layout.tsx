@@ -4,6 +4,7 @@ import MainNav from './components/MainNav';
 import Dashboard from './components/Dashboard';
 import * as style from '@/styles/views/Layout.module.scss';
 import { Action } from 'vuex-class';
+import { debounce } from '@/filters';
 
 @Component({})
 export default class Layout extends Vue {
@@ -12,8 +13,31 @@ export default class Layout extends Vue {
 
   private sideOpen: boolean = true;
 
+  private timerCode: any = null;
+
+  private resizeDebounce = debounce(() => {
+    this.handleResize();
+  }, 250);
+
   async created() {
     await this.getInit();
+  }
+
+  mounted() {
+    this.handleResize();
+    window.addEventListener('resize', this.resizeDebounce);
+  }
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.resizeDebounce);
+  }
+
+  handleResize() {
+    if (window.innerWidth < 768) {
+      this.sideOpen = false;
+    } else {
+      this.sideOpen = true;
+    }
   }
 
   get layoutStyle() {

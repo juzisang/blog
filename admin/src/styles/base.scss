@@ -46,25 +46,6 @@ p {
   font-weight: 400;
 }
 
-.subTitle_1 {
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.subTitle_2 {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.body_1 {
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.body_2 {
-  font-size: 14px;
-  font-weight: 400;
-}
 @each $mp in margin padding {
   @each $dc in top right bottom left {
     @each $size in 4 8 16 24 {
@@ -77,4 +58,12 @@ p {
 
 .app-container {
   padding: 8px 12px;
+}
+
+@media (max-width: 992px) {
+  .col {
+    &:nth-child(n + 2) {
+      margin-top: 16px;
+    }
+  }
 }

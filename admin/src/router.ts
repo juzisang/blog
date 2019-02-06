@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
 import Layout from './views/layout/Layout';
-import EmptyRouter from '@/components/EmptyRouter';
+import ContentRouter from '@/components/ContentRouter';
 
 Vue.use(Router);
 
@@ -33,7 +33,7 @@ export const homeRouter: RouteConfig[] = [
       title: '文章管理',
       icon: 'create',
     },
-    component: EmptyRouter,
+    component: ContentRouter,
     children: [
       {
         name: 'ArticleList',
@@ -41,6 +41,7 @@ export const homeRouter: RouteConfig[] = [
         meta: {
           title: '所有文章',
           icon: 'toc',
+          cache: false,
         },
         component: () => import('@/views/article/ArticleList'),
       },
