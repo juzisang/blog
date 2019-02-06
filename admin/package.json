@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "mavon-editor": "^2.6.17",
     "muse-ui": "^3.0.1",
     "muse-ui-progress": "^0.1.0",
     "muse-ui-toast": "^0.3.0",

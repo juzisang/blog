@@ -31,5 +31,8 @@ export * from './MuList';
 export * from './MuSubHeader';
 export * from './MuGrid';
 export * from './MuDataTable';
+export * from './MuCheckbox';
+export * from './MuRadio';
+export * from './MuSwitch';
 
 import 'muse-ui/lib/styles/theme.less';

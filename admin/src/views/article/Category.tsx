@@ -64,7 +64,7 @@ class CategorySave extends Vue {
     const result = await this.$refs.form.validate();
     if (result) {
       await addCategory(this.saveForm);
-      this.$refs.form.clear();
+      this.clearForm();
       EventBus.$emit(TAG_RELOAD);
       MuToast.success('添加成功');
     }
@@ -74,7 +74,7 @@ class CategorySave extends Vue {
     const result = await this.$refs.form.validate();
     if (result) {
       await updateCategory(this.saveForm.mid, this.saveForm);
-      this.$refs.form.clear();
+      this.clearForm();
       EventBus.$emit(TAG_RELOAD);
       MuToast.success('修改成功');
     }
