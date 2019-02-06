@@ -30,5 +30,6 @@ export * from './MuAvatar';
 export * from './MuList';
 export * from './MuSubHeader';
 export * from './MuGrid';
+export * from './MuDataTable';
 
 import 'muse-ui/lib/styles/theme.less';

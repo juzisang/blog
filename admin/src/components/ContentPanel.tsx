@@ -25,6 +25,7 @@ export default class ContentPanel extends Tsx.Component<ContentPanelProps> {
       <MuPaper class={style.panel} zDepth={this.zDepth}>
         <header class={style.header} style={{ backgroundColor: this.theme.background.default }}>
           {this.title}
+          {this.$slots.right && <div class={style.action}>{this.$slots.right}</div>}
         </header>
         <MuDivider />
         <section class={style.content} style={{ backgroundColor: this.theme.background.default }}>

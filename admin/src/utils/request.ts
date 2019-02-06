@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import router from '../router';
+import store from '../store';
 import { getToken } from './auth';
 import { MuToast } from '@/muse';
 
@@ -34,17 +34,13 @@ service.interceptors.response.use(
     }
   },
   error => {
-    if (!error.response && error instanceof Error) {
-      MuToast.error(error.message);
-    } else {
-      switch (error.response.status) {
-        case 401:
-          router.replace({ name: 'Login' });
-          break;
-        default:
-          MuToast.error(error.response.data.message);
-          break;
-      }
+    switch (error.response.status) {
+      case 401:
+        store.dispatch('LogOut').then(() => location.reload());
+        break;
+      default:
+        MuToast.error(error.response.data.message);
+        break;
     }
     return Promise.reject(error);
   },
