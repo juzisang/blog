@@ -25,7 +25,7 @@ export default class ArticleEdit extends Vue {
     content: '',
     thumb: '',
     state: 'draft',
-    category: 0,
+    category: null,
     tags: [],
   };
 
@@ -61,6 +61,7 @@ export default class ArticleEdit extends Vue {
   // 文章保存
   @debounce(1000)
   async handleSave() {
+    await this.validateForm();
     if (this.aid) {
       await updateArticle(this.aid, this.form);
       MuToast.success('更新成功');
@@ -68,6 +69,19 @@ export default class ArticleEdit extends Vue {
       this.aid = await saveArticle(this.form);
       MuToast.success('保存成功');
     }
+  }
+
+  validateForm() {
+    return new Promise((resolve, reject) => {
+      const keys = Object.keys(this.form);
+      for (let key of keys) {
+        if (!(this.form as any)[key]) {
+          MuToast.error(`${key} 不能为空`);
+          return reject(`${key} 不能为空`);
+        }
+      }
+      resolve();
+    });
   }
 
   handleUploadSuccess(res: any) {

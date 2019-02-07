@@ -5,6 +5,6 @@ interface ISaveArticle {
   content: string;
   thumb: string;
   state: string;
-  category: number;
+  category: number | any;
   tags: Array<string>;
 }
