@@ -6,7 +6,7 @@ export const MuFlex = Tsx.ofType<MuFlexProps>().convert(require('muse-ui/lib/Gri
 type MuFlexProps = {
   tag?: string;
   inline?: boolean;
-  direction?: string;
+  direction?: 'column' | 'row';
   wrap?: string;
   fill?: boolean;
   justifyContent?: 'start' | 'center' | 'end' | 'between' | 'around';

@@ -1,11 +1,12 @@
 .panel {
   overflow: hidden;
+  position: relative;
 }
 .header {
   height: 48px;
   line-height: 48px;
   font-size: 18px;
-  padding: 0 16px;
+  padding: 0 0 0 16px;
   .action {
     float: right;
     height: 48px;
@@ -13,10 +14,20 @@
   }
 }
 
+.progress {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  right: 0;
+}
+
 .content {
   width: 100%;
   margin-top: 2px;
   > form {
     padding: 16px 16px 0px 16px;
+  }
+  :global(.form) {
+    padding: 16px;
   }
 }

@@ -1,5 +1,5 @@
 import { ofType } from 'vue-tsx-support';
-// import 'mavon-editor/dist/css/index.css';
+import 'mavon-editor/dist/css/index.css';
 
 export const MavonEditor = ofType<MavonEditorProps, MavonEditorEvents>().convert(require('mavon-editor').mavonEditor);
 

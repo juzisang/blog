@@ -201,13 +201,9 @@ class TagList extends Vue {
 
   render() {
     return (
-      <ContentPanel title={'标签列表'}>
-        <MuButton slot="right" onClick={() => !this.loading && this.loadData()} icon>
-          <MuIcon value="refresh" />
-        </MuButton>
+      <ContentPanel title={'标签列表'} loading={this.loading} showLoading={true} onRefresh={this.loadData}>
         <MuDataTable
           stripe
-          loading={this.loading}
           columns={this.columns}
           data={this.data}
           scopedSlots={{

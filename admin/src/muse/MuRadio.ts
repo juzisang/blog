@@ -7,7 +7,7 @@ type MuRadioProps = {
   labelLeft?: boolean;
   uncheckIcon?: string;
   checkedIcon?: string;
-  inputValue?: boolean | any[];
+  inputValue?: boolean | any[] | string;
   disabled?: boolean;
   color?: string;
   ripple?: boolean;

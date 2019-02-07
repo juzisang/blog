@@ -29,9 +29,9 @@ module.exports = {
         .set('loader', 'typings-for-css-modules-loader');
     });
     // svg loader
-    const svgRule = config.module.rule('svg');
-    svgRule.uses.clear();
-    svgRule.use('vue-svg-loader').loader('vue-svg-loader');
+    // const svgRule = config.module.rule('svg');
+    // svgRule.uses.clear();
+    // svgRule.use('vue-svg-loader').loader('vue-svg-loader');
   },
   css: {
     loaderOptions: {
