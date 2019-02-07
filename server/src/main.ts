@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as helmet from 'helmet';
 
 import { ValidationPipe } from '@app/pipes/validation.pipe';
 import { ResponseInterceptor } from '@app/interceptors/response.interceptor';
@@ -10,6 +11,8 @@ import { ENV, APP } from '@app/app.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(helmet());
+  app.useStaticAssets(APP.staticPath, { maxAge: 31536000 });
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ResponseInterceptor());
 
@@ -17,7 +20,6 @@ async function bootstrap() {
     origin: ENV.isDev ? '*' : APP.origin,
     credentials: true,
     maxAge: 60 * 60 * 24,
-    // methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Authorization', 'Content-Type'],
   });
 

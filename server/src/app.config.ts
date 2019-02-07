@@ -1,8 +1,11 @@
 import { ConnectionOptions } from 'typeorm';
+import * as path from 'path';
 
 export const APP = {
   host: 3000,
   origin: process.env.BLOG_APP_ORIGIN || 'http://localhost:3000/',
+  staticPath: path.join(__dirname, '../static'),
+  uploadPath: path.join(__dirname, '../static/files'),
 };
 
 /**

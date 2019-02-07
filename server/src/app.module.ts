@@ -12,11 +12,12 @@ import { CommentModule } from '@app/modules/comment/comment.module';
 import { MetasModule } from '@app/modules/metas/metas.module';
 import { OptionModule } from '@app/modules/option/option.module';
 import { UserModule } from '@app/modules/user/user.module';
+import { HelperModule } from '@app/modules/helper/helper.module';
 import { UserService } from './modules/user/user.service';
 import { OptionService } from './modules/option/option.service';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(DB), AuthModule, UserModule, MetasModule, OptionModule, ArticleModule, CommentModule],
+  imports: [TypeOrmModule.forRoot(DB), AuthModule, UserModule, MetasModule, OptionModule, ArticleModule, CommentModule, HelperModule],
   controllers: [AppController],
   providers: [AppService],
 })
@@ -40,6 +41,9 @@ export class AppModule implements OnModuleInit {
     }
   }
 
+  /**
+   * 默认配置
+   */
   async createDefaultOption() {
     const { option } = DEFAULT_DATA;
     if (!(await this.optionService.findOption())) {
