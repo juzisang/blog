@@ -34,13 +34,16 @@ export class ArticleService {
     const metas = await this.metasEntity.findByIds([...dto.tags, dto.category]);
     const category = metas.filter(meta => meta.type === 'category');
     const tags = metas.filter(meta => meta.type === 'tag');
-    // 开启事务
-    await this.articleEntity.manager.transaction(async entityManager => {
-      // 存储文章
-      const { aid } = await entityManager.save(article);
-      // metas
-      await entityManager.save(tags.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
-      await entityManager.save(category.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
+    return new Promise(async resolve => {
+      // 开启事务
+      await this.articleEntity.manager.transaction(async entityManager => {
+        // 存储文章
+        const { aid } = await entityManager.save(article);
+        // metas
+        await entityManager.save(tags.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
+        await entityManager.save(category.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
+        resolve(aid);
+      });
     });
   }
 

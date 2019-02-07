@@ -24,7 +24,7 @@ export class SaveArticleDto {
 
   @ApiModelProperty()
   @IsNotEmpty()
-  @IsUrl()
+  @IsString()
   thumb: string;
 
   @ApiModelProperty({ type: 'string', enum: ['online', 'draft', 'delete'] })

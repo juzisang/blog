@@ -53,7 +53,9 @@ export default class Layout extends Vue {
         <MainNav open$sync={this.sideOpen} />
         <div class={style.appContent} style={this.layoutStyle}>
           <Dashboard />
-          <router-view />
+          <keep-alive>
+            <router-view />
+          </keep-alive>
         </div>
       </div>
     );

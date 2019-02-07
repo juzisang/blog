@@ -1,14 +1,23 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { MuForm, MuFormItem, MuTextField, MuRow, MuCol, MuCheckbox, MuFlex, MuRadio, MuButton, MuIcon, MuSelect, MuOption } from '@/muse';
+import { MuForm, MuFormItem, MuTextField, MuRow, MuCol, MuCheckbox, MuFlex, MuRadio, MuButton, MuIcon, MuSelect, MuOption, MuToast } from '@/muse';
 import ContentPanel from '@/components/ContentPanel';
 import { ImgInputer } from '@/components/ImgInputer';
 import { getTags } from '@/api/tag';
 import { MavonEditor } from '@/components/MavonEditor';
 import * as style from '@/styles/views/ArticleEdit.module.scss';
 import { getCategorys } from '@/api/category';
+import { UPLOAD_URL } from '@/api/helper';
+import { State } from 'vuex-class';
+import { saveArticle, updateArticle } from '@/api/article';
+import { debounce } from 'typescript-debounce-decorator';
 
 @Component({})
 export default class ArticleEdit extends Vue {
+  @State(state => state.user.token)
+  private readonly token!: string;
+
+  aid: any = null;
+
   form = {
     title: '',
     keywords: '',
@@ -16,7 +25,7 @@ export default class ArticleEdit extends Vue {
     content: '',
     thumb: '',
     state: 'draft',
-    category: '',
+    category: 0,
     tags: [],
   };
 
@@ -50,8 +59,19 @@ export default class ArticleEdit extends Vue {
   }
 
   // 文章保存
-  handleSave() {
-    console.log('save');
+  @debounce(1000)
+  async handleSave() {
+    if (this.aid) {
+      await updateArticle(this.aid, this.form);
+      MuToast.success('更新成功');
+    } else {
+      this.aid = await saveArticle(this.form);
+      MuToast.success('保存成功');
+    }
+  }
+
+  handleUploadSuccess(res: any) {
+    this.form.thumb = res.body;
   }
 
   render() {
@@ -77,9 +97,26 @@ export default class ArticleEdit extends Vue {
             </ContentPanel>
           </MuCol>
           <MuCol span={3}>
-            <ContentPanel title="缩略图">
+            <ContentPanel title="发布选项">
+              <MuForm model={this.form} labelPosition="left" labelWidth={48}>
+                <MuFormItem label="状态">
+                  <MuSelect v-model={this.form.state}>
+                    <MuOption value="online" label="直接发布" />
+                    <MuOption value="draft" label="暂存草稿" />
+                    <MuOption value="delete" label="直接删除" />
+                  </MuSelect>
+                </MuFormItem>
+                <MuFormItem>
+                  <MuButton style="margin:0;" fullWidth onClick={this.handleSave} color="primary">
+                    发布
+                  </MuButton>
+                </MuFormItem>
+              </MuForm>
+            </ContentPanel>
+
+            <ContentPanel class={style.panel} title="缩略图">
               <div class="form">
-                <ImgInputer class={style.thumb} icon="img" placeholder="上传缩略图" />
+                <ImgInputer autoUpload propsOnSuccess={this.handleUploadSuccess} class={style.thumb} icon="img" placeholder="上传缩略图" action={UPLOAD_URL} headers={{ Authorization: this.token }} />
               </div>
             </ContentPanel>
 
@@ -97,23 +134,6 @@ export default class ArticleEdit extends Vue {
                   <MuCheckbox key={item.mid} inputValue={this.form.tags} value={item.mid} onChange={(value: any) => (this.form.tags = value)} class={style.formCheckbox} label={item.name} />
                 ))}
               </MuFlex>
-            </ContentPanel>
-
-            <ContentPanel class={style.panel} title="发布选项">
-              <MuForm model={this.form} labelPosition="left" labelWidth={48}>
-                <MuFormItem label="状态">
-                  <MuSelect v-model={this.form.state}>
-                    <MuOption value="online" label="直接发布" />
-                    <MuOption value="draft" label="暂存草稿" />
-                    <MuOption value="delete" label="直接删除" />
-                  </MuSelect>
-                </MuFormItem>
-                <MuFormItem>
-                  <MuButton style="margin:0;" fullWidth color="primary">
-                    发布
-                  </MuButton>
-                </MuFormItem>
-              </MuForm>
             </ContentPanel>
           </MuCol>
         </MuRow>

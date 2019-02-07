@@ -28,8 +28,8 @@ export const userModule: Module<UserState, RootState> = {
     // 登录
     async Login(content: ActionContext<UserState, RootState>, user: any) {
       const body = await login({ ...user });
-      content.commit('SET_USER_TOKEN', body);
       setToken(body);
+      content.commit('SET_USER_TOKEN', getToken());
       return body;
     },
     // 获取用户信息

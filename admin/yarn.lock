@@ -7087,6 +7087,11 @@ typeface-roboto@^0.0.54:
   resolved "http://registry.npm.taobao.org/typeface-roboto/download/typeface-roboto-0.0.54.tgz#8f02c9a18d1cfa7f49381a6ff0d21ff061f38ad2"
   integrity sha1-jwLJoY0c+n9JOBpv8NIf8GHzitI=
 
+typescript-debounce-decorator@^0.0.17:
+  version "0.0.17"
+  resolved "http://registry.npm.taobao.org/typescript-debounce-decorator/download/typescript-debounce-decorator-0.0.17.tgz#92f971e23de2f0ca3c3100419d59337b5e455575"
+  integrity sha1-kvlx4j3i8Mo8MQBBnVkze15FVXU=
+
 typescript-eslint-parser@^18.0.0:
   version "18.0.0"
   resolved "http://registry.npm.taobao.org/typescript-eslint-parser/download/typescript-eslint-parser-18.0.0.tgz#3e5055a44980d69e4154350fc5d8b1ab4e2332a8"
