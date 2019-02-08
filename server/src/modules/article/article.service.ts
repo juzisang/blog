@@ -27,21 +27,15 @@ export class ArticleService {
   async create(dto: SaveArticleDto) {
     const { uid } = await this.userService.findRoot();
     // 文章
-    const article = this.articleEntity.create({
-      ...dto,
-      uid,
-    });
+    const article = this.articleEntity.create({ ...dto, uid });
     const metas = await this.metasEntity.findByIds([...dto.tags, dto.category]);
-    const category = metas.filter(meta => meta.type === 'category');
-    const tags = metas.filter(meta => meta.type === 'tag');
     return new Promise(async resolve => {
       // 开启事务
       await this.articleEntity.manager.transaction(async entityManager => {
         // 存储文章
         const { aid } = await entityManager.save(article);
         // metas
-        await entityManager.save(tags.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
-        await entityManager.save(category.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
+        await entityManager.save(metas.map(({ mid }) => this.relationshipsEntity.create({ aid, mid })));
         resolve(aid);
       });
     });
@@ -59,7 +53,6 @@ export class ArticleService {
     const newMetas = await this.metasEntity.findByIds([...dto.tags, dto.category]);
     const newCategory = newMetas.filter(meta => meta.type === 'category').map(item => item.mid);
     const newTags = newMetas.filter(meta => meta.type === 'tag').map(item => item.mid);
-
     // 旧Meta
     const oldMetas = await this.relationshipsEntity
       .createQueryBuilder('relationships')
@@ -70,13 +63,11 @@ export class ArticleService {
       .getRawMany();
     const oldCategory = oldMetas.filter(meta => meta.type === 'category').map(item => item.mid);
     const oldTags = oldMetas.filter(meta => meta.type === 'tag').map(item => item.mid);
-
     // 判断是否有更改
     const isUpdateMeta = type => {
       const obj = { tag: { old: oldTags, new: newTags }, category: { old: oldCategory, new: newCategory } };
       return obj[type].old.sort().join() !== obj[type].new.sort().join();
     };
-
     // 开启事务
     await this.metasEntity.manager.transaction(async entityManager => {
       // 判断是否设置分类，以及是否改变

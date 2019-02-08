@@ -41,7 +41,6 @@ export const homeRouter: RouteConfig[] = [
         meta: {
           title: '所有文章',
           icon: 'toc',
-          cache: false,
         },
         component: () => import('@/views/article/ArticleList'),
       },
@@ -51,6 +50,7 @@ export const homeRouter: RouteConfig[] = [
         meta: {
           title: '发布文章',
           icon: 'create',
+          cache: false,
         },
         component: () => import('@/views/article/ArticleEdit'),
       },

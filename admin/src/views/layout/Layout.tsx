@@ -4,7 +4,8 @@ import MainNav from './components/MainNav';
 import Dashboard from './components/Dashboard';
 import * as style from '@/styles/views/Layout.module.scss';
 import { Action } from 'vuex-class';
-import { debounce } from '@/filters';
+import { debounce } from 'typescript-debounce-decorator';
+import { homeRouter } from '@/router';
 
 @Component({})
 export default class Layout extends Vue {
@@ -13,11 +14,9 @@ export default class Layout extends Vue {
 
   private sideOpen: boolean = true;
 
-  private timerCode: any = null;
-
-  private resizeDebounce = debounce(() => {
-    this.handleResize();
-  }, 250);
+  private get noCacheViews() {
+    return homeRouter.filter(item => item.meta.cache === false).map(item => item.name as string);
+  }
 
   async created() {
     await this.getInit();
@@ -25,13 +24,14 @@ export default class Layout extends Vue {
 
   mounted() {
     this.handleResize();
-    window.addEventListener('resize', this.resizeDebounce);
+    window.addEventListener('resize', () => this.handleResize());
   }
 
   beforeDestroy() {
-    window.removeEventListener('resize', this.resizeDebounce);
+    window.removeEventListener('resize', () => this.handleResize());
   }
 
+  @debounce(250)
   handleResize() {
     if (window.innerWidth < 768) {
       this.sideOpen = false;
@@ -53,7 +53,7 @@ export default class Layout extends Vue {
         <MainNav open$sync={this.sideOpen} />
         <div class={style.appContent} style={this.layoutStyle}>
           <Dashboard />
-          <keep-alive>
+          <keep-alive max={10} exclude={this.noCacheViews}>
             <router-view />
           </keep-alive>
         </div>
