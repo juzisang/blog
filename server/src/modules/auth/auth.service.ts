@@ -17,24 +17,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  /**
-   * 新建Token
-   */
   createToken(user: UserPayload) {
     return this.jwtService.sign(user);
   }
 
-  /**
-   * 判断用户是否存在
-   * @param name
-   */
   async validateUser(uid) {
     return await this.userRepository.findOne(uid);
   }
 
-  /**
-   * 登录
-   */
   async loginUser(dto: LoginUserDto) {
     const user = await this.userRepository.findOne({ name: dto.name });
     if (!user) {

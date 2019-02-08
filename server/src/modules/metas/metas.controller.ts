@@ -10,93 +10,67 @@ import { ApiUseTags, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
 export class MetasController {
   constructor(private readonly metasService: MetasService) {}
 
-  /**
-   * 获取所有Tags
-   */
-  @Get('tags')
-  findTags() {
-    return this.metasService.findAll('tag');
-  }
+  // ADMIN
 
-  /**
-   * 获取所有分类
-   */
-  @Get('categorys')
-  findCategorys() {
-    return this.metasService.findAll('category');
-  }
-
-  /**
-   * 获取 Tag 详情
-   */
-  @Get('tag')
-  findTag(@Query() body: QueryMetasDto) {
-    return this.metasService.findOne('tag', body);
-  }
-
-  /**
-   * 获取分类详情
-   */
-  @Get('category')
-  findCategory(@Query() body: QueryMetasDto) {
-    return this.metasService.findOne('category', body);
-  }
-
-  /**
-   * 添加 Tag
-   */
-  @UseGuards(AuthGuard())
   @Post('tag')
+  @UseGuards(AuthGuard())
   createTag(@Body() dto: SaveMetasDto) {
-    return this.metasService.create('tag', dto);
+    return this.metasService.createMeta('tag', dto);
   }
 
-  /**
-   * 添加分类
-   */
-  @UseGuards(AuthGuard())
   @Post('category')
+  @UseGuards(AuthGuard())
   createCategory(@Body() dto: SaveMetasDto) {
-    return this.metasService.create('category', dto);
+    return this.metasService.createMeta('category', dto);
   }
 
-  /**
-   * 修改 Tag
-   */
-  @ApiImplicitParam({ name: 'mid' })
-  @UseGuards(AuthGuard())
   @Put('tag/:mid')
+  @UseGuards(AuthGuard())
+  @ApiImplicitParam({ name: 'mid' })
   updateTag(@Param('mid') mid, @Body() dto: SaveMetasDto) {
-    return this.metasService.update('tag', mid, dto);
+    return this.metasService.updateMeta('tag', mid, dto);
   }
 
-  /**
-   * 修改分类
-   */
-  @ApiImplicitParam({ name: 'mid' })
-  @UseGuards(AuthGuard())
   @Put('category/:mid')
+  @UseGuards(AuthGuard())
+  @ApiImplicitParam({ name: 'mid' })
   updateCategory(@Param('mid') mid, @Body() dto: SaveMetasDto) {
-    return this.metasService.update('category', mid, dto);
+    return this.metasService.updateMeta('category', mid, dto);
   }
 
-  /**
-   * 删除 Tag
-   */
-  @ApiImplicitParam({ name: 'mid' })
-  @UseGuards(AuthGuard())
   @Delete('tag/:mid')
+  @UseGuards(AuthGuard())
+  @ApiImplicitParam({ name: 'mid' })
   async deleteTag(@Param('mid') mid) {
-    return this.metasService.delete('tag', mid);
+    return this.metasService.deleteMeta('tag', mid);
   }
 
-  /**
-   * 删除分类
-   */
-  @ApiImplicitParam({ name: 'mid' })
-  @UseGuards(AuthGuard())
   @Delete('category/:mid')
+  @UseGuards(AuthGuard())
+  @ApiImplicitParam({ name: 'mid' })
   async deleteCategory(@Param('mid') mid) {
-    return this.metasService.delete('category', mid);
+    return this.metasService.deleteMeta('category', mid);
+  }
+
+  // PUBLIC
+
+  @Get('tags')
+  getTags() {
+    return this.metasService.getMetas('tag');
+  }
+
+  @Get('categorys')
+  getCategorys() {
+    return this.metasService.getMetas('category');
+  }
+
+  @Get('tag')
+  getTag(@Query() body: QueryMetasDto) {
+    return this.metasService.getMeta('tag', body);
+  }
+
+  @Get('category')
+  getCategory(@Query() body: QueryMetasDto) {
+    return this.metasService.getMeta('category', body);
   }
 }

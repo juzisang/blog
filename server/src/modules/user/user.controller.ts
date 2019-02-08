@@ -10,32 +10,28 @@ import { UpdateUserDto, UpdatePasswordDto } from './user.dto';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  /**
-   * 获取用户信息
-   */
+
+  // ADMIN
+
+  @Put()
+  @UseGuards(AuthGuard())
+  updateUser(@Body() dto: UpdateUserDto) {
+    return this.userService.updateAdmin(dto).then(() => '修改成功');
+  }
+
+  @Put('password')
+  @UseGuards(AuthGuard())
+  updatePwd(@Body() dto: UpdatePasswordDto) {
+    return this.userService.updateAdminPwd(dto).then(() => '修改成功');
+  }
+
+  // PUBLIC
+
   @Get()
-  async findRoot() {
-    const _user = await this.userService.findRoot();
+  async findAdmin() {
+    const _user = await this.userService.getAdmin();
     const { name, slogan, uid, avatar } = _user;
     const user = { name, slogan, uid, avatar };
     return user;
-  }
-
-  /**
-   * 修改用户
-   */
-  @UseGuards(AuthGuard())
-  @Put()
-  update(@Body() dto: UpdateUserDto) {
-    return this.userService.update(dto).then(() => '修改成功');
-  }
-
-  /**
-   * 修改密码
-   */
-  @UseGuards(AuthGuard())
-  @Put('password')
-  updatePwd(@Body() dto: UpdatePasswordDto) {
-    return this.userService.updatePwd(dto).then(() => '修改成功');
   }
 }

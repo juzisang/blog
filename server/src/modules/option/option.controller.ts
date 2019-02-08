@@ -11,20 +11,18 @@ import { OptionDto } from './option.dto';
 export class OptionController {
   constructor(private readonly optionService: OptionService) {}
 
-  /**
-   * 更新配置
-   */
-  @UseGuards(AuthGuard())
+  // ADMIN
+
   @Put()
-  update(@Body() dto: OptionDto) {
+  @UseGuards(AuthGuard())
+  updateOption(@Body() dto: OptionDto) {
     return this.optionService.updateOption(dto);
   }
 
-  /**
-   * 返回配置
-   */
+  // PUBLIC
+
   @Get()
-  async find() {
+  async getOption() {
     return this.optionService.findOption();
   }
 }

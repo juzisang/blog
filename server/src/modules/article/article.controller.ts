@@ -2,8 +2,6 @@ import { Controller, Get, Post, Put, Delete, UseGuards, Body, Param, Query } fro
 import { AuthGuard } from '@nestjs/passport';
 import { ApiUseTags, ApiBearerAuth, ApiImplicitParam } from '@nestjs/swagger';
 
-import { User } from '@app/decorators/user.decorator';
-
 import { ArticleService } from './article.service';
 import { SaveArticleDto } from './article.dto';
 import { PaginationDto } from './pagination.dto';
@@ -14,57 +12,43 @@ import { PaginationDto } from './pagination.dto';
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  /**
-   * 文章列表
-   */
-  @Get('list')
-  findAll(@Query('state') state, @Query() dto: PaginationDto) {
-    return this.articleService.findList(state, dto);
-  }
+  // ADMIN
 
-  /**
-   * 返回文章详情
-   */
-  @ApiImplicitParam({ name: 'aid' })
-  @Get(':aid')
-  findOne(@Param('aid') aid) {
-    return this.articleService.findOne(aid);
-  }
-
-  /**
-   * 添加文章
-   */
-  @UseGuards(AuthGuard())
-  @Post()
-  create(@Body() dto: SaveArticleDto) {
-    return this.articleService.create(dto);
-  }
-
-  /**
-   * 更新文章
-   */
-  @ApiImplicitParam({ name: 'aid' })
-  @UseGuards(AuthGuard())
   @Put(':aid')
-  update(@Param('aid') aid, @Body() dto: SaveArticleDto) {
-    return this.articleService.update(aid, dto);
+  @UseGuards(AuthGuard())
+  @ApiImplicitParam({ name: 'aid' })
+  updateArticle(@Param('aid') aid, @Body() dto: SaveArticleDto) {
+    return this.articleService.updateArticle(aid, dto);
   }
 
-  /**
-   * 删除文章
-   */
+  @Post()
   @UseGuards(AuthGuard())
+  createArticle(@Body() dto: SaveArticleDto) {
+    return this.articleService.createArticle(dto);
+  }
+
   @Delete('delete/:aid')
-  delete(@Param('aid') aid) {
-    return this.articleService.updateState(aid, 'delete');
+  @UseGuards(AuthGuard())
+  deleteArticle(@Param('aid') aid) {
+    return this.articleService.updateArticleState(aid, 'delete');
   }
 
-  /**
-   * 发布文章
-   */
-  @UseGuards(AuthGuard())
   @Put('publish/:aid')
-  publish(@Param('aid') aid) {
-    return this.articleService.updateState(aid, 'online');
+  @UseGuards(AuthGuard())
+  publishArticle(@Param('aid') aid) {
+    return this.articleService.updateArticleState(aid, 'online');
+  }
+
+  // PUBLIC
+
+  @Get('list')
+  getArticles(@Query('state') state, @Query() dto: PaginationDto) {
+    return this.articleService.getArticles(state, dto);
+  }
+
+  @Get(':aid')
+  @ApiImplicitParam({ name: 'aid' })
+  getArticle(@Param('aid') aid) {
+    return this.articleService.getArticle(aid);
   }
 }

@@ -16,7 +16,7 @@ export class MetasService {
   /**
    * 返货 tag category，及其所属文章
    */
-  findOne(type: 'tag' | 'category', data: QueryMetasDto) {
+  getMeta(type: 'tag' | 'category', data: QueryMetasDto) {
     return this.metasEntity
       .createQueryBuilder('metas')
       .leftJoin(RelationshipsEntity, 'relationships', 'metas.mid = relationships.mid')
@@ -29,7 +29,7 @@ export class MetasService {
   /**
    * 返回 tag category 列表，及其文章数
    */
-  async findAll(type: 'tag' | 'category') {
+  async getMetas(type: 'tag' | 'category') {
     return this.metasEntity
       .createQueryBuilder('metas')
       .select(['metas.mid as mid', 'metas.name as name', 'metas.slug as slug', 'metas.description as description', 'metas.type as type'])
@@ -44,7 +44,7 @@ export class MetasService {
   /**
    * 创建 tag category
    */
-  async create(type: 'tag' | 'category', dto: SaveMetasDto) {
+  async createMeta(type: 'tag' | 'category', dto: SaveMetasDto) {
     const meta = await this.metasEntity.findOne({ type, name: dto.name });
     if (meta) {
       throw new BadRequestException(`${type} 已经存在`);
@@ -55,16 +55,16 @@ export class MetasService {
   /**
    * 更新 tag category
    */
-  async update(type: 'tag' | 'category', mid: number, dto: SaveMetasDto) {
-    await this.findOneOrFail(type, mid);
+  async updateMeta(type: 'tag' | 'category', mid: number, dto: SaveMetasDto) {
+    await this.findOneMetaOrFail(type, mid);
     await this.metasEntity.update(mid, dto);
   }
 
   /**
    * 删除 tag category
    */
-  async delete(type: 'tag' | 'category', mid) {
-    await this.findOneOrFail(type, mid);
+  async deleteMeta(type: 'tag' | 'category', mid) {
+    await this.findOneMetaOrFail(type, mid);
     await this.metasEntity.manager.transaction(async entityManager => {
       // 删除文章与meta关系
       await entityManager.delete(RelationshipsEntity, { mid });
@@ -76,7 +76,7 @@ export class MetasService {
   /**
    * 不存在，即报错
    */
-  private async findOneOrFail(type: string, mid: number) {
+  private async findOneMetaOrFail(type: string, mid: number) {
     const meta = await this.metasEntity.findOne(mid);
     if (!meta) {
       throw new BadRequestException(`${type} 不存在`);

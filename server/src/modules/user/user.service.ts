@@ -14,17 +14,11 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  /**
-   * 判断用户是否为空
-   */
   async IsEmptyUsers() {
     return (await this.userRepository.count()) === 0;
   }
 
-  /**
-   * 获取root用户
-   */
-  async findRoot() {
+  async getAdmin() {
     const users = await this.userRepository.find();
     if (users.length === 0) {
       throw new Error('用户不存在');
@@ -32,10 +26,7 @@ export class UserService {
     return users[0];
   }
 
-  /**
-   * 新建root用户
-   */
-  async created(dto: CreateUserDto) {
+  async createdAdmin(dto: CreateUserDto) {
     if (this.IsEmptyUsers()) {
       return await this.userRepository.save(
         this.userRepository.create({
@@ -47,11 +38,8 @@ export class UserService {
     throw new BadRequestException('用户已存在');
   }
 
-  /**
-   * 更新用户数据
-   */
-  async update(date: UpdateUserDto) {
-    const { uid } = await this.findRoot();
+  async updateAdmin(date: UpdateUserDto) {
+    const { uid } = await this.getAdmin();
     return await this.userRepository.update(uid, {
       name: date.name,
       avatar: date.avatar,
@@ -59,11 +47,8 @@ export class UserService {
     });
   }
 
-  /**
-   * 修改密码
-   */
-  async updatePwd(dto: UpdatePasswordDto) {
-    const { password, uid } = await this.findRoot();
+  async updateAdminPwd(dto: UpdatePasswordDto) {
+    const { password, uid } = await this.getAdmin();
     if (password !== encryptPwd(dto.oldPassword)) {
       throw new BadRequestException('密码错误');
     }

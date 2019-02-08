@@ -21,11 +21,8 @@ export class ArticleService {
     private readonly userService: UserService,
   ) {}
 
-  /**
-   * 创建文章
-   */
-  async create(dto: SaveArticleDto) {
-    const { uid } = await this.userService.findRoot();
+  async createArticle(dto: SaveArticleDto) {
+    const { uid } = await this.userService.getAdmin();
     // 文章
     const article = this.articleEntity.create({ ...dto, uid });
     const metas = await this.metasEntity.findByIds([...dto.tags, dto.category]);
@@ -41,10 +38,7 @@ export class ArticleService {
     });
   }
 
-  /**
-   * 更新文章
-   */
-  async update(aid: number, dto: SaveArticleDto) {
+  async updateArticle(aid: number, dto: SaveArticleDto) {
     const article = await this.articleEntity.findOne(aid);
     if (!article) {
       throw new BadRequestException('文章不存在');
@@ -83,11 +77,8 @@ export class ArticleService {
     });
   }
 
-  /**
-   * 获取文章详情
-   */
-  async findOne(aid: number) {
-    const user = await this.userService.findRoot();
+  async getArticle(aid: number) {
+    const user = await this.userService.getAdmin();
     if (!(await this.articleEntity.findOne(aid))) {
       throw new BadRequestException('文章不存在');
     }
@@ -101,11 +92,8 @@ export class ArticleService {
     return this.mapMetas(article);
   }
 
-  /**
-   * 获取文章列表
-   */
-  async findList(state, dto: PaginationDto) {
-    const { uid } = await this.userService.findRoot();
+  async getArticles(state, dto: PaginationDto) {
+    const { uid } = await this.userService.getAdmin();
     const [list, count] = await this.articleEntity
       .createQueryBuilder('article')
       .where(`article.uid = :uid ${state === 'all' ? `` : `AND article.state = ${state}`}`, { uid })
@@ -125,7 +113,7 @@ export class ArticleService {
     };
   }
 
-  async updateState(aid, state) {
+  async updateArticleState(aid, state) {
     const article = await this.articleEntity.findOne(aid);
     if (!article) throw new BadRequestException('文章不存在');
     await this.articleEntity.update(article.aid, { state });

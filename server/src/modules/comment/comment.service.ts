@@ -15,10 +15,7 @@ export class CommentService {
     private readonly articleEntity: Repository<ArticleEntity>,
   ) {}
 
-  /**
-   * 更加文章id 获取评论列表
-   */
-  async findList(aid: number, dto: PaginationDto) {
+  async getComments(aid: number, dto: PaginationDto) {
     const article = await this.articleEntity.findOne(aid);
     if (!article) {
       throw new BadRequestException('文章不存在');
@@ -39,10 +36,7 @@ export class CommentService {
     };
   }
 
-  /**
-   * 添加评论
-   */
-  async create(aid: number, comment: any) {
+  async createComment(aid: number, comment: any) {
     const article = await this.articleEntity.findOne(aid);
     if (!article) {
       throw new BadRequestException('文章不存在');
@@ -62,10 +56,7 @@ export class CommentService {
     );
   }
 
-  /**
-   * 修改文章状态
-   */
-  async update(cid: number, state) {
+  async updateComment(cid: number, state) {
     if (!(await this.commentEntity.findOne(cid))) {
       throw new BadRequestException('评论不存在');
     }
