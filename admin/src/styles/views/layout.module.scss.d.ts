@@ -1,5 +1,6 @@
 export const layout: string;
 export const appContent: string;
+export const appContainer: string;
 export const mainNav: string;
 export const sidebar: string;
 export const routerLinkExactActive: string;

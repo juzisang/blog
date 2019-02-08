@@ -54,7 +54,7 @@ export default class Layout extends Vue {
         <div class={style.appContent} style={this.layoutStyle}>
           <Dashboard />
           <keep-alive max={10} exclude={this.noCacheViews}>
-            <router-view />
+            <router-view class={style.appContainer} />
           </keep-alive>
         </div>
       </div>

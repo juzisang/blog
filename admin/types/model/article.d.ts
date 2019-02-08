@@ -8,3 +8,7 @@ interface ISaveArticle {
   category: number | any;
   tags: Array<string>;
 }
+
+interface IArticleQuery extends IPage {
+  state?: string;
+}

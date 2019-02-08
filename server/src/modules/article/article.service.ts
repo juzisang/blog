@@ -108,9 +108,9 @@ export class ArticleService {
     const { uid } = await this.userService.findRoot();
     const [list, count] = await this.articleEntity
       .createQueryBuilder('article')
-      .where('article.uid = :uid AND article.state = :state', { uid, state })
-      .leftJoinAndSelect(RelationshipsEntity, 'relationships', 'article.aid = relationships.aid')
-      .leftJoinAndMapMany('article.metas', MetasEntity, 'metas', 'relationships.mid = metas.mid')
+      .where(`article.uid = :uid ${state === 'all' ? `` : `AND article.state = ${state}`}`, { uid })
+      .innerJoin(RelationshipsEntity, 'relationships', 'article.aid = relationships.aid')
+      .leftJoinAndMapMany('article.metas', MetasEntity, 'metas', 'metas.mid = relationships.mid')
       .orderBy('article.create_time', 'DESC')
       .skip((dto.index - 1) * dto.size)
       .take(dto.size)
@@ -125,17 +125,10 @@ export class ArticleService {
     };
   }
 
-  /**
-   * 删除文章
-   */
-  async delete(aid: number) {
+  async updateState(aid, state) {
     const article = await this.articleEntity.findOne(aid);
-    if (!article) {
-      throw new BadRequestException('文章不存在');
-    }
-    await this.articleEntity.update(article.aid, {
-      state: 'delete',
-    });
+    if (!article) throw new BadRequestException('文章不存在');
+    await this.articleEntity.update(article.aid, { state });
   }
 
   /**

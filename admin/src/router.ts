@@ -47,6 +47,7 @@ export const homeRouter: RouteConfig[] = [
       {
         name: 'ArticleEdit',
         path: 'articleEdit',
+        props: route => route.query,
         meta: {
           title: '发布文章',
           icon: 'create',

@@ -27,6 +27,12 @@ export class ArticleEntity {
   description: string;
 
   /**
+   * 文章关键字
+   */
+  @Column({ comment: '文章关键字' })
+  keywords: string;
+
+  /**
    * 文章内容
    */
   @Column({ type: 'text', comment: '文章内容', select: false })

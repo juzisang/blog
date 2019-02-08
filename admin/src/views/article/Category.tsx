@@ -19,7 +19,7 @@ export default class Category extends Vue {
 
   render() {
     return (
-      <div class="app-container ">
+      <div>
         <MuRow gutter>
           <MuCol xl={4} lg={4} md={12} sm={12} span={4}>
             <CategorySave />

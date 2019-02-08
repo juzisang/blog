@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function getArticles(params: IPage) {
+export function getArticles(params: IArticleQuery) {
   return request({
     url: '/article/list',
     method: 'get',
@@ -33,7 +33,14 @@ export function updateArticle(aid: number, data: ISaveArticle) {
 
 export function deleteArticle(aid: number) {
   return request({
-    url: `/article/${aid}`,
+    url: `/article/delete/${aid}`,
     method: 'delete',
+  });
+}
+
+export function publishArticle(aid: number) {
+  return request({
+    url: `/article/publish/${aid}`,
+    method: 'put',
   });
 }

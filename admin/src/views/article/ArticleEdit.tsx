@@ -1,4 +1,4 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { MuForm, MuFormItem, MuTextField, MuRow, MuCol, MuCheckbox, MuFlex, MuRadio, MuButton, MuIcon, MuSelect, MuOption, MuToast } from '@/muse';
 import ContentPanel from '@/components/ContentPanel';
 import { ImgInputer } from '@/components/ImgInputer';
@@ -8,15 +8,16 @@ import * as style from '@/styles/views/ArticleEdit.module.scss';
 import { getCategorys } from '@/api/category';
 import { UPLOAD_URL } from '@/api/helper';
 import { State } from 'vuex-class';
-import { saveArticle, updateArticle } from '@/api/article';
+import { saveArticle, updateArticle, getArticle } from '@/api/article';
 import { debounce } from 'typescript-debounce-decorator';
 
 @Component({})
 export default class ArticleEdit extends Vue {
+  @Prop({ type: String, default: null })
+  public readonly aid!: any;
+
   @State(state => state.user.token)
   private readonly token!: string;
-
-  aid: any = null;
 
   form = {
     title: '',
@@ -48,12 +49,29 @@ export default class ArticleEdit extends Vue {
   async created() {
     this.loadTags();
     this.loadCategorys();
+    if (this.aid) {
+      this.loadArticle();
+    }
   }
 
+  async loadArticle() {
+    const article = await getArticle(this.aid);
+    this.form.title = article.title;
+    this.form.keywords = article.keywords;
+    this.form.description = article.description;
+    this.form.content = article.content;
+    this.form.thumb = article.thumb;
+    this.form.state = article.state;
+    this.form.tags = article.tags.map((item: any) => item.mid);
+    this.form.category = article.category.mid;
+  }
+
+  @debounce(500)
   async loadTags() {
     this.tagList = await getTags();
   }
 
+  @debounce(500)
   async loadCategorys() {
     this.categoryList = await getCategorys();
   }
@@ -66,7 +84,8 @@ export default class ArticleEdit extends Vue {
       await updateArticle(this.aid, this.form);
       MuToast.success('更新成功');
     } else {
-      this.aid = await saveArticle(this.form);
+      const aid = await saveArticle(this.form);
+      this.$router.replace({ name: 'ArticleEdit', query: { aid } });
       MuToast.success('保存成功');
     }
   }
@@ -90,7 +109,7 @@ export default class ArticleEdit extends Vue {
 
   render() {
     return (
-      <div class="app-container">
+      <div>
         <MuRow gutter>
           <MuCol span={9}>
             <ContentPanel title="编辑文章">

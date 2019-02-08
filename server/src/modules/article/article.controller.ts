@@ -18,8 +18,8 @@ export class ArticleController {
    * 文章列表
    */
   @Get('list')
-  findAll(@User() user, @Query() dto: PaginationDto) {
-    return this.articleService.findList(user ? '*' : 'online', dto);
+  findAll(@Query('state') state, @Query() dto: PaginationDto) {
+    return this.articleService.findList(state, dto);
   }
 
   /**
@@ -54,8 +54,17 @@ export class ArticleController {
    * 删除文章
    */
   @UseGuards(AuthGuard())
-  @Delete(':aid')
+  @Delete('delete/:aid')
   delete(@Param('aid') aid) {
-    return this.articleService.delete(aid);
+    return this.articleService.updateState(aid, 'delete');
+  }
+
+  /**
+   * 发布文章
+   */
+  @UseGuards(AuthGuard())
+  @Put('publish/:aid')
+  publish(@Param('aid') aid) {
+    return this.articleService.updateState(aid, 'online');
   }
 }
