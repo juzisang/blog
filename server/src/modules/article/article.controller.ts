@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, UseGuards, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, UseGuards, Body, Param, Query, Patch } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiUseTags, ApiBearerAuth, ApiImplicitParam } from '@nestjs/swagger';
 
@@ -14,13 +14,6 @@ export class ArticleController {
 
   // ADMIN
 
-  @Put(':aid')
-  @UseGuards(AuthGuard())
-  @ApiImplicitParam({ name: 'aid' })
-  updateArticle(@Param('aid') aid, @Body() dto: SaveArticleDto) {
-    return this.articleService.updateArticle(aid, dto);
-  }
-
   @Post()
   @UseGuards(AuthGuard())
   createArticle(@Body() dto: SaveArticleDto) {
@@ -33,7 +26,14 @@ export class ArticleController {
     return this.articleService.updateArticleState(aid, 'delete');
   }
 
-  @Put('publish/:aid')
+  @Put(':aid')
+  @UseGuards(AuthGuard())
+  @ApiImplicitParam({ name: 'aid' })
+  updateArticle(@Param('aid') aid, @Body() dto: SaveArticleDto) {
+    return this.articleService.updateArticle(aid, dto);
+  }
+
+  @Patch('publish/:aid')
   @UseGuards(AuthGuard())
   publishArticle(@Param('aid') aid) {
     return this.articleService.updateArticleState(aid, 'online');

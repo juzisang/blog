@@ -41,6 +41,6 @@ export function deleteArticle(aid: number) {
 export function publishArticle(aid: number) {
   return request({
     url: `/article/publish/${aid}`,
-    method: 'put',
+    method: 'patch',
   });
 }

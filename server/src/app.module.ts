@@ -34,7 +34,7 @@ export class AppModule implements OnModuleInit {
    */
   async createDefaultUser() {
     if (await this.userService.IsEmptyUsers()) {
-      await this.userService.created({
+      await this.userService.createdAdmin({
         name: DEFAULT_DATA.user.name,
         password: DEFAULT_DATA.user.password,
       });
