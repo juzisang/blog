@@ -1,0 +1,53 @@
+@import '../import.scss';
+
+.layout {
+  .appContent {
+    padding-top: 64px + 16px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    padding-left: 16px;
+    transition: padding-left 0.45s $easeOutFunction;
+  }
+  .appContainer {
+    padding: 8px 12px;
+  }
+}
+
+.mainNav {
+  position: fixed;
+  right: 0;
+  top: 0;
+  transition: left 0.45s $easeOutFunction;
+}
+
+.sidebar {
+  .router-link-exact-active {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.dashboard {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .breadcrumbsItem {
+    font-size: 20px;
+  }
+  .title {
+    color: #000000;
+  }
+}
+
+:global {
+  .mu-item {
+    .toggle-icon {
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+  }
+  .mu-item__open {
+    .toggle-icon {
+      transform: rotate(180deg);
+    }
+  }
+}
