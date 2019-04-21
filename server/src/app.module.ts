@@ -11,14 +11,7 @@ import { CommentModule } from '@app/modules/comment/comment.module';
 import { CategoryModule } from '@app/modules/category/category.module';
 
 @Module({
-  imports: [
-    DBModule,
-    AuthModule,
-    ArticleModule,
-    CategoryModule,
-    TagModule,
-    CommentModule,
-  ],
+  imports: [DBModule, AuthModule, ArticleModule, CategoryModule, TagModule, CommentModule],
   controllers: [AppController],
   providers: [AppService],
 })
