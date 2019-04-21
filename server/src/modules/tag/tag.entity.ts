@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('tag')
-export class CategoryEntity {
+export class TagEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
-  mid: number;
+  id: number;
 
   @Column({ comment: '名字' })
   name: string;

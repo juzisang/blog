@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 @Entity('article')
 export class ArticleEntity {
   @PrimaryGeneratedColumn({ comment: '文章id' })
-  aid: number;
+  id: number;
 
   @Column({ comment: '用户id' })
   uid: number;

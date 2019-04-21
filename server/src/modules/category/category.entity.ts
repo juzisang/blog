@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 @Entity('category')
 export class CategoryEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
-  mid: number;
+  id: number;
 
   @Column({ comment: '名字' })
   name: string;

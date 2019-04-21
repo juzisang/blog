@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 @Entity('auth')
 export class AuthEntity {
   @PrimaryGeneratedColumn({ comment: '用户id' })
-  uid: number;
+  id: number;
 
   @Column({ unique: true, comment: '账号' })
   username: string;
