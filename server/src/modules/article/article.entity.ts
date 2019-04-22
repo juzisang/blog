@@ -5,9 +5,6 @@ export class ArticleEntity {
   @PrimaryGeneratedColumn({ comment: '文章id' })
   id: number;
 
-  @Column({ comment: '用户id' })
-  uid: number;
-
   @Column({ comment: '文章标题' })
   title: string;
 
