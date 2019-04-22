@@ -15,7 +15,7 @@ export class TagService {
     const tag = this.tagEntity.create(tagDto);
     return this.tagEntity
       .findOne({ name: tag.name })
-      .then<TagEntity | Error>(entity => (entity ? Promise.reject(new BadRequestException(`${tag.name} 已经存在`)) : tag))
+      .then<TagEntity>(entity => (entity ? Promise.reject(new BadRequestException(`${tag.name} 已经存在`)) : tag))
       .then(entity => this.tagEntity.save(entity));
   }
 
@@ -28,6 +28,6 @@ export class TagService {
   }
 
   getTag(id: number) {
-    return this.tagEntity.findOne(id);
+    return this.tagEntity.findOneOrFail(id);
   }
 }
