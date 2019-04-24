@@ -17,8 +17,12 @@ export class ArticleController {
   }
 
   @Get('list')
-  getArticles() {}
+  getArticles() {
+    //
+  }
 
   @Get(':id')
-  getArticle() {}
+  getArticle() {
+    //
+  }
 }
