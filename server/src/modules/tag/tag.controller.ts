@@ -21,8 +21,8 @@ export class TagController {
     return this.tagService.getTags();
   }
 
-  @Get(':id')
-  getTag(@Param('id') id: number) {
-    return this.tagService.getTag(id);
+  @Get(':name')
+  getTag(@Param('name') name: string) {
+    return this.tagService.getTag(name);
   }
 }

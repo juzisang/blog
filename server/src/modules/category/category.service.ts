@@ -27,7 +27,7 @@ export class CategoryService {
     return this.categoryEntity.find();
   }
 
-  getCategory(id: number) {
-    return this.categoryEntity.findOneOrFail(id);
+  getCategory(name: string) {
+    return this.categoryEntity.findOneOrFail({ name });
   }
 }

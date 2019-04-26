@@ -16,13 +16,13 @@ export class CategoryController {
     return this.categoryService.editCategory(id, dto);
   }
 
-  @Get('/list')
+  @Get('list')
   getCategorys() {
     return this.categoryService.getCategorys();
   }
 
-  @Get(':id')
-  getCategory(@Param('id') id: number) {
-    return this.categoryService.getCategory(id);
+  @Get(':name')
+  getCategory(@Param('name') name: string) {
+    return this.categoryService.getCategory(name);
   }
 }

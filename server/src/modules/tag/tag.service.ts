@@ -27,7 +27,7 @@ export class TagService {
     return this.tagEntity.find();
   }
 
-  getTag(id: number) {
-    return this.tagEntity.findOneOrFail(id);
+  getTag(name: string) {
+    return this.tagEntity.findOneOrFail({ name });
   }
 }
