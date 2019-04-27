@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from './article.entity';
 import { Repository } from 'typeorm';
-import { RelationshipsEntity } from './relationships.entity';
 import { ArticleDto } from './article.dto';
+import { RelationshipsEntity } from './relationships.entity';
 
 @Injectable()
 export class ArticleService {
@@ -39,7 +39,7 @@ export class ArticleService {
     });
   }
 
-  editArticle(id: number, dto: ArticleDto) {
+  updateArticle(id: number, dto: ArticleDto) {
     return this.articleEntity.findOneOrFail(id).then(() =>
       this.articleEntity.manager.transaction(entityManager => {
         return (
@@ -61,11 +61,7 @@ export class ArticleService {
             // 删除标签 & 分类
             .then(list => entityManager.remove<RelationshipsEntity>(RelationshipsEntity, list))
             // 重新建立关系
-            .then(() =>
-              entityManager.save<RelationshipsEntity>(
-                entityManager.create<RelationshipsEntity>(RelationshipsEntity, [...dto.tags.map(tag => ({ mid: tag, aid: id })), { mid: dto.category, aid: id }]),
-              ),
-            )
+            .then(() => entityManager.save<RelationshipsEntity>(entityManager.create<RelationshipsEntity>(RelationshipsEntity, [...dto.tags.map(tag => ({ mid: tag, aid: id })), { mid: dto.category, aid: id }])))
         );
       }),
     );

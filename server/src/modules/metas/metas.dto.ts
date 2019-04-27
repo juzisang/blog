@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class TagDto {
+export class MetasDto {
   @IsNotEmpty()
   @IsString()
   name: string;

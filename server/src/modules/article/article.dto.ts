@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsArray, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, IsNumber, IsEnum } from 'class-validator';
+
+enum ArticleState {
+  online = 'online',
+  draft = 'draft',
+  delete = 'delete',
+}
 
 export class ArticleDto {
   @IsNotEmpty()
@@ -19,6 +25,7 @@ export class ArticleDto {
 
   @IsNotEmpty()
   @IsString()
+  @IsEnum(ArticleState)
   state: string;
 
   @IsNotEmpty()

@@ -6,12 +6,11 @@ import { DBModule } from './db.module';
 
 import { AuthModule } from '@app/modules/auth/auth.module';
 import { ArticleModule } from '@app/modules/article/article.module';
-import { TagModule } from '@app/modules/tag/tag.module';
+import { MetasModule } from '@app/modules/metas/metas.module';
 import { CommentModule } from '@app/modules/comment/comment.module';
-import { CategoryModule } from '@app/modules/category/category.module';
 
 @Module({
-  imports: [DBModule, AuthModule, ArticleModule, CategoryModule, TagModule, CommentModule],
+  imports: [DBModule, AuthModule, ArticleModule, MetasModule, CommentModule],
   controllers: [AppController],
   providers: [AppService],
 })

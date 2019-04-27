@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity('category')
-export class CategoryEntity {
+@Entity('metas')
+export class MetasEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
   id: number;
 
@@ -13,6 +13,9 @@ export class CategoryEntity {
 
   @Column({ nullable: true, comment: '描述' })
   description: string;
+
+  @Column({ type: 'enum', enum: ['tag', 'category'], comment: '类型', select: false })
+  type: string;
 
   @CreateDateColumn({ comment: '创建时间' })
   ctime: Date;

@@ -1,10 +1,10 @@
-import { Entity, PrimaryColumn } from 'typeorm';
+import { PrimaryColumn, Entity } from 'typeorm';
 
 @Entity('relationships')
 export class RelationshipsEntity {
   @PrimaryColumn({ comment: '文章id' })
   aid: number;
 
-  @PrimaryColumn({ comment: '分类标签id' })
+  @PrimaryColumn({ comment: '分类id' })
   mid: number;
 }
