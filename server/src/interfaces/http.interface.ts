@@ -1,5 +1,10 @@
+export enum IHttpStatus {
+  Error = 'error',
+  Success = 'success',
+}
+
 export interface IHttpResponse<T> {
-  code: number;
+  status: IHttpStatus;
   message: string;
   data?: T;
 }

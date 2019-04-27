@@ -2,7 +2,7 @@ import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from '@nes
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { IHttpResponse } from '@app/interfaces/http.interface';
+import { IHttpResponse, IHttpStatus } from '@app/interfaces/http.interface';
 
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor {
@@ -13,9 +13,9 @@ export class TransformInterceptor<T> implements NestInterceptor {
 
   toBaseResponse(data: any) {
     return {
-      code: 200,
+      status: IHttpStatus.Success,
+      message: '请求成功',
       data,
-      message: 'ok',
     };
   }
 }
