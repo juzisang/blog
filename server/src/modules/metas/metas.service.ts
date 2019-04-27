@@ -24,7 +24,6 @@ export class MetasService {
     return this.metasEntity
       .findOneOrFail({ id, type })
       .then(() => this.metasEntity.update({ id, type }, dto))
-      .catch(() => `${name} 不存在`);
   }
 
   getMetas(type: 'tag' | 'category') {
