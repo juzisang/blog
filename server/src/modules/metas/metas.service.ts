@@ -21,16 +21,14 @@ export class MetasService {
   }
 
   updateMeta(type: 'tag' | 'category', id: number, dto: MetasDto) {
-    return this.metasEntity
-      .findOneOrFail({ id, type })
-      .then(() => this.metasEntity.update({ id, type }, dto))
+    return this.metasEntity.findOneOrFail({ id, type }).then(() => this.metasEntity.update({ id, type }, dto));
   }
 
   getMetas(type: 'tag' | 'category') {
     return this.metasEntity.find({ type });
   }
 
-  getMeta(type: 'tag' | 'category', name: string) {
-    return this.metasEntity.findOneOrFail({ name, type }).catch(() => `${name} 不存在`);
+  getMeta(type: 'tag' | 'category', id: number) {
+    return this.metasEntity.findOneOrFail({ id, type });
   }
 }

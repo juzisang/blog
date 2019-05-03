@@ -6,7 +6,7 @@ import { MetasService } from './metas.service';
 export class TagController {
   constructor(private readonly metaService: MetasService) {}
 
-  @Post('/')
+  @Post()
   addTag(@Body() tag: MetasDto) {
     return this.metaService.addMeta('tag', tag);
   }
@@ -16,13 +16,13 @@ export class TagController {
     return this.metaService.updateMeta('tag', id, tag);
   }
 
-  @Get('list')
+  @Get()
   getTags() {
     return this.metaService.getMetas('tag');
   }
 
-  @Get(':name')
-  getTag(@Param('name') name: string) {
-    return this.metaService.getMeta('tag', name);
+  @Get(':id')
+  getTag(@Param('id') id: number) {
+    return this.metaService.getMeta('tag', id);
   }
 }

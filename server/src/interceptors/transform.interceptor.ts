@@ -15,7 +15,7 @@ export class TransformInterceptor<T> implements NestInterceptor {
     return {
       status: IHttpStatus.Success,
       message: '请求成功',
-      data,
+      data: data ? data : undefined,
     };
   }
 }

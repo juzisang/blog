@@ -9,7 +9,11 @@ import { HttpExceptionFilter } from '@app/interceptors/http-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // validation
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
   // transform
   app.useGlobalInterceptors(new TransformInterceptor());
   // error filter

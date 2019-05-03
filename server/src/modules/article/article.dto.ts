@@ -40,3 +40,11 @@ export class ArticleDto {
   @IsString()
   content: string;
 }
+
+export class ArticlePagination {
+  @IsNotEmpty()
+  page: number;
+
+  @IsNotEmpty()
+  size: number;
+}

@@ -6,7 +6,7 @@ import { MetasDto } from './metas.dto';
 export class CategoryController {
   constructor(private readonly metaService: MetasService) {}
 
-  @Post('/')
+  @Post()
   addCategory(@Body() dto: MetasDto) {
     return this.metaService.addMeta('category', dto);
   }
@@ -16,13 +16,13 @@ export class CategoryController {
     return this.metaService.updateMeta('category', id, dto);
   }
 
-  @Get('list')
+  @Get()
   getCategorys() {
     return this.metaService.getMetas('category');
   }
 
-  @Get(':name')
-  getCategory(@Param('name') name: string) {
-    return this.metaService.getMeta('category', name);
+  @Get(':id')
+  getCategory(@Param('id') id: number) {
+    return this.metaService.getMeta('category', id);
   }
 }

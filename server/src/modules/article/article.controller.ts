@@ -1,28 +1,28 @@
-import { Controller, Get, Post, Put, Param, Body } from '@nestjs/common';
-import { ArticleDto } from './article.dto';
+import { Controller, Get, Post, Put, Param, Body, Query } from '@nestjs/common';
+import { ArticleDto, ArticlePagination } from './article.dto';
 import { ArticleService } from './article.service';
 
 @Controller('article')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  @Post('/')
+  @Post()
   addArticle(@Body() dto: ArticleDto) {
     return this.articleService.addArticle(dto);
   }
 
   @Put(':id')
-  updateArticle(@Param('id') id: number, dto: ArticleDto) {
+  updateArticle(@Param('id') id: number, @Body() dto: ArticleDto) {
     return this.articleService.updateArticle(id, dto);
   }
 
-  @Get('list')
-  getArticles() {
-    //
+  @Get()
+  getArticles(@Query() dto: ArticlePagination) {
+    return this.articleService.getArticles(dto);
   }
 
   @Get(':id')
-  getArticle() {
-    //
+  getArticle(@Param('id') id: number) {
+    return this.articleService.getArticle(id);
   }
 }

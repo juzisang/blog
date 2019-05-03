@@ -14,7 +14,7 @@ export class MetasEntity {
   @Column({ nullable: true, comment: '描述' })
   description: string;
 
-  @Column({ type: 'enum', enum: ['tag', 'category'], comment: '类型', select: false })
+  @Column({ type: 'enum', enum: ['tag', 'category'], comment: '类型'})
   type: string;
 
   @CreateDateColumn({ comment: '创建时间' })
