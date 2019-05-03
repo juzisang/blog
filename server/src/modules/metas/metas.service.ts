@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 
 import { MetasDto } from './metas.dto';
 import { MetasEntity } from './metas.entity';
+import { RelationshipsEntity } from '@app/modules/article/relationships.entity';
+import { ArticleEntity } from '@app/modules/article/article.entity';
 
 @Injectable()
 export class MetasService {
@@ -25,10 +27,28 @@ export class MetasService {
   }
 
   getMetas(type: 'tag' | 'category') {
-    return this.metasEntity.find({ type });
+    return this.metasEntity
+      .createQueryBuilder('metas')
+      .select(['metas.id as id', 'metas.name as name', 'metas.slug as slug', 'metas.description as description', 'metas.type as type', 'metas.ctime as ctime', 'metas.utime as utime'])
+      .addSelect('COUNT(relationships.aid)', 'articleCount')
+      .leftJoin(RelationshipsEntity, 'relationships', 'relationships.mid = metas.id')
+      .where('metas.type = :type', { type })
+      .groupBy('metas.id')
+      .orderBy('articleCount', 'DESC')
+      .getRawMany();
   }
 
-  getMeta(type: 'tag' | 'category', id: number) {
-    return this.metasEntity.findOneOrFail({ id, type });
+  async getMeta(type: 'tag' | 'category', id: number) {
+    return this.metasEntity
+      .findOneOrFail({ id, type })
+      .then(async tag => {
+        const articles = await this.metasEntity.manager
+          .createQueryBuilder(ArticleEntity, 'article')
+          .leftJoin(RelationshipsEntity, 'relationships', 'relationships.aid = article.id')
+          .leftJoinAndMapOne('article.category', MetasEntity, 'metas', 'metas.id = relationships.mid AND metas.type = :type', { type: 'category' })
+          .getMany();
+        return [tag, articles];
+      })
+      .then(([tag, articles]) => ({ ...tag, articles }));
   }
 }
