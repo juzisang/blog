@@ -5,11 +5,11 @@ export class CommentEntity {
   @PrimaryGeneratedColumn({ comment: '评论id' })
   id: number;
 
+  @Column({ comment: '父评论', name: 'parent_id', nullable: true })
+  parentId: number;
+
   @Column({ comment: '所属文章id' })
   aid: number;
-
-  @Column({ nullable: true, comment: '父评论id' })
-  parent: number;
 
   @Column({ comment: '评论者名字', name: 'author_name' })
   authorName: string;
@@ -28,9 +28,6 @@ export class CommentEntity {
 
   @Column({ comment: '设备信息' })
   agent: string;
-
-  @Column({ type: 'enum', enum: ['online', 'delete'], comment: '评论状态' })
-  state: 'online' | 'delete';
 
   @CreateDateColumn({ comment: '创建时间' })
   ctime: Date;

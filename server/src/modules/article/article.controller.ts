@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Put, Param, Body, Query } from '@nestjs/common';
-import { ArticleDto, ArticlePagination } from './article.dto';
+import { ArticleDto } from './article.dto';
 import { ArticleService } from './article.service';
+import { PaginationDto } from '@app/common/pagination.dto';
 
 @Controller('article')
 export class ArticleController {
@@ -17,7 +18,7 @@ export class ArticleController {
   }
 
   @Get()
-  getArticles(@Query() dto: ArticlePagination) {
+  getArticles(@Query() dto: PaginationDto) {
     return this.articleService.getArticles(dto);
   }
 

@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from './article.entity';
 import { Repository } from 'typeorm';
-import { ArticleDto, ArticlePagination } from './article.dto';
+import { ArticleDto } from './article.dto';
 import { RelationshipsEntity } from './relationships.entity';
 import { MetasEntity } from '@app/modules/metas/metas.entity';
+import { PaginationDto } from '@app/common/pagination.dto';
 
 @Injectable()
 export class ArticleService {
@@ -70,7 +71,7 @@ export class ArticleService {
     );
   }
 
-  getArticles(dto: ArticlePagination) {
+  getArticles(dto: PaginationDto) {
     return Promise.resolve()
       .then(() =>
         this.articleEntity
