@@ -13,6 +13,6 @@ export class AuthController {
 
   @Get()
   getAdmin() {
-    return this.authService.getAdmin();
+    return this.authService.getAdminInfo();
   }
 }

@@ -36,7 +36,7 @@ export class AuthService {
     );
   }
 
-  getAdmin() {
+  getAdminInfo() {
     return this.authEntity.findOneOrFail({ username: 'root' });
   }
 
@@ -47,13 +47,6 @@ export class AuthService {
       slogan: ' ',
       avatar: ' ',
     });
-  }
-
-  isCreateAdmin() {
-    return this.authEntity
-      .findOneOrFail({ username: 'root' })
-      .then(() => true)
-      .catch(() => false);
   }
 
   validateUser(payload: JwtPayload) {

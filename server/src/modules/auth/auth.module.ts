@@ -1,4 +1,4 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Module, OnModuleInit, Global } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
@@ -7,6 +7,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { AuthEntity } from './auth.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forFeature([AuthEntity]),
@@ -26,10 +27,6 @@ export class AuthModule implements OnModuleInit {
   constructor(private readonly authService: AuthService) {}
 
   onModuleInit() {
-    this.authService.isCreateAdmin().then(is => {
-      if (!is) {
-        this.authService.createAdmin();
-      }
-    });
+    this.authService.getAdminInfo().catch(() => this.authService.createAdmin());
   }
 }

@@ -23,13 +23,24 @@ export class MetasService {
   }
 
   updateMeta(type: 'tag' | 'category', id: number, dto: MetasDto) {
-    return this.metasEntity.findOneOrFail({ id, type }).then(() => this.metasEntity.update({ id, type }, dto));
+    return this.metasEntity
+      .findOneOrFail({ id, type })
+      .then(() => this.metasEntity.update({ id, type }, dto))
+      .then(() => null);
   }
 
   getMetas(type: 'tag' | 'category') {
     return this.metasEntity
       .createQueryBuilder('metas')
-      .select(['metas.id as id', 'metas.name as name', 'metas.slug as slug', 'metas.description as description', 'metas.type as type', 'metas.ctime as ctime', 'metas.utime as utime'])
+      .select([
+        'metas.id as id',
+        'metas.name as name',
+        'metas.slug as slug',
+        'metas.description as description',
+        'metas.type as type',
+        'metas.ctime as ctime',
+        'metas.utime as utime',
+      ])
       .addSelect('COUNT(relationships.aid)', 'articleCount')
       .leftJoin(RelationshipsEntity, 'relationships', 'relationships.mid = metas.id')
       .where('metas.type = :type', { type })

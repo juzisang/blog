@@ -1,17 +1,20 @@
-import { Controller, Get, Post, Put, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, UseGuards } from '@nestjs/common';
 import { MetasDto } from './metas.dto';
 import { MetasService } from './metas.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('tag')
 export class TagController {
   constructor(private readonly metaService: MetasService) {}
 
   @Post()
+  @UseGuards(AuthGuard())
   addTag(@Body() tag: MetasDto) {
     return this.metaService.addMeta('tag', tag);
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard())
   editTag(@Param('id') id: number, @Body() tag: MetasDto) {
     return this.metaService.updateMeta('tag', id, tag);
   }
