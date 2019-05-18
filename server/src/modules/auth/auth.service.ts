@@ -41,11 +41,13 @@ export class AuthService {
   }
 
   createAdmin() {
-    return this.register({
-      username: 'root',
-      password: '123456',
-      slogan: ' ',
-      avatar: ' ',
+    return this.getAdminInfo().catch(() => {
+      return this.register({
+        username: 'root',
+        password: '123456',
+        slogan: ' ',
+        avatar: ' ',
+      });
     });
   }
 

@@ -27,6 +27,6 @@ export class AuthModule implements OnModuleInit {
   constructor(private readonly authService: AuthService) {}
 
   onModuleInit() {
-    this.authService.getAdminInfo().catch(() => this.authService.createAdmin());
+    this.authService.createAdmin();
   }
 }
