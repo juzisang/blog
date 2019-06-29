@@ -8,9 +8,10 @@ import { AuthModule } from '@app/modules/auth/auth.module';
 import { ArticleModule } from '@app/modules/article/article.module';
 import { MetasModule } from '@app/modules/metas/metas.module';
 import { CommentModule } from '@app/modules/comment/comment.module';
+import { ConfigModule } from '@app/modules/config/config.module';
 
 @Module({
-  imports: [DBModule, AuthModule, ArticleModule, MetasModule, CommentModule],
+  imports: [DBModule, AuthModule, ArticleModule, MetasModule, CommentModule, ConfigModule],
   controllers: [AppController],
   providers: [AppService],
 })
