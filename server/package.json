@@ -7,7 +7,7 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "NODE_ENV=development NODE_ENV=development ts-node -r tsconfig-paths/register src/main.ts",
-    "start:dev": "NODE_ENV=development nodemon",
+    "start:dev": "NODE_ENV=development nodemon -L",
     "start:debug": "NODE_ENV=development nodemon --config nodemon-debug.json",
     "prestart:prod": "NODE_ENV=production rimraf dist && npm run build",
     "start:prod": "NODE_ENV=production node dist/main.js",

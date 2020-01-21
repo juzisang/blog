@@ -2,38 +2,28 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
     "moduleResolution": "node",
-    "experimentalDecorators": true,
+    "lib": [
+      "esnext",
+      "esnext.asynciterable",
+      "dom"
+    ],
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "allowJs": true,
     "sourceMap": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "noEmit": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "src/*"
+        "./src/*"
       ]
     },
     "types": [
       "@types/node",
-      "@nuxt/vue-app",
-    ],
-    "lib": [
-      "esnext",
-      "esnext.asynciterable",
-      "dom",
-      "scripthost"
-    ],
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "types/**/*.ts",
-    "node_modules/vue-tsx-support/enable-check.d.ts",
-    "node_modules/vue-tsx-support/options/enable-vue-router.d.ts",
-    "node_modules/vue-tsx-support/options/enable-nativeon.d.ts",
-  ]
+      "@nuxt/vue-app"
+    ]
+  }
 }
