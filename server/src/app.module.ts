@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import * as path from 'path';
+import { UserModule } from './modules/user/user.module';
+import { BlogModule } from './modules/blog/blog.module';
 
 @Module({
   imports: [
@@ -23,7 +25,9 @@ import * as path from 'path';
       entities: [path.join(__dirname, '**/**.entity{.ts,.js}')],
       synchronize: true,
       logging: true,
-    })
+    }),
+    UserModule,
+    BlogModule
   ],
   controllers: [AppController],
   providers: [AppService],
