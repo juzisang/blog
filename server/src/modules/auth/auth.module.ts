@@ -10,9 +10,11 @@ import { AuthController } from './auth.controller';
   imports: [
     UserModule,
     PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60s' },
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: process.env.JWT_SECRET,
+        signOptions: { expiresIn: 3600 },
+      })
     })
   ],
   controllers: [AuthController],
