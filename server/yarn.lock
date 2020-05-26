@@ -5038,6 +5038,11 @@ neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.npm.taobao.org/neo-async/download/neo-async-2.6.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fneo-async%2Fdownload%2Fneo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha1-rCetpmFn+ohJpq3dg39rGJrSCBw=
 
+nestjs-typeorm-paginate@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.npm.taobao.org/nestjs-typeorm-paginate/download/nestjs-typeorm-paginate-2.0.3.tgz#62443a344400817d99a7bbdd048ed2938390d8db"
+  integrity sha1-YkQ6NEQAgX2Zp7vdBI7Sk4OQ2Ns=
+
 next-tick@1:
   version "1.1.0"
   resolved "https://registry.npm.taobao.org/next-tick/download/next-tick-1.1.0.tgz#1836ee30ad56d67ef281b22bd199f709449b35eb"

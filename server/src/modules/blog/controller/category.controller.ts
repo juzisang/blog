@@ -1,5 +1,6 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Body, Post, Put } from "@nestjs/common";
 import { CategoryService } from "../service/category.service";
+import { CategorySaveDto, CategoryUpdateDto } from "../dto/CategoryDto";
 
 @Controller('category')
 export class CategoryController {
@@ -8,9 +9,24 @@ export class CategoryController {
     private readonly categoryService: CategoryService
   ) { }
 
-  @Get()
-  getList() {
-    return this.categoryService.getList()
+  @Get('/list')
+  getAllList() {
+    return this.categoryService.getAllList()
+  }
+
+  @Get('/tree')
+  getTreeList() {
+    return this.categoryService.getTreeList()
+  }
+
+  @Post()
+  save(@Body() dto: CategorySaveDto) {
+    return this.categoryService.save(dto)
+  }
+
+  @Put()
+  update(@Body() dto: CategoryUpdateDto) {
+    return this.categoryService.update(dto)
   }
 
 }

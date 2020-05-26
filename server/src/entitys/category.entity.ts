@@ -5,7 +5,7 @@ export class CategoryEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
   id: number;
 
-  @Column({ comment: '父分类id' })
+  @Column({ comment: '父分类id', nullable: true })
   pid: number;
 
   @Column({ comment: '标签名' })

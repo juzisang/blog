@@ -22,7 +22,7 @@ async function bootstrap() {
   // 将错误转换为固定格式
   app.useGlobalFilters(new HttpExceptionFilter())
 
-  await app.listen(3000);
+  await app.listen(process.env.APP_PORT);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

@@ -11,7 +11,17 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     response.status(status).json({
       status: IHttpStatus.Error,
-      message: exception.message,
+      message: this.getMessage(exception.getResponse()),
     });
+  }
+
+  getMessage(message: string | object) {
+    if (typeof message === 'string') {
+      return message
+    }
+
+    if (typeof message === 'object') {
+      return (message as any).message
+    }
   }
 }
