@@ -48,7 +48,7 @@ jobs:
         with:
           filename: 'blog-server.zip'
           path: './server'
-          directory: './tmp'
+          exclusions: '/*node_modules/*'
       - name: SSH Deploy
         uses: easingthemes/ssh-deploy@v2.1.2
         with:
@@ -65,7 +65,7 @@ jobs:
           user: ${{ secrets.REMOTE_USER }}
           command: |
             cd ~/root/tmp/
-            unzip ./blog-server.zip
-            mv ./blog-server ~/app/blog-server
-            cd ~/app/blog-server/dist
-            pm2 start ./main.js
+            unzip -o ./blog-server.zip -d ~/apps/blog-server
+            cd ~/apps/blog-server/
+            yarn install
+            pm2 start npm -- run dev start:prod
