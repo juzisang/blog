@@ -36,12 +36,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Nest Build
-        run: |
-          cd ./server
-          npm install @nestjs/cli -g
-          yarn install
-          yarn build
+      - run: cd ./server
+      - run: npm install @nestjs/cli -g
+      - run: yarn install
+      - run: yarn build
       - name: Environment variables to Dotenv
         uses: CallePuzzle/envvar-to-dotenv-action@0.1.0
         with:
