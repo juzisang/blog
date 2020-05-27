@@ -69,7 +69,7 @@ jobs:
             source ~/.bashrc
             cd /root/tmp/
             unzip -o ./blog-server.zip -d ~/tmp/
-            mv -f ./server ~/apps/blog-server/
+            mv -f ./server/ ~/apps/blog-server/
             cd ~/apps/blog-server/
             yarn install
-            pm2 restart ecosystem.config.js
+            pm2 restart ./ecosystem.config.js
