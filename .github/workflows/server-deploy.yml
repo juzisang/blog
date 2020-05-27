@@ -65,7 +65,7 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           user: ${{ secrets.REMOTE_USER }}
           command: |
-            cd ~/root/tmp/
+            cd /root/tmp/
             unzip -o ./blog-server.zip -d ~/apps/blog-server
             cd ~/apps/blog-server/
             yarn install
