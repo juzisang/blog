@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Tree, TreeChildren } from 'typeorm'
 
 @Entity('category')
+@Tree('materialized-path')
 export class CategoryEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
   id: number;
@@ -16,6 +17,9 @@ export class CategoryEntity {
 
   @Column({ comment: '描述', nullable: true })
   description: string;
+
+  @TreeChildren()
+  children: CategoryEntity[];
 
   @CreateDateColumn({ comment: '创建时间', select: false })
   ctime: Date;

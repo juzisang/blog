@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne, OneToMany, ManyToMany } from 'typeorm'
+import { CategoryEntity } from './category.entity';
+import { TagEntity } from './tag.entity';
 
 @Entity('content')
 export class ContentEntity {
@@ -35,6 +37,13 @@ export class ContentEntity {
 
   @Column({ comment: '内容', type: 'text' })
   content: string
+
+  @OneToOne(type => CategoryEntity)
+  @JoinColumn({ name: 'category_id' })
+  category: CategoryEntity
+
+  @ManyToMany(type => TagEntity)
+  tags: TagEntity[]
 
   @CreateDateColumn({ comment: '创建时间', select: false })
   ctime: Date;
