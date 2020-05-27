@@ -64,12 +64,14 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           host: ${{ secrets.REMOTE_HOST }}
           user: ${{ secrets.REMOTE_USER }}
-          args: '-tt -vvv'
+          args: '-tt'
           command: |
             source ~/.bashrc
-            cd /root/tmp/
+            cd ~/tmp/
             unzip -o ./blog-server.zip -d ~/tmp/
-            mv -f ./server/ ~/apps/blog-server/
+            cp -rf ./server/ ~/apps/blog-server/
             cd ~/apps/blog-server/
-            yarn install
+            yarn install --check-files
             pm2 restart ./ecosystem.config.js
+            rm -rf ~/tmp/blog-server.zip ~/tmp/server
+            
