@@ -47,7 +47,7 @@ jobs:
       - name: Zip Release
         uses: TheDoctor0/zip-release@v0.3.0
         with:
-          filename: 'blog-server.zip'
+          filename: './tmp/blog-server.zip'
           path: './server'
           exclusions: '/*node_modules/*'
       - name: SSH Deploy
@@ -56,7 +56,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SOURCE: './tmp'
+          SOURCE: './tmp/'
           TARGET: '~/root/tmp/'
       - name: Start
         uses: fifsky/ssh-action@v0.0.4
