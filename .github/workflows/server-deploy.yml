@@ -52,7 +52,7 @@ jobs:
           exclusions: '/*node_modules/*'
       - name: SSH Deploy
         uses: easingthemes/ssh-deploy@v2.1.2
-        with:
+        env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
