@@ -39,6 +39,7 @@ jobs:
       - name: Nest Build
         run: |
           cd ./server
+          npm install @nestjs/cli -g
           yarn install
           yarn build
       - name: Environment variables to Dotenv
