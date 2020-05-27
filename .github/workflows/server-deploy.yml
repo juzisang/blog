@@ -64,6 +64,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           host: ${{ secrets.REMOTE_HOST }}
           user: ${{ secrets.REMOTE_USER }}
+          args: '-tt -vvv'
           command: |
             cd /root/tmp/
             unzip -o ./blog-server.zip -d ~/tmp/
