@@ -1,0 +1,79 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+on:
+  push:
+    branches:
+      - master
+      - ci
+    paths:
+      - 'server/*'
+
+env:
+  NODE_ENV: 'production'
+  SERVER_APP_PORT: '108080'
+  SERVER_BLOG_SITE_ORIGIN: 'juzisang.com'
+  SERVER_JWT_SECRET: ${{ secrets.SERVER_JWT_SECRET }}
+  SERVER_USER_ROOT_NAME: ${{ secrets.SERVER_USER_ROOT_NAME }}
+  SERVER_USER_ROOT_PASSWORD: ${{ secrets.SERVER_USER_ROOT_PASSWORD }}
+
+  SERVER_DATABASE_HOST: ${{ secrets.SERVER_DATABASE_HOST }}
+  SERVER_DATABASE_PORT: ${{ secrets.SERVER_DATABASE_PORT }}
+  SERVER_DATABASE_USERNAME: ${{ secrets.SERVER_DATABASE_USERNAME }}
+  SERVER_DATABASE_PASSWORD: ${{ secrets.SERVER_DATABASE_PASSWORD }}
+  SERVER_DATABASE_DATABASE: ${{ secrets.SERVER_DATABASE_DATABASE }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Nest Build
+    - run: cd ./server
+    - run: yarn build
+    - run: yarn test
+
+    - name: Environment variables to Dotenv
+      uses: CallePuzzle/envvar-to-dotenv-action@0.1.0
+      with:
+        envPath: './server/.env'
+        variableNamesByFilter: ^SERVER_(.*)|NODE_ENV
+
+    - name: Zip Release
+      uses: TheDoctor0/zip-release@v0.3.0
+      with:
+        filename: 'blog-server.zip'
+        path: './server'
+        directory: './tmp'
+
+    - name: SSH Deploy
+      uses: easingthemes/ssh-deploy@v2.1.2
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+        REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        SOURCE: './tmp'
+        TARGET: '~/root/tmp/'
+
+    - name: Start
+      uses: fifsky/ssh-action@v0.0.4
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        user: ${{ secrets.REMOTE_USER }}
+        command: |
+          cd ~/root/tmp/
+          unzip ./blog-server.zip
+          mv ./blog-server ~/app/blog-server
+          cd ~/app/blog-server/dist
+          pm2 start ./main.js
