@@ -7,8 +7,8 @@ on:
     branches:
       - master
       - ci
-    paths:
-      - 'server/*'
+    # paths:
+    #   - 'server/*'
 
 env:
   NODE_ENV: 'production'
