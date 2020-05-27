@@ -61,8 +61,8 @@ jobs:
       - name: Start
         uses: fifsky/ssh-action@v0.0.4
         with:
-          host: ${{ secrets.REMOTE_HOST }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.REMOTE_HOST }}
           user: ${{ secrets.REMOTE_USER }}
           command: |
             cd ~/root/tmp/
