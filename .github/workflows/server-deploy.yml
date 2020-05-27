@@ -66,6 +66,7 @@ jobs:
           user: ${{ secrets.REMOTE_USER }}
           args: '-tt -vvv'
           command: |
+            source ~/.bashrc
             cd /root/tmp/
             unzip -o ./blog-server.zip -d ~/tmp/
             mv -f ./server ~/apps/blog-server/
