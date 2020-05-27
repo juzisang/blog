@@ -57,7 +57,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           SOURCE: './blog-server.zip'
-          TARGET: '~/root/tmp/'
+          TARGET: '/root/tmp/'
       - name: Start
         uses: fifsky/ssh-action@v0.0.4
         with:
