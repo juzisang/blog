@@ -12,9 +12,10 @@ import { CategoryController } from "./controller/category.controller";
 import { TagController } from "./controller/tag.controller";
 import { ContentController } from "./controller/content.controller";
 import { CommentController } from "./controller/comment.controller";
+import { UserModule } from "@app/user/user.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CategoryEntity, TagEntity, ContentEntity, CommentEntity])],
+  imports: [TypeOrmModule.forFeature([CategoryEntity, TagEntity, ContentEntity, CommentEntity]), UserModule],
   controllers: [CategoryController, TagController, ContentController, CommentController],
   providers: [CategoryService, TagService, ContentService, CommentService]
 })

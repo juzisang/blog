@@ -2,7 +2,7 @@ import { Injectable, BadRequestException, NotFoundException } from "@nestjs/comm
 import { InjectRepository } from "@nestjs/typeorm";
 import { CategoryEntity } from "@app/blog/entity/category.entity";
 import { Repository } from "typeorm";
-import { CategorySaveDto, CategoryUpdateDto } from "../dto/CategoryDto";
+import { CategorySaveDto, CategoryUpdateDto } from "../dto/category.dto";
 
 @Injectable()
 export class CategoryService {
@@ -14,6 +14,10 @@ export class CategoryService {
 
   getAllList() {
     return this.categoryEntity.find()
+  }
+
+  getOne(name: string) {
+    return this.categoryEntity.findOne({ name })
   }
 
   async save(dto: CategorySaveDto) {
