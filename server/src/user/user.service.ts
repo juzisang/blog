@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserEntity } from "src/entitys/user.entity";
+import { UserEntity } from "@app/user/user.entity";
 import { Repository } from "typeorm";
 import { UserDto } from "./user.dto";
 import { MD5 } from 'crypto-js'

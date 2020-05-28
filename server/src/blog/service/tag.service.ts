@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { TagEntity } from "@app/entitys/tag.entity";
+import { TagEntity } from "@app/blog/entity/tag.entity";
 import { Repository } from "typeorm";
 import { TagSaveDto, TagUpdateDto } from "../dto/TagDto";
 

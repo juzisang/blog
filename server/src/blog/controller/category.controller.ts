@@ -14,11 +14,6 @@ export class CategoryController {
     return this.categoryService.getAllList()
   }
 
-  @Get('/tree')
-  getTreeList() {
-    return this.categoryService.getTreeList()
-  }
-
   @Post()
   save(@Body() dto: CategorySaveDto) {
     return this.categoryService.save(dto)

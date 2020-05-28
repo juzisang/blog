@@ -1,0 +1,9 @@
+{
+  "remote.SSH.defaultForwardedPorts": [
+    {
+      "remotePort": 28080,
+      "localPort": 28080,
+      "name": "blog-server"
+    }
+  ]
+}

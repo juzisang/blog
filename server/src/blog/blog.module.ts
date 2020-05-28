@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { CategoryEntity } from "src/entitys/category.entity";
-import { TagEntity } from "src/entitys/tag.entity";
-import { ContentEntity } from "src/entitys/content.entity";
-import { CommentEntity } from "src/entitys/comment.entity";
+import { CategoryEntity } from "@app/blog/entity/category.entity";
+import { TagEntity } from "@app/blog/entity/tag.entity";
+import { ContentEntity } from "@app/blog/entity/content.entity";
+import { CommentEntity } from "@app/blog/entity/comment.entity";
 import { CategoryService } from "./service/category.service";
 import { TagService } from "./service/tag.service";
 import { ContentService } from "./service/content.service";
