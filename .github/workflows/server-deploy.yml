@@ -47,7 +47,7 @@ jobs:
       - name: Zip Release
         uses: TheDoctor0/zip-release@v0.3.0
         with:
-          filename: 'blog-server.zip'
+          filename: 'server.zip'
           path: './server'
           exclusions: '/*node_modules/*'
       - name: SSH Deploy
@@ -56,7 +56,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SOURCE: './blog-server.zip'
+          SOURCE: './server.zip'
           TARGET: '/root/tmp/'
       - name: Start
         uses: fifsky/ssh-action@v0.0.4
@@ -68,10 +68,10 @@ jobs:
           command: |
             source ~/.bashrc
             cd ~/tmp/
-            unzip -o ./blog-server.zip -d ~/tmp/
-            cp -rf ./server/ ~/apps/blog-server/
-            cd ~/apps/blog-server/
-            yarn install --check-files
+            unzip -o ./server.zip -d ./tmp/
+            cp -rf ./server/ ~/apps/blog/
+            cd ~/apps/blog/server/
+            yarn install
             pm2 restart ./ecosystem.config.js
-            rm -rf ~/tmp/blog-server.zip ~/tmp/server
+            rm -rf ~/tmp/server.zip ~/tmp/server
             
