@@ -68,7 +68,7 @@ jobs:
           command: |
             source ~/.bashrc
             cd ~/tmp/
-            unzip -o ./server.zip -d ./tmp/
+            unzip -o ./server.zip -d ./
             cp -rf ./server/ ~/apps/blog/
             cd ~/apps/blog/server/
             yarn install
