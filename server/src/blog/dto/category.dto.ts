@@ -1,9 +1,9 @@
 import { IsNumber, IsNotEmpty, IsString, IsOptional } from "class-validator";
 
 export class CategorySaveDto {
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  pid: number
+  pName: number
 
   @IsString()
   @IsNotEmpty()

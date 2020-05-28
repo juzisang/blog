@@ -1,14 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne, OneToMany, ManyToMany } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne, ManyToMany } from 'typeorm'
 import { CategoryEntity } from './category.entity';
 import { TagEntity } from './tag.entity';
+import { UserEntity } from '@app/user/user.entity';
 
 @Entity('content')
 export class ContentEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
   id: number;
-
-  @Column({ comment: '用户ID' })
-  uid: number;
 
   @Column({ comment: '类型', type: 'enum', enum: ['page', 'article'] })
   type: 'page' | 'article'
@@ -37,6 +35,10 @@ export class ContentEntity {
 
   @Column({ comment: '内容', type: 'text' })
   content: string
+
+  @OneToOne(type => UserEntity)
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity;
 
   @OneToOne(type => CategoryEntity)
   @JoinColumn({ name: 'category_id' })

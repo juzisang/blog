@@ -1,17 +1,17 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: ServerDeploy
+name: ServerDevDeploy
 on:
   push:
     branches:
-      - master
+      - dev
     paths:
       - 'server/**'
 
 env:
   NODE_ENV: 'production'
-  SERVER_APP_PORT: '18080'
+  SERVER_APP_PORT: '28080'
   SERVER_BLOG_SITE_ORIGIN: 'juzisang.com'
   SERVER_JWT_SECRET: ${{ secrets.SERVER_JWT_SECRET }}
   SERVER_USER_ROOT_NAME: ${{ secrets.SERVER_USER_ROOT_NAME }}
@@ -19,9 +19,9 @@ env:
 
   SERVER_DATABASE_HOST: ${{ secrets.SERVER_DATABASE_HOST }}
   SERVER_DATABASE_PORT: ${{ secrets.SERVER_DATABASE_PORT }}
-  SERVER_DATABASE_USERNAME: ${{ secrets.SERVER_DATABASE_USERNAME }}
-  SERVER_DATABASE_PASSWORD: ${{ secrets.SERVER_DATABASE_PASSWORD }}
-  SERVER_DATABASE_DATABASE: ${{ secrets.SERVER_DATABASE_DATABASE }}
+  SERVER_DATABASE_USERNAME: ${{ secrets.SERVER_DEV_DATABASE_USERNAME }}
+  SERVER_DATABASE_PASSWORD: ${{ secrets.SERVER_DEV_DATABASE_PASSWORD }}
+  SERVER_DATABASE_DATABASE: ${{ secrets.SERVER_DEV_DATABASE_DATABASE }}
 
 jobs:
   deploy:
@@ -46,7 +46,7 @@ jobs:
       - name: Zip Release
         uses: TheDoctor0/zip-release@v0.3.0
         with:
-          filename: 'server.zip'
+          filename: 'server-dev.zip'
           path: './server'
           exclusions: '/*node_modules/*'
       - name: SSH Deploy
@@ -55,7 +55,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SOURCE: './server.zip'
+          SOURCE: './server-dev.zip'
           TARGET: '/root/tmp/'
       - name: Start
         uses: fifsky/ssh-action@v0.0.4
@@ -67,9 +67,9 @@ jobs:
           command: |
             source ~/.bashrc
             cd ~/tmp/
-            unzip -o ./server.zip -d ./
-            cp -rf ./server/ ~/apps/blog/
-            cd ~/apps/blog/server/
+            unzip -o ./server-dev.zip -d ./
+            cp -rf ./server/ ~/apps/blog-dev/
+            cd ~/apps/blog-dev/server/
             yarn install
             pm2 restart ./ecosystem.config.js
-            rm -rf ~/tmp/server.zip ~/tmp/server
+            rm -rf ~/tmp/server-dev.zip ~/tmp/server

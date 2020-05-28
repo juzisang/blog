@@ -1,8 +1,8 @@
 import { Injectable, BadRequestException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { TagEntity } from "@app/entitys/tag.entity";
+import { TagEntity } from "@app/blog/entity/tag.entity";
 import { Repository } from "typeorm";
-import { TagSaveDto, TagUpdateDto } from "../dto/TagDto";
+import { TagSaveDto, TagUpdateDto } from "../dto/tag.dto";
 
 @Injectable()
 export class TagService {
@@ -13,6 +13,12 @@ export class TagService {
 
   getAllList() {
     return this.tagEntity.find()
+  }
+
+  getPickList(names: string[]) {
+    return this.tagEntity.find({
+      where: names.map((name) => ({ name }))
+    })
   }
 
   async save(dto: TagSaveDto) {

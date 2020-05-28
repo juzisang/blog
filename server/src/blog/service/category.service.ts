@@ -1,8 +1,8 @@
 import { Injectable, BadRequestException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { CategoryEntity } from "src/entitys/category.entity";
+import { CategoryEntity } from "@app/blog/entity/category.entity";
 import { Repository } from "typeorm";
-import { CategorySaveDto, CategoryUpdateDto } from "../dto/CategoryDto";
+import { CategorySaveDto, CategoryUpdateDto } from "../dto/category.dto";
 
 @Injectable()
 export class CategoryService {
@@ -16,16 +16,14 @@ export class CategoryService {
     return this.categoryEntity.find()
   }
 
-  getTreeList() {
-    const tree = this.categoryEntity.manager.getTreeRepository(CategoryEntity)
-    return tree.findTrees()
+  getOne(name: string) {
+    return this.categoryEntity.findOne({ name })
   }
 
   async save(dto: CategorySaveDto) {
-    if (await this.categoryEntity.findOne({ name: dto.name, pid: dto.pid })) {
+    if (await this.categoryEntity.findOne({ name: dto.name })) {
       throw new BadRequestException(`${dto.name}分类已存在`)
     }
-
     const entity = this.categoryEntity.create(dto)
     await this.categoryEntity.save(entity)
   }
