@@ -69,6 +69,6 @@ jobs:
             cd ~/tmp/
             unzip -o ./server-dev.zip -d ./
             cp -rf ./server/ ~/apps/blog-dev/
-            cd ~/apps/blog-dev/server/
-            pm2 restart ./ecosystem.config.js
             rm -rf ~/tmp/server-dev.zip ~/tmp/server
+            cd ~/apps/blog-dev/server/
+            pm2 restart ./config/ecosystem.dev.config.js
