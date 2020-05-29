@@ -17,11 +17,11 @@ export class UserModule implements OnModuleInit {
   ) { }
 
   async onModuleInit() {
-    const rootUser = await this.userService.findOne({ username: process.env.SERVER_USER_ROOT_NAME })
+    const rootUser = await this.userService.findOne({ username: process.env.USER_ROOT_NAME })
     if (!rootUser) {
       await this.userService.create({
-        username: process.env.SERVER_USER_ROOT_NAME,
-        password: process.env.SERVER_USER_ROOT_PASSWORD
+        username: process.env.USER_ROOT_NAME,
+        password: process.env.USER_ROOT_PASSWORD
       })
     }
   }

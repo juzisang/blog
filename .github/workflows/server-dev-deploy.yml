@@ -6,8 +6,8 @@ on:
   push:
     branches:
       - dev
-    paths:
-      - 'server/**'
+    # paths:
+    #   - 'server/**'
 
 env:
   NODE_ENV: 'production'
@@ -48,7 +48,7 @@ jobs:
         with:
           filename: 'server-dev.zip'
           path: './server'
-          exclusions: '/*node_modules/*'
+          # exclusions: '/*node_modules/*'
       - name: SSH Deploy
         uses: easingthemes/ssh-deploy@v2.1.2
         env:
@@ -69,7 +69,6 @@ jobs:
             cd ~/tmp/
             unzip -o ./server-dev.zip -d ./
             cp -rf ./server/ ~/apps/blog-dev/
-            cd ~/apps/blog-dev/server/
-            yarn install
-            pm2 restart ./ecosystem.config.js
             rm -rf ~/tmp/server-dev.zip ~/tmp/server
+            cd ~/apps/blog-dev/server/
+            pm2 restart ecosystem.dev.config.js

@@ -48,7 +48,7 @@ jobs:
         with:
           filename: 'server.zip'
           path: './server'
-          exclusions: '/*node_modules/*'
+          # exclusions: '/*node_modules/*'
       - name: SSH Deploy
         uses: easingthemes/ssh-deploy@v2.1.2
         env:
@@ -69,7 +69,6 @@ jobs:
             cd ~/tmp/
             unzip -o ./server.zip -d ./
             cp -rf ./server/ ~/apps/blog/
-            cd ~/apps/blog/server/
-            yarn install
-            pm2 restart ./ecosystem.config.js
             rm -rf ~/tmp/server.zip ~/tmp/server
+            cd ~/apps/blog/server/
+            pm2 restart ecosystem.config.js

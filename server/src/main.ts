@@ -13,7 +13,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   // cors
   app.enableCors({
-    origin: process.env.NODE_ENV === 'development' ? '*' : process.env.SERVER_BLOG_SITE_ORIGIN,
+    origin: process.env.NODE_ENV === 'development' ? '*' : process.env.BLOG_SITE_ORIGIN,
     credentials: true,
     maxAge: 60 * 60 * 24,
   });
@@ -22,7 +22,7 @@ async function bootstrap() {
   // 将错误转换为固定格式
   app.useGlobalFilters(new HttpExceptionFilter())
 
-  await app.listen(process.env.SERVER_APP_PORT);
+  await app.listen(process.env.APP_PORT);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

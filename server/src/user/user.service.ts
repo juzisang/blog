@@ -24,7 +24,7 @@ export class UserService {
 
   async findAdmin() {
     if (!this.admin) {
-      this.admin = await this.userEntity.findOne({ username: process.env.SERVER_USER_ROOT_NAME })
+      this.admin = await this.userEntity.findOne({ username: process.env.USER_ROOT_NAME })
     }
     return this.admin
   }
