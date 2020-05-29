@@ -12,7 +12,7 @@ import { AuthController } from './auth.controller';
     PassportModule,
     JwtModule.registerAsync({
       useFactory: () => ({
-        secret: process.env.SERVER_JWT_SECRET,
+        secret: process.env.JWT_SECRET,
         signOptions: { expiresIn: 3600 },
       })
     })
