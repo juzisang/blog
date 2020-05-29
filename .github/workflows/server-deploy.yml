@@ -71,4 +71,4 @@ jobs:
             cp -rf ./server/ ~/apps/blog/
             rm -rf ~/tmp/server.zip ~/tmp/server
             cd ~/apps/blog/server/
-            pm2 restart ./config/ecosystem.config.js
+            pm2 restart ecosystem.config.js
