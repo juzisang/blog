@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ContentEntity } from "@app/blog/entity/content.entity";
+import { ContentEntity } from "@app/modules/blog/entity/content.entity";
 import { Repository } from "typeorm";
 import { paginate, Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate'
-import { UserService } from "@app/user/user.service";
+import { UserService } from "@app/modules/user/user.service";
 import { ContentSaveDto, ContentUpdateDto } from "../dto/content.dto";
 import { TagService } from "./tag.service";
 import { CategoryService } from "./category.service";

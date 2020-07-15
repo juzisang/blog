@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne, ManyToMany } from 'typeorm'
 import { CategoryEntity } from './category.entity';
 import { TagEntity } from './tag.entity';
-import { UserEntity } from '@app/user/user.entity';
+import { UserEntity } from '@app/modules/user/user.entity';
 
 @Entity('content')
 export class ContentEntity {
