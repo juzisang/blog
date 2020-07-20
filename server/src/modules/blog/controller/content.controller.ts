@@ -2,7 +2,9 @@ import { Controller, Get, Query, Body, Post, Put } from "@nestjs/common";
 import { ContentService } from "../service/content.service";
 import { ContentSaveDto, ContentUpdateDto } from "../dto/content.dto";
 import { Auth } from "@app/common/auth.decorator";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('content')
 @Controller('content')
 export class ContentController {
 
