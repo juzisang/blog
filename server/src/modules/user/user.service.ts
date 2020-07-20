@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "@app/modules/user/user.entity";
 import { Repository } from "typeorm";
 import { UserDto } from "./user.dto";
 import { MD5 } from 'crypto-js'
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class UserService {
@@ -12,7 +13,8 @@ export class UserService {
 
   constructor(
     @InjectRepository(UserEntity)
-    private readonly userEntity: Repository<UserEntity>
+    private readonly userEntity: Repository<UserEntity>,
+    private readonly jwtService: JwtService
   ) {
   }
 
@@ -46,4 +48,23 @@ export class UserService {
       password: MD5(userDto.password).toString()
     })
   }
+
+  async login(userDto: UserDto) {
+    const isValidate = await this.validate(userDto)
+    if (!isValidate) {
+      throw new UnauthorizedException()
+    }
+
+    const user = await this.findOne({ username: userDto.username })
+    return await this.jwtService.sign({
+      id: user.id,
+      username: user.username
+    })
+  }
+
+  async validateUser(id: number) {
+    const user = await this.findOne({ id })
+    return !!user
+  }
+
 }

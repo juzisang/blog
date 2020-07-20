@@ -4,7 +4,7 @@ import { ContentEntity } from "@app/modules/blog/entity/content.entity";
 import { Repository } from "typeorm";
 import { paginate, Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate'
 import { UserService } from "@app/modules/user/user.service";
-import { ContentSaveDto, ContentUpdateDto } from "../dto/content.dto";
+import { ContentDto } from "../dto/content.dto";
 import { TagService } from "./tag.service";
 import { CategoryService } from "./category.service";
 
@@ -19,42 +19,58 @@ export class ContentService {
     private readonly categoryService: CategoryService
   ) { }
 
-  getList(options: IPaginationOptions): Promise<Pagination<ContentEntity>> {
-    return paginate<ContentEntity>(this.contentEntity, options);
+  list(type: 'article' | 'page', options: IPaginationOptions): Promise<Pagination<ContentEntity>> {
+    const queryBuilder = this.contentEntity.createQueryBuilder('content')
+    queryBuilder.where('content.type = :type', { type })
+    queryBuilder.orderBy('content.ctime', 'DESC')
+    return paginate<ContentEntity>(queryBuilder, options);
   }
 
-  async save(dto: ContentSaveDto) {
-    const { type, description, content, state, thumb } = dto
+  async get(title: string) {
+    const content = await this.contentEntity.findOne({ title })
+    if (content) {
+      await this.contentEntity.update(content.id, { views: content.views + 1 })
+    }
+    return content
+  }
+
+  async save(type: 'article' | 'page', dto: ContentDto) {
+    const { description, content, state, thumb } = dto
     const user = await this.userService.findAdmin()
-    const tags = await this.tagService.getPickList(dto.tags)
-    const category = await this.categoryService.getOne(dto.category)
+    const tags = await this.tagService.pick(dto.tags)
+    const category = await this.categoryService.get(dto.category)
 
     const entity = this.contentEntity.create({
       user,
       tags,
       category,
-      type, description, content, state, thumb
+      type,
+      description,
+      content,
+      state,
+      thumb
     })
 
     await this.contentEntity.save(entity)
   }
 
-  async update(dto: ContentUpdateDto) {
-    const content = await this.contentEntity.findOne({ id: dto.id })
+  async update(type: 'article' | 'page', id: number, dto: ContentDto) {
+    const content = await this.contentEntity.findOne({ id })
 
     if (!content) {
-      throw new NotFoundException(`${dto.id}不存在`)
+      throw new NotFoundException(`${id}不存在`)
     }
 
     content.user = await this.userService.findAdmin()
-    content.tags = await this.tagService.getPickList(dto.tags)
-    content.category = await this.categoryService.getOne(dto.category)
-    content.type = dto.type
+    content.tags = await this.tagService.pick(dto.tags)
+    content.category = await this.categoryService.get(dto.category)
+    content.type = type
     content.description = dto.description
     content.content = dto.content
     content.state = dto.state
     content.thumb = dto.thumb
 
-    await this.contentEntity.update(dto.id, content)
+    await this.contentEntity.update(id, content)
   }
+
 }

@@ -1,7 +1,7 @@
 import { IsNumber, IsNotEmpty, IsString, IsOptional } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class CategorySaveDto {
+export class CategoryDto {
   @ApiProperty({ description: '分类名' })
   @IsString()
   @IsNotEmpty()
@@ -16,11 +16,4 @@ export class CategorySaveDto {
   @IsString()
   @IsNotEmpty()
   description: string;
-}
-
-export class CategoryUpdateDto extends CategorySaveDto {
-  @ApiProperty({ description: 'id' })
-  @IsNumber()
-  @IsNotEmpty()
-  id: number;
 }

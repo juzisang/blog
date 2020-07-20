@@ -10,13 +10,14 @@ import { ContentService } from "./service/content.service";
 import { CommentService } from "./service/comment.service";
 import { CategoryController } from "./controller/category.controller";
 import { TagController } from "./controller/tag.controller";
-import { ContentController } from "./controller/content.controller";
+import { PageController } from "./controller/page.controller";
 import { CommentController } from "./controller/comment.controller";
 import { UserModule } from "@app/modules/user/user.module";
+import { ArticleController } from './controller/article.controller'
 
 @Module({
   imports: [TypeOrmModule.forFeature([CategoryEntity, TagEntity, ContentEntity, CommentEntity]), UserModule],
-  controllers: [CategoryController, TagController, ContentController, CommentController],
+  controllers: [CategoryController, TagController, PageController, CommentController, ArticleController],
   providers: [CategoryService, TagService, ContentService, CommentService]
 })
 export class BlogModule { }

@@ -2,7 +2,7 @@ import { Injectable, BadRequestException, NotFoundException } from "@nestjs/comm
 import { InjectRepository } from "@nestjs/typeorm";
 import { TagEntity } from "@app/modules/blog/entity/tag.entity";
 import { Repository } from "typeorm";
-import { TagSaveDto, TagUpdateDto } from "../dto/tag.dto";
+import { TagDto } from "../dto/tag.dto";
 
 @Injectable()
 export class TagService {
@@ -11,17 +11,21 @@ export class TagService {
     private readonly tagEntity: Repository<TagEntity>
   ) { }
 
-  getAllList() {
+  list() {
     return this.tagEntity.find()
   }
 
-  getPickList(names: string[]) {
+  get(name: string) {
+    return this.tagEntity.find({ name })
+  }
+
+  pick(names: string[]) {
     return this.tagEntity.find({
       where: names.map((name) => ({ name }))
     })
   }
 
-  async save(dto: TagSaveDto) {
+  async save(dto: TagDto) {
     if (await this.tagEntity.findOne({ name: dto.name })) {
       throw new BadRequestException(`${dto.name}标签已存在`)
     }
@@ -29,11 +33,11 @@ export class TagService {
     await this.tagEntity.save(entity)
   }
 
-  async update(dto: TagUpdateDto) {
-    if (!(await this.tagEntity.findOne({ id: dto.id }))) {
+  async update(id: number, dto: TagDto) {
+    if (!(await this.tagEntity.findOne({ id }))) {
       throw new NotFoundException(`${dto.name}不存在`)
     }
     const entity = this.tagEntity.create(dto)
-    await this.tagEntity.update(dto.id, entity)
+    await this.tagEntity.update(id, entity)
   }
 }

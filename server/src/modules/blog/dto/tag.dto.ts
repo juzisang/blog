@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString, IsNumber } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class TagSaveDto {
+export class TagDto {
   @ApiProperty({ description: '标签名' })
   @IsString()
   @IsNotEmpty()
@@ -16,11 +16,4 @@ export class TagSaveDto {
   @IsString()
   @IsNotEmpty()
   description: string;
-}
-
-export class TagUpdateDto extends TagSaveDto {
-  @ApiProperty({ description: 'id' })
-  @IsNumber()
-  @IsNotEmpty()
-  id: number;
 }

@@ -5,7 +5,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import * as path from 'path';
 import { BlogModule } from './modules/blog/blog.module';
-import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
@@ -27,7 +26,6 @@ import { UserModule } from './modules/user/user.module';
       synchronize: true,
       logging: true,
     }),
-    AuthModule,
     UserModule,
     BlogModule
   ],

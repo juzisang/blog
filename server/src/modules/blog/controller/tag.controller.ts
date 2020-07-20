@@ -1,6 +1,6 @@
 import { Controller, Body, Post, Get, Put, Param } from "@nestjs/common";
 import { TagService } from "../service/tag.service";
-import { TagSaveDto, TagUpdateDto } from "../dto/tag.dto";
+import { TagDto } from "../dto/tag.dto";
 import { Auth } from "@app/common/auth.decorator";
 import { ApiTags, ApiOkResponse, ApiBearerAuth, ApiParam } from "@nestjs/swagger";
 import { TagEntity } from "../entity/tag.entity";
@@ -13,24 +13,24 @@ export class TagController {
     private readonly tagService: TagService
   ) { }
 
-  @ApiOkResponse({ type: [TagEntity], isArray: true, description: '标签列表' })
+  @ApiOkResponse({ type: TagEntity, isArray: true, description: '标签列表' })
   @Get()
   list() {
-    return this.tagService.getAllList()
+    return this.tagService.list()
   }
 
-  @ApiParam({ name: 'id' })
+  @ApiParam({ name: 'name' })
   @ApiOkResponse({ type: TagEntity, description: '标签详情' })
-  @Get(':id')
-  one(@Param('id') id: string) {
-    return
+  @Get(':name')
+  one(@Param('name') name: string) {
+    return this.tagService.get(name)
   }
 
   @ApiBearerAuth()
   @ApiOkResponse({ type: TagEntity, description: '保存标签' })
   @Auth()
   @Post()
-  save(@Body() dto: TagSaveDto) {
+  save(@Body() dto: TagDto) {
     return this.tagService.save(dto)
   }
 
@@ -39,7 +39,7 @@ export class TagController {
   @ApiOkResponse({ type: TagEntity, description: '更新标签' })
   @Auth()
   @Put(':id')
-  update(@Param('id') id: string, @Body() dto: TagUpdateDto) {
-    return this.tagService.update(dto)
+  update(@Param('id') id: number, @Body() dto: TagDto) {
+    return this.tagService.update(id, dto)
   }
 }

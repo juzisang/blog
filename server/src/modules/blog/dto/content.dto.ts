@@ -1,4 +1,5 @@
-import { IsString, IsEnum, IsNotEmpty, IsUrl, IsArray, IsNumber } from "class-validator";
+import { IsString, IsEnum, IsNotEmpty, IsUrl, IsArray } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
 
 export enum ContentType {
   page = 'page',
@@ -11,42 +12,39 @@ export enum ContentState {
   delete = 'delete'
 }
 
-export class ContentSaveDto {
-  @IsEnum(ContentType)
-  @IsNotEmpty()
-  type: 'page' | 'article'
-
+export class ContentDto {
+  @ApiProperty({ description: '状态', enum: ['online', 'draft', 'delete'] })
   @IsEnum(ContentState)
   @IsNotEmpty()
-  state: 'online' | 'draft' | 'delete';
+  state: ContentState;
 
+  @ApiProperty({ description: '标题' })
   @IsString()
   @IsNotEmpty()
   title: string
 
+  @ApiProperty({ description: '缩略图' })
   @IsUrl()
   @IsNotEmpty()
   thumb: string;
 
+  @ApiProperty({ description: '描述' })
   @IsString()
   @IsNotEmpty()
   description: string;
 
+  @ApiProperty({ description: '标签', type: [String] })
   @IsArray()
   @IsNotEmpty()
   tags: string[]
 
+  @ApiProperty({ description: '分类' })
   @IsString()
   @IsNotEmpty()
   category: string
 
+  @ApiProperty({ description: '内容' })
   @IsString()
   @IsNotEmpty()
   content: string;
-}
-
-export class ContentUpdateDto extends ContentSaveDto {
-  @IsNumber()
-  @IsNotEmpty()
-  id: number
 }

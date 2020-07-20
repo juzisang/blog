@@ -35,7 +35,7 @@ async function bootstrap() {
       .build();
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('api', app, document, {
-      customCss: await fs.readFile(path.resolve('src/assets/theme-material.css'), 'utf-8')
+      // customCss: await fs.readFile(path.resolve('src/assets/theme-material.css'), 'utf-8')
     });
   }
 
