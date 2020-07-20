@@ -15,8 +15,12 @@ export class TagService {
     return this.tagEntity.find()
   }
 
-  get(name: string) {
-    return this.tagEntity.find({ name })
+  async get(name: string) {
+    const tag = await this.tagEntity.findOne({ name })
+    if (!tag) {
+      throw new NotFoundException(`${name}不存在`)
+    }
+    return tag
   }
 
   pick(names: string[]) {
@@ -30,7 +34,7 @@ export class TagService {
       throw new BadRequestException(`${dto.name}标签已存在`)
     }
     const entity = this.tagEntity.create(dto)
-    await this.tagEntity.save(entity)
+    return await this.tagEntity.save(entity)
   }
 
   async update(id: number, dto: TagDto) {
@@ -39,5 +43,6 @@ export class TagService {
     }
     const entity = this.tagEntity.create(dto)
     await this.tagEntity.update(id, entity)
+    return await this.tagEntity.findOne({ id })
   }
 }

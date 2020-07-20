@@ -16,8 +16,12 @@ export class CategoryService {
     return this.categoryEntity.find()
   }
 
-  get(name: string) {
-    return this.categoryEntity.findOne({ name })
+  async get(name: string) {
+    const category = await this.categoryEntity.findOne({ name })
+    if (!category) {
+      throw new NotFoundException(`${name}不存在`)
+    }
+    return category
   }
 
   async save(dto: CategoryDto) {
@@ -25,7 +29,7 @@ export class CategoryService {
       throw new BadRequestException(`${dto.name}分类已存在`)
     }
     const entity = this.categoryEntity.create(dto)
-    await this.categoryEntity.save(entity)
+    return await this.categoryEntity.save(entity)
   }
 
   async update(id: number, dto: CategoryDto) {
@@ -34,5 +38,6 @@ export class CategoryService {
     }
     const entity = this.categoryEntity.create(dto)
     await this.categoryEntity.update(id, entity)
+    return this.categoryEntity.findOne({ id })
   }
 }

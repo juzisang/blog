@@ -28,7 +28,7 @@ export class PageController {
   @ApiParam({ name: 'title', description: '标题' })
   @Get(':title')
   get(@Param('title') title: string) {
-    return this.contentService.get(title)
+    return this.contentService.get({ title })
   }
 
   @ApiBearerAuth()

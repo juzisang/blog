@@ -26,32 +26,38 @@ export class ContentService {
     return paginate<ContentEntity>(queryBuilder, options);
   }
 
-  async get(title: string) {
-    const content = await this.contentEntity.findOne({ title })
+  async get({ id, title }: { id?: number, title?: string }) {
+    const queryBuilder = this.contentEntity.createQueryBuilder('content')
+      .addSelect('content.content')
+    id ? queryBuilder.where({ id }) : queryBuilder.where({ title })
+    const content = await queryBuilder.getOne()
     if (content) {
       await this.contentEntity.update(content.id, { views: content.views + 1 })
+    } else {
+      throw new NotFoundException(`${id || title}不存在`)
     }
     return content
   }
 
   async save(type: 'article' | 'page', dto: ContentDto) {
-    const { description, content, state, thumb } = dto
+    const { description, content, state, thumb, title } = dto
     const user = await this.userService.findAdmin()
     const tags = await this.tagService.pick(dto.tags)
     const category = await this.categoryService.get(dto.category)
 
     const entity = this.contentEntity.create({
-      user,
-      tags,
-      category,
+      title,
       type,
       description,
       content,
       state,
-      thumb
+      thumb,
+      user,
+      tags,
+      category,
     })
 
-    await this.contentEntity.save(entity)
+    return await this.contentEntity.save(entity)
   }
 
   async update(type: 'article' | 'page', id: number, dto: ContentDto) {

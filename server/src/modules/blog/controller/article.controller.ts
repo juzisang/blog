@@ -17,7 +17,7 @@ export class ArticleController {
   @ApiQuery({ name: 'limit', description: '数量' })
   @ApiOkResponse({ type: ContentEntity, isArray: true, description: '文章列表' })
   @Get()
-  list(@Query('page') page = 1, @Query('limit') limit = 10) {
+  list(@Query('page') page = 0, @Query('limit') limit = 10) {
     limit = limit > 100 ? 100 : limit;
     return this.contentService.list('article', {
       page,
@@ -25,10 +25,10 @@ export class ArticleController {
     });
   }
 
-  @ApiParam({ name: 'title', description: '标题' })
-  @Get(':title')
-  get(@Param('title') title: string) {
-    return this.contentService.get(title)
+  @ApiParam({ name: 'id', description: '文章ID' })
+  @Get(':id')
+  get(@Param('id') id: number) {
+    return this.contentService.get({ id })
   }
 
   @ApiBearerAuth()

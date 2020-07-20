@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne, ManyToMany } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToMany, ManyToOne, JoinTable } from 'typeorm'
 import { CategoryEntity } from './category.entity';
 import { TagEntity } from './tag.entity';
 import { UserEntity } from '@app/modules/user/user.entity';
@@ -19,7 +19,7 @@ export class ContentEntity {
   state: 'online' | 'draft' | 'delete';
 
   @ApiProperty({ description: '阅读数' })
-  @Column({ comment: '阅读数' })
+  @Column({ comment: '阅读数', default: 0 })
   views: number
 
   @ApiProperty({ description: '额外字段' })
@@ -39,18 +39,19 @@ export class ContentEntity {
   description: string;
 
   @ApiProperty({ description: '内容' })
-  @Column({ comment: '内容', type: 'text' })
+  @Column({ comment: '内容', type: 'text', select: false })
   content: string
 
-  @OneToOne(type => UserEntity)
+  @ManyToOne(type => UserEntity)
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @OneToOne(type => CategoryEntity)
+  @ManyToOne(type => CategoryEntity)
   @JoinColumn({ name: 'category_id' })
   category: CategoryEntity
 
   @ManyToMany(type => TagEntity)
+  @JoinTable()
   tags: TagEntity[]
 
   @CreateDateColumn({ comment: '创建时间', select: false })
