@@ -4,14 +4,15 @@
 name: ServerDevDeploy
 on:
   push:
-    tags:
-      - "*"
+    branches:
+      - "dev"
     paths:
       - 'server/**'
+      - '.github/**'
 
 env:
   NODE_ENV: 'production'
-  SERVER_APP_PORT: '28080'
+  SERVER_APP_PORT: '18080'
   SERVER_BLOG_SITE_ORIGIN: 'juzisang.com'
   SERVER_JWT_SECRET: ${{ secrets.SERVER_JWT_SECRET }}
   SERVER_USER_ROOT_NAME: ${{ secrets.SERVER_USER_ROOT_NAME }}
@@ -19,9 +20,9 @@ env:
 
   SERVER_DATABASE_HOST: ${{ secrets.SERVER_DATABASE_HOST }}
   SERVER_DATABASE_PORT: ${{ secrets.SERVER_DATABASE_PORT }}
-  SERVER_DATABASE_USERNAME: ${{ secrets.SERVER_DEV_DATABASE_USERNAME }}
-  SERVER_DATABASE_PASSWORD: ${{ secrets.SERVER_DEV_DATABASE_PASSWORD }}
-  SERVER_DATABASE_DATABASE: ${{ secrets.SERVER_DEV_DATABASE_DATABASE }}
+  SERVER_DATABASE_USERNAME: ${{ secrets.SERVER_DEV_DATABASE_USERNAME  }}
+  SERVER_DATABASE_PASSWORD: ${{ secrets.SERVER_DEV_DATABASE_PASSWORD  }}
+  SERVER_DATABASE_DATABASE: ${{ secrets.SERVER_DEV_DATABASE_DATABASE  }}
 
 jobs:
   deploy:
@@ -30,45 +31,47 @@ jobs:
       matrix:
         node-version: [12.x]
     steps:
+      # 设置 node 版本
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install @nestjs/cli -g
-      - run: cd ./server && yarn install
-      - run: cd ./server && yarn build
+      - run: cd ./server && yarn install && yarn build
+      # 将环境变量转换成 .env 文件
       - name: Environment variables to Dotenv
         uses: CallePuzzle/envvar-to-dotenv-action@0.1.0
         with:
           envPath: './server/.env'
           variableNamesByFilter: ^SERVER_(.*)|NODE_ENV
+      # 打包 server 所有文件成 zip
       - name: Zip Release
         uses: TheDoctor0/zip-release@v0.3.0
         with:
-          filename: 'server-dev.zip'
+          filename: 'blog-server.zip'
           path: './server'
-          # exclusions: '/*node_modules/*'
-      - name: SSH Deploy
-        uses: easingthemes/ssh-deploy@v2.1.2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SOURCE: './server-dev.zip'
-          TARGET: '/root/tmp/'
-      - name: Start
+          exclusions: '/*node_modules/*'
+      # 将打包之后的文件，推送到服务器
+      - name: Scp Pipelines
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          host: ${{ secrets.DEV_REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          local: "./blog-server.zip"
+          remote: "/tmp/blog-server.zip"
+      # ssh 到服务器，重启
+      - name: Restart Server
         uses: fifsky/ssh-action@v0.0.4
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          host: ${{ secrets.REMOTE_HOST }}
+          host: ${{ secrets.DEV_REMOTE_HOST }}
           user: ${{ secrets.REMOTE_USER }}
           args: '-tt'
           command: |
             source ~/.bashrc
-            cd ~/tmp/
-            unzip -o ./server-dev.zip -d ./
-            cp -rf ./server/ ~/apps/blog-dev/
-            rm -rf ~/tmp/server-dev.zip ~/tmp/server
-            cd ~/apps/blog-dev/server/
-            pm2 restart ecosystem.dev.config.js
+            mv -f /tmp/blog-server.zip /usr/etc/blog/
+            unzip -o /usr/etc/blog/blog-server.zip -d /usr/etc/blog/ && rm -rf /usr/etc/blog/blog-server.zip
+            cd /usr/etc/blog/server && yarn install --production
+            pm2 restart /usr/etc/blog/server/ecosystem.config.js
