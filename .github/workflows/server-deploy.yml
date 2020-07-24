@@ -66,7 +66,7 @@ jobs:
         uses: fifsky/ssh-action@v0.0.4
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          host: ${{ secrets.DEV_REMOTE_HOST }}
+          host: ${{ secrets.REMOTE_HOST }}
           user: ${{ secrets.REMOTE_USER }}
           args: '-tt'
           command: |
