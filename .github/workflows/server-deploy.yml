@@ -38,19 +38,21 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install @nestjs/cli -g
+      - run: npm i -g @zeit/ncc
       - run: cd ./server && yarn install && yarn build
+      - run: ncc build ./server/dist/main.js -m -o ./blog-server
       # 将环境变量转换成 .env 文件
       - name: Environment variables to Dotenv
         uses: CallePuzzle/envvar-to-dotenv-action@0.1.0
         with:
-          envPath: './server/.env'
+          envPath: './blog-server/.env'
           variableNamesByFilter: ^SERVER_(.*)|NODE_ENV
       # 打包 server 所有文件成 zip
       - name: Zip Release
         uses: TheDoctor0/zip-release@v0.3.0
         with:
           filename: 'blog-server.zip'
-          path: './server'
+          path: './blog-server'
           exclusions: '/*node_modules/*'
       # 将打包之后的文件，推送到服务器
       - name: Scp Pipelines
@@ -71,7 +73,6 @@ jobs:
           args: '-tt'
           command: |
             source ~/.bashrc
-            mv -f /tmp/blog-server.zip /usr/etc/blog/
-            unzip -o /usr/etc/blog/blog-server.zip -d /usr/etc/blog/ && rm -rf /usr/etc/blog/blog-server.zip
-            cd /usr/etc/blog/server && yarn install --production
-            pm2 restart /usr/etc/blog/server/ecosystem.config.js
+            mv -f /tmp/blog-server.zip /usr/etc/
+            unzip -o /usr/etc/blog-server.zip -d /usr/etc/ && rm -rf /usr/etc/blog-server.zip
+            pm2 restart /usr/etc/blog-server/index.js

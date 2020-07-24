@@ -3,9 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import * as path from 'path';
 import { BlogModule } from './modules/blog/blog.module';
 import { UserModule } from './modules/user/user.module';
+import { UserEntity } from './modules/user/user.entity';
+import { CategoryEntity } from './modules/blog/entity/category.entity';
+import { ContentEntity } from './modules/blog/entity/content.entity';
+import { TagEntity } from './modules/blog/entity/tag.entity';
+import { CommentEntity } from './modules/blog/entity/comment.entity';
 
 @Module({
   imports: [
@@ -22,7 +26,13 @@ import { UserModule } from './modules/user/user.module';
       database: process.env.DATABASE_DATABASE,
       entityPrefix: 'blog_',
       charset: 'utf8_general_ci',
-      entities: [path.join(__dirname, '**/**.entity{.ts,.js}')],
+      entities: [
+        UserEntity,
+        CategoryEntity,
+        ContentEntity,
+        TagEntity,
+        CommentEntity
+      ],
       synchronize: true,
       logging: true,
     }),
