@@ -73,5 +73,5 @@ jobs:
             source ~/.bashrc
             mv -f /tmp/blog-server.zip /usr/etc/blog/
             unzip -o /usr/etc/blog/blog-server.zip -d /usr/etc/blog/ && rm -rf /usr/etc/blog/blog-server.zip
-            cd /usr/etc/blog/server && yarn install
+            cd /usr/etc/blog/server && yarn install --production
             pm2 restart /usr/etc/blog/server/ecosystem.config.js
