@@ -74,4 +74,4 @@ jobs:
             source ~/.bashrc
             mv -f /tmp/blog-server.zip /usr/etc/
             unzip -o /usr/etc/blog-server.zip -d /usr/etc/ && rm -rf /usr/etc/blog-server.zip
-            pm2 restart /usr/etc/blog-server/index.js --name blog-server || pm2 start /usr/etc/blog-server/index.js --name blog-server
+            cd /usr/etc/blog-server/ && pm2 restart index.js --name blog-server || pm2 start index.js --name blog-server
