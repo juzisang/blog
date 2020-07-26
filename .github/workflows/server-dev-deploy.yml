@@ -40,19 +40,19 @@ jobs:
       - run: npm install @nestjs/cli -g
       - run: npm i -g @zeit/ncc
       - run: cd ./server && yarn install && yarn build
-      - run: ncc build ./server/dist/main.js -m -o ./blog-server
+      - run: ncc build ./server/dist/main.js -m -o ./blog-dev-server
       # 将环境变量转换成 .env 文件
       - name: Environment variables to Dotenv
         uses: CallePuzzle/envvar-to-dotenv-action@0.1.0
         with:
-          envPath: './blog-server/.env'
+          envPath: './blog-dev-server/.env'
           variableNamesByFilter: ^SERVER_(.*)|NODE_ENV
       # 打包 server 所有文件成 zip
       - name: Zip Release
         uses: TheDoctor0/zip-release@v0.3.0
         with:
-          filename: 'blog-server.zip'
-          path: './blog-server'
+          filename: 'blog-dev-server.zip'
+          path: './blog-dev-server'
           exclusions: '/*node_modules/*'
       # 将打包之后的文件，推送到服务器
       - name: Scp Pipelines
@@ -61,8 +61,8 @@ jobs:
           host: ${{ secrets.DEV_REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          local: "./blog-server.zip"
-          remote: "/tmp/blog-server.zip"
+          local: "./blog-dev-server.zip"
+          remote: "/tmp/blog-dev-server.zip"
       # ssh 到服务器，重启
       - name: Restart Server
         uses: fifsky/ssh-action@v0.0.4
@@ -73,6 +73,6 @@ jobs:
           args: '-tt'
           command: |
             source ~/.bashrc
-            mv -f /tmp/blog-server.zip /usr/etc/
-            unzip -o /usr/etc/blog-server.zip -d /usr/etc/ && rm -rf /usr/etc/blog-server.zip
-            pm2 restart /usr/etc/blog-server/index.js --name blog-server
+            mv -f /tmp/blog-dev-server.zip /usr/etc/
+            unzip -o /usr/etc/blog-dev-server.zip -d /usr/etc/ && rm -rf /usr/etc/blog-dev-server.zip
+            pm2 restart /usr/etc/blog-dev-server/index.js --name blog-dev-server
