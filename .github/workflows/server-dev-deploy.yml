@@ -12,7 +12,7 @@ on:
 
 env:
   NODE_ENV: 'production'
-  SERVER_APP_PORT: '18080'
+  SERVER_APP_PORT: '17080'
   SERVER_BLOG_SITE_ORIGIN: 'juzisang.com'
   SERVER_JWT_SECRET: ${{ secrets.SERVER_JWT_SECRET }}
   SERVER_USER_ROOT_NAME: ${{ secrets.SERVER_USER_ROOT_NAME }}
@@ -37,8 +37,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install @nestjs/cli -g
-      - run: npm i -g @zeit/ncc
+      - run: npm install @nestjs/cli @zeit/ncc -g
       - run: cd ./server && yarn install && yarn build
       - run: ncc build ./server/dist/main.js -m -o ./blog-dev-server
       # 将环境变量转换成 .env 文件
