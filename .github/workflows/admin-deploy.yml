@@ -55,7 +55,7 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          local: './admin/blog-admin.zip'
+          local: './admin/dist/blog-admin.zip'
           remote: '/tmp/blog-admin.zip'
       # ssh 到服务器，重启
       - name: Restart admin
