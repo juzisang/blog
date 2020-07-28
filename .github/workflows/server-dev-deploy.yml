@@ -58,9 +58,11 @@ jobs:
       - name: Install Nest Cli 
         run: npm install @nestjs/cli -g
       - name: Install Dependencies
-        run: cd ./server && yarn install
+        run: cd ./server && yarn
       - name: Build
         run: cd ./server && yarn build
+      - name: Copy Script
+        run: cp -r ./.github/scripts ./server/scripts
       # 将环境变量转换成 .env 文件
       - name: Environment variables to Dotenv
         uses: JuZiSang/envvar-to-dotenv-action@master

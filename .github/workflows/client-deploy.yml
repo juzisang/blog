@@ -39,7 +39,7 @@ jobs:
             ${{ runner.os }}-yarn-
       # 安装依赖，打包流程
       - name: Install Dependencies
-        run: cd ./client && yarn install
+        run: cd ./client && yarn
       - name: Build
         run: cd ./client && yarn build
       - name: Copy Script
