@@ -10,9 +10,6 @@ on:
       - 'client/**'
       - '.github/**'
 
-env:
-  NODE_ENV: 'production'
-
 jobs:
   deploy:
     runs-on: ubuntu-16.04
