@@ -5,7 +5,7 @@ name: ServerDeploy
 on:
   push:
     branches:
-      - "master"
+      - 'master'
     paths:
       - 'server/**'
       - '.github/**'
@@ -17,7 +17,6 @@ env:
   SERVER_JWT_SECRET: ${{ secrets.SERVER_JWT_SECRET }}
   SERVER_USER_ROOT_NAME: ${{ secrets.SERVER_USER_ROOT_NAME }}
   SERVER_USER_ROOT_PASSWORD: ${{ secrets.SERVER_USER_ROOT_PASSWORD }}
-
   SERVER_DATABASE_HOST: ${{ secrets.SERVER_DATABASE_HOST }}
   SERVER_DATABASE_PORT: ${{ secrets.SERVER_DATABASE_PORT }}
   SERVER_DATABASE_USERNAME: ${{ secrets.SERVER_DATABASE_USERNAME }}
@@ -37,21 +36,20 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install @nestjs/cli @zeit/ncc -g
+      - run: npm install @nestjs/cli -g
       - run: cd ./server && yarn install && yarn build
-      - run: ncc build ./server/dist/main.js -m -o ./blog-server
       # 将环境变量转换成 .env 文件
       - name: Environment variables to Dotenv
-        uses: CallePuzzle/envvar-to-dotenv-action@0.1.0
+        uses: JuZiSang/envvar-to-dotenv-action@master
         with:
-          envPath: './blog-server/.env'
+          envPath: './server/.env'
           variableNamesByFilter: ^SERVER_(.*)|NODE_ENV
       # 打包 server 所有文件成 zip
       - name: Zip Release
-        uses: TheDoctor0/zip-release@v0.3.0
+        uses: thedoctor0/zip-release@master
         with:
           filename: 'blog-server.zip'
-          path: './blog-server'
+          directory: './server'
           exclusions: '/*node_modules/*'
       # 将打包之后的文件，推送到服务器
       - name: Scp Pipelines
@@ -60,8 +58,8 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          local: "./blog-server.zip"
-          remote: "/tmp/blog-server.zip"
+          local: "./server/blog-dev-server.zip"
+          remote: '/tmp/blog-server.zip'
       # ssh 到服务器，重启
       - name: Restart Server
         uses: fifsky/ssh-action@v0.0.4
@@ -73,5 +71,6 @@ jobs:
           command: |
             source ~/.bashrc
             mv -f /tmp/blog-server.zip /usr/etc/
-            unzip -o /usr/etc/blog-server.zip -d /usr/etc/ && rm -rf /usr/etc/blog-server.zip
-            cd /usr/etc/blog-server/ && pm2 restart index.js --name blog-server || pm2 start index.js --name blog-server
+            unzip -o /usr/etc/blog-server.zip -d /usr/etc/blog-server && rm -rf /usr/etc/blog-server.zip
+            cd /usr/etc/blog-server && sh ./script/check-update.sh
+            pm2 restart /usr/etc/blog-server/ecosystem.config.js
