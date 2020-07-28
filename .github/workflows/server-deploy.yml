@@ -36,8 +36,24 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install @nestjs/cli -g
-      - run: cd ./server && yarn install && yarn build
+      # 增加缓存    
+      - name: Get Yarn Cache Directory Path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      # 安装依赖，打包流程
+      - name: Install Nest Cli 
+        run: npm install @nestjs/cli -g
+      - name: Install Dependencies
+        run: cd ./server && yarn install
+      - name: Build
+        run: cd ./server && yarn build
       # 将环境变量转换成 .env 文件
       - name: Environment variables to Dotenv
         uses: JuZiSang/envvar-to-dotenv-action@master
@@ -58,7 +74,7 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          local: "./server/blog-dev-server.zip"
+          local: "./server/blog-server.zip"
           remote: '/tmp/blog-server.zip'
       # ssh 到服务器，重启
       - name: Restart Server
