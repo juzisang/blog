@@ -46,7 +46,7 @@ jobs:
         uses: TheDoctor0/zip-release@v0.3.0
         with:
           filename: 'blog-admin.zip'
-          directory: './admin'
+          directory: './admin/dist'
           exclusions: '/*node_modules/* /*src/*'
       # 将打包之后的文件，推送到服务器
       - name: Scp Pipelines
