@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts --port 18081",
+    "dev": "nuxt-ts",
     "build": "nuxt-ts build",
-    "start": "nuxt-ts start --port 18081",
+    "start": "nuxt-ts start",
     "generate": "nuxt-ts generate"
   },
   "dependencies": {
