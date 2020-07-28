@@ -52,7 +52,7 @@ jobs:
       - name: Scp Pipelines
         uses: garygrossgarten/github-action-scp@release
         with:
-          host: ${{ secrets.DEV_REMOTE_HOST }}
+          host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
           local: './client/blog-client.zip'
@@ -62,7 +62,7 @@ jobs:
         uses: fifsky/ssh-action@v0.0.4
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          host: ${{ secrets.DEV_REMOTE_HOST }}
+          host: ${{ secrets.REMOTE_HOST }}
           user: ${{ secrets.REMOTE_USER }}
           args: '-tt'
           command: |
