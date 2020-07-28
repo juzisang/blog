@@ -69,5 +69,5 @@ jobs:
             source ~/.bashrc
             mv -f /tmp/blog-client.zip /usr/etc/
             unzip -o /usr/etc/blog-client.zip -d /usr/etc/blog-client && rm -rf /usr/etc/blog-client.zip
-            cd /usr/etc/blog-client && sh ./script/check-update.sh
+            cd /usr/etc/blog-client && sh ./scripts/check-update.sh
             pm2 restart blog-client || pm2 start npm --name blog-client -- start
