@@ -69,4 +69,3 @@ jobs:
             source ~/.bashrc
             mv -f /tmp/blog-admin.zip /usr/etc/
             unzip -o /usr/etc/blog-admin.zip -d /usr/etc/blog-admin && rm -rf /usr/etc/blog-admin.zip
-            cd /usr/etc/blog-admin && sh ./scripts/check-update.sh
