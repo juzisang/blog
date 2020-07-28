@@ -1,0 +1,72 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: AdminDeploy
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'admin/**'
+      - '.github/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      # 设置 node 版本
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      # 增加缓存
+      - name: Get Yarn Cache Directory Path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      # 安装依赖，打包流程
+      - name: Install Dependencies
+        run: cd ./admin && yarn
+      - name: Build
+        run: cd ./admin && yarn build
+      - name: Copy Script
+        run: cp -r ./.github/scripts ./admin/scripts
+      # 打包 admin 所有文件成 zip
+      - name: Zip Release
+        uses: TheDoctor0/zip-release@v0.3.0
+        with:
+          filename: 'blog-admin.zip'
+          directory: './admin/dist'
+          exclusions: '/*node_modules/* /*src/*'
+      # 将打包之后的文件，推送到服务器
+      - name: Scp Pipelines
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          local: './admin/blog-admin.zip'
+          remote: '/tmp/blog-admin.zip'
+      # ssh 到服务器，重启
+      - name: Restart admin
+        uses: fifsky/ssh-action@v0.0.4
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.REMOTE_HOST }}
+          user: ${{ secrets.REMOTE_USER }}
+          args: '-tt'
+          command: |
+            source ~/.bashrc
+            mv -f /tmp/blog-admin.zip /usr/etc/
+            unzip -o /usr/etc/blog-admin.zip -d /usr/etc/blog-admin && rm -rf /usr/etc/blog-admin.zip
+            cd /usr/etc/blog-admin && sh ./scripts/check-update.sh
