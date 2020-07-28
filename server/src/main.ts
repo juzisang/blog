@@ -3,10 +3,10 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as helmet from 'helmet';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import { TransformInterceptor } from './common/transform.interceptor';
-import { HttpExceptionFilter } from './common/http-exception.filter';
-import * as fs from 'fs-extra';
-import * as path from 'path';
+// import { TransformInterceptor } from './common/transform.interceptor';
+// import { HttpExceptionFilter } from './common/http-exception.filter';
+// import * as fs from 'fs-extra';
+// import * as path from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
