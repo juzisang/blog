@@ -2,48 +2,48 @@ pipeline {
     agent any
 
     tools { 
-        nodejs 'nodejs-12.19.0' 
+        nodejs "nodejs-12.19.0" 
     }
 
     environment {
-        TYPE = ''
+        TYPE = ""
     }
     
     stages {
-        stage('Build Server') { 
+        stage("Build Server") { 
             when {
-                changeset '/server/*.*'
+                changeset "/server/*.*"
             }
             steps {
                 script {
-                    env.TYPE = 'Server'
+                    env.TYPE = "Server"
                 }
 
-                dir('/server') {
-                    sh 'yarn install' 
-                    sh 'yarn build' 
+                dir("/server") {
+                    sh "yarn install" 
+                    sh "yarn build" 
                 }
             }
         }
-        stage('Build Client') { 
+        stage("Build Client") { 
             when {
-                changeset '/client/*.*'
+                changeset "/client/*.*"
             }
             steps {
                 script {
-                    env.TYPE = 'Client'
+                    env.TYPE = "Client"
                 }
 
-                dir('/client') {
-                    sh 'yarn install' 
-                    sh 'yarn build'
+                dir("/client") {
+                    sh "yarn install" 
+                    sh "yarn build"
                 }
             }
         }
     }
     post {
         always {
-            echo 'Build ${TYPE} finish'
+            echo "Build ${env.TYPE} finish"
         }
     }
 }
