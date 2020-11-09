@@ -15,7 +15,10 @@ pipeline {
                 changeset '/server/*.*'
             }
             steps {
-                TYPE = 'Server'
+                script {
+                    env.TYPE = 'Server'
+                }
+
                 dir('/server') {
                     sh 'yarn install' 
                     sh 'yarn build' 
@@ -27,7 +30,10 @@ pipeline {
                 changeset '/client/*.*'
             }
             steps {
-                TYPE = 'Client'
+                script {
+                    env.TYPE = 'Client'
+                }
+
                 dir('/client') {
                     sh 'yarn install' 
                     sh 'yarn build'
