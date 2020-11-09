@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage("Build Server") { 
             when {
-                changeset "/server/*.*"
+                changeset "**/server/*.*"
             }
             steps {
                 script {
@@ -27,7 +27,7 @@ pipeline {
         }
         stage("Build Client") { 
             when {
-                changeset "/client/*.*"
+                changeset "**/client/*.*"
             }
             steps {
                 script {
