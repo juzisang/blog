@@ -72,7 +72,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
-        context: .
+        context: ./server
         push: true
         tags: juzisang/blog-back-end:latest,juzisang/blog-back-end:${{ steps.get-package-version.outputs.current-version }}
         cache-from: type=registry,ref=juzisang/blog-back-end:latest
