@@ -77,7 +77,7 @@ jobs:
         cache-to: type=inline
 
     - if: ${{ github.ref == 'refs/heads/master' }}
-    - name: Deploy Prod Server
+      name: Deploy Prod Server
       uses: garygrossgarten/github-action-ssh@release
       with:
         host: ${{ secrets.SERVER_HOST }}
@@ -86,7 +86,7 @@ jobs:
         command: sudo docker stack deploy -c ./sites-manage/nodejs-blog-compose.yml nodejs-blog
 
     - if: ${{ github.ref == 'refs/heads/dev' }}
-    - name: Deploy Test Server
+      name: Deploy Test Server
       uses: garygrossgarten/github-action-ssh@release
       with:
         host: ${{ secrets.SERVER_HOST }}
