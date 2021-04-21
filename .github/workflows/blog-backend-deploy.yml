@@ -56,7 +56,9 @@ jobs:
 
     - name: Get Package Version
       id: get-package-version
-      uses: stevenbenitez/get-package-version-action@v1
+      uses: martinbeentjes/npm-get-version-action@master
+      with: 
+        path: ./server
    
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -72,7 +74,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: juzisang/blog-back-end:latest,juzisang/blog-back-end:${{ steps.get-package-version.outputs.version }}
+        tags: juzisang/blog-back-end:latest,juzisang/blog-back-end:${{ steps.get-package-version.outputs.current-version }}
         cache-from: type=registry,ref=juzisang/blog-back-end:latest
         cache-to: type=inline
 
