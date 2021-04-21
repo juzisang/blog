@@ -83,7 +83,7 @@ jobs:
       uses: garygrossgarten/github-action-ssh@release
       with:
         host: ${{ secrets.SERVER_HOST }}
-        user: ${{ secrets.SERVER_USER_NAME }}
+        username: ${{ secrets.SERVER_USER_NAME }}
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
         command: sudo docker stack deploy -c ./sites-manage/nodejs-blog-compose.yml nodejs-blog
 
@@ -92,6 +92,6 @@ jobs:
       uses: garygrossgarten/github-action-ssh@release
       with:
         host: ${{ secrets.SERVER_HOST }}
-        user: ${{ secrets.SERVER_USER_NAME }}
+        username: ${{ secrets.SERVER_USER_NAME }}
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
         command: sudo docker stack deploy -c ./sites-manage/nodejs-test-blog-compose.yml nodejs-test-blog
