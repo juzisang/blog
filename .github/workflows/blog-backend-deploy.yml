@@ -49,10 +49,13 @@ jobs:
       run: npm install @nestjs/cli -g
 
     - name: Install Dependencies
-      run: yarn
+      run: yarn install
 
     - name: Build Server
       run: yarn build
+
+    - name: Clear mode_modules
+      run: rm -rf ./node_modules
 
     - name: Get Package Version
       id: get-package-version
