@@ -7,7 +7,6 @@ on:
       - dev
     paths:
       - 'server/**'
-      - '.github/**'
 
 jobs:
   build:
@@ -88,7 +87,7 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER_NAME }}
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: sudo docker stack deploy -c ./sites-manage/nodejs-blog-compose.yml nodejs-blog
+        command: sudo docker stack deploy -c ./sites-manage/nodejs-blog-compose.yml nodejs_blog
 
     - if: ${{ github.ref == 'refs/heads/dev' }}
       name: Deploy Test Server
@@ -97,4 +96,4 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER_NAME }}
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: sudo docker stack deploy -c ./sites-manage/nodejs-test-blog-compose.yml nodejs-test-blog
+        command: sudo docker stack deploy -c ./sites-manage/nodejs-test-blog-compose.yml nodejs_test_blog
