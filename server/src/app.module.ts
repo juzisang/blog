@@ -14,6 +14,9 @@ import { config } from './app.config'
 import { UserController } from './controller/user.controller'
 import { OptionsController } from './controller/options.controller'
 import { OptionsService } from './service/options.service'
+import { TagController } from './controller/tag.controller'
+import { CategoryController } from './controller/category.controller'
+import { MetaService } from './service/meta.service'
 @Module({
   imports: [
     PassportModule,
@@ -23,13 +26,7 @@ import { OptionsService } from './service/options.service'
         signOptions: { expiresIn: '7d' },
       }),
     }),
-    TypeOrmModule.forFeature([
-      ArticleEntity,
-      ArticleMetaRelationEntity,
-      OptionsEntity,
-      MetaEntity,
-      UserEntity,
-    ]),
+    TypeOrmModule.forFeature([ArticleEntity, ArticleMetaRelationEntity, OptionsEntity, MetaEntity, UserEntity]),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: config.DATABASE_HOST,
@@ -39,25 +36,18 @@ import { OptionsService } from './service/options.service'
       database: config.DATABASE_DATABASE,
       entityPrefix: 'blog_',
       charset: 'utf8_general_ci',
-      entities: [
-        ArticleEntity,
-        ArticleMetaRelationEntity,
-        OptionsEntity,
-        MetaEntity,
-        UserEntity,
-      ],
+      entities: [ArticleEntity, ArticleMetaRelationEntity, OptionsEntity, MetaEntity, UserEntity],
       synchronize: true,
       logging: true,
     }),
   ],
-  controllers: [AppController, UserController, OptionsController],
-  providers: [JwtStrategy, UserService, OptionsService],
+  controllers: [AppController, UserController, OptionsController, TagController, CategoryController],
+  providers: [JwtStrategy, UserService, OptionsService, MetaService],
 })
 export class AppModule implements OnModuleInit {
+  constructor(private readonly userService: UserService) {}
 
-  constructor (private readonly userService: UserService) { }
-
-  onModuleInit () {
+  onModuleInit() {
     this.userService.initAdmin()
   }
 }

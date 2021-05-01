@@ -10,7 +10,7 @@ console.log('config:', config)
 async function bootstrap () {
   const app = await NestFactory.create(AppModule,{})
   // 设置路由前缀
-  app.setGlobalPrefix('api')
+  // app.setGlobalPrefix('api')
   // 过滤常见安全问题
   app.use(helmet())
   // 设置参数验证
