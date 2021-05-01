@@ -14,7 +14,7 @@ ENV NODE_ENV='production' \
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
+COPY package.json package-lock.json ./
 
 RUN npm install --production
 
