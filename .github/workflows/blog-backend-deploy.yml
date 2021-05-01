@@ -7,6 +7,7 @@ on:
       - dev
     paths:
       - 'server/**'
+      - '.github/**'
 
 jobs:
   build:
@@ -68,7 +69,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./server
-        push: true
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=registry,ref=juzisang/blog-back-end:latest
