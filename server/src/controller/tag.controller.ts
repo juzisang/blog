@@ -3,11 +3,11 @@ import { MetaService } from '@app/service/meta.service'
 import { Auth } from '@app/util/auth.decorator'
 import { Controller, Post, Body, Get } from '@nestjs/common'
 
-@Controller('tags')
+@Controller('tag')
 export class TagController {
   constructor(private readonly metaService: MetaService) {}
 
-  @Get()
+  @Get('list')
   getAll() {
     return this.metaService.getMetas('tag')
   }

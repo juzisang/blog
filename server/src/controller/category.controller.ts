@@ -7,14 +7,14 @@ import { Controller, Post, Body, Get } from '@nestjs/common'
 export class CategoryController {
   constructor(private readonly metaService: MetaService) {}
 
-  @Get()
+  @Get('list')
   getAll() {
-    return this.metaService.getMetas('tag')
+    return this.metaService.getMetas('category')
   }
 
   @Auth()
   @Post()
   save(@Body() category: MetaDto) {
-    return this.metaService.saveMeta(category, 'tag')
+    return this.metaService.saveMeta(category, 'category')
   }
 }
