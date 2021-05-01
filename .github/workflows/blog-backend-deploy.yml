@@ -50,6 +50,8 @@ jobs:
       uses: crazy-max/ghaction-docker-meta@v2
       with:
         images: juzisang/blog-back-end
+        flavor: |
+          latest=true
         tags: |
           type=sha,priority=1000,prefix=sha-,suffix=
    
