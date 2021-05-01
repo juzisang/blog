@@ -81,9 +81,7 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER_NAME }}
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: | 
-          export VERSION=${{ steps.meta.outputs.version }}
-          sudo docker stack deploy -c ./sites-manage/nodejs-blog-compose.yml nodejs_blog
+        command: sudo env VERSION=${{ steps.meta.outputs.version }} docker stack deploy -c ./sites-manage/nodejs-blog-compose.yml nodejs_blog
 
     - if: ${{ github.ref == 'refs/heads/dev' }}
       name: Deploy Test Server
@@ -92,6 +90,4 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER_NAME }}
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: |
-          export VERSION=${{ steps.meta.outputs.version }}
-          sudo docker stack deploy -c ./sites-manage/nodejs-test-blog-compose.yml nodejs_test_blog
+        command: sudo env VERSION=${{ steps.meta.outputs.version }} docker stack deploy -c ./sites-manage/nodejs-test-blog-compose.yml nodejs_test_blog
