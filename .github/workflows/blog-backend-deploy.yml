@@ -44,12 +44,14 @@ jobs:
 
     - name: Clear mode_modules
       run: rm -rf ./node_modules
-
-    - name: Get Package Version
-      id: get-package-version
-      uses: martinbeentjes/npm-get-version-action@master
-      with: 
-        path: ./server
+  
+    - name: Docker meta
+      id: meta
+      uses: crazy-max/ghaction-docker-meta@v2
+      with:
+        images: juzisang/blog-back-end
+        tags: |
+          type=sha,priority=1000,prefix=sha-,suffix=
    
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -65,7 +67,8 @@ jobs:
       with:
         context: ./server
         push: true
-        tags: juzisang/blog-back-end:latest,juzisang/blog-back-end:${{ steps.get-package-version.outputs.current-version }}
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=registry,ref=juzisang/blog-back-end:latest
         cache-to: type=inline
 
@@ -77,7 +80,7 @@ jobs:
         username: ${{ secrets.SERVER_USER_NAME }}
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
         command: | 
-          export VERSION=${{ steps.get-package-version.outputs.current-version }}
+          export VERSION=${{ steps.meta.outputs.version }}
           sudo docker stack deploy -c ./sites-manage/nodejs-blog-compose.yml nodejs_blog
 
     - if: ${{ github.ref == 'refs/heads/dev' }}
@@ -87,4 +90,6 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER_NAME }}
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: sudo docker stack deploy -c ./sites-manage/nodejs-test-blog-compose.yml nodejs_test_blog
+        command: |
+          export VERSION=${{ steps.meta.outputs.version }}
+          sudo docker stack deploy -c ./sites-manage/nodejs-test-blog-compose.yml nodejs_test_blog
