@@ -8,12 +8,12 @@ import { Repository } from 'typeorm'
 export class MetaService {
   constructor(@InjectRepository(MetaEntity) private readonly metaService: Repository<MetaEntity>) {}
 
-  getMetas(type: 'tag' | 'category') {
+  getList(type: 'tag' | 'category') {
     return this.metaService.find({ type })
   }
 
-  async saveMeta(tagDto: MetaDto, type: 'tag' | 'category') {
-    const meta = await this.metaService.findOne({ name: tagDto.name, type })
-    return this.metaService.save(this.metaService.create({ ...meta, ...tagDto }))
+  async save(dto: MetaDto, type: 'tag' | 'category') {
+    const meta = await this.metaService.findOne({ name: dto.name, type })
+    await this.metaService.save(this.metaService.create({ ...meta, ...dto, type }))
   }
 }

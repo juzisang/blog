@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity } from './base.entity'
 
 @Entity('meta')
-export class MetaEntity {
+export class MetaEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
   id: number
 
@@ -16,10 +17,4 @@ export class MetaEntity {
 
   @Column({ comment: '类目', type: 'enum', enum: ['tag', 'category'], select: false })
   type: 'tag' | 'category'
-
-  @CreateDateColumn({ comment: '创建时间', select: false })
-  ctime: Date
-
-  @UpdateDateColumn({ comment: '修改时间', select: false })
-  utime: Date
 }

@@ -1,7 +1,7 @@
 import { MetaDto } from '@app/app.dto'
 import { MetaService } from '@app/service/meta.service'
 import { Auth } from '@app/util/auth.decorator'
-import { Controller, Post, Body, Get } from '@nestjs/common'
+import { Controller, Post, Body, Get, Put } from '@nestjs/common'
 
 @Controller('tag')
 export class TagController {
@@ -9,12 +9,12 @@ export class TagController {
 
   @Get('list')
   getAll() {
-    return this.metaService.getMetas('tag')
+    return this.metaService.getList('tag')
   }
 
   @Auth()
   @Post()
   save(@Body() tag: MetaDto) {
-    return this.metaService.saveMeta(tag, 'tag')
+    return this.metaService.save(tag, 'tag')
   }
 }

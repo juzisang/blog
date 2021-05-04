@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity } from './base.entity'
 
 @Entity('options')
-export class OptionsEntity {
+export class OptionsEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
   id: number
 
@@ -13,10 +14,5 @@ export class OptionsEntity {
 
   @Column({ comment: 'value', nullable: true })
   value: string
-
-  @CreateDateColumn({ comment: '创建时间', select: false })
-  ctime: Date
-
-  @UpdateDateColumn({ comment: '修改时间', select: false })
-  utime: Date
+  
 }

@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity } from './base.entity'
 
 @Entity('user')
-export class UserEntity {
+export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
   id: number
 
@@ -25,10 +26,4 @@ export class UserEntity {
 
   @Column({ comment: '邮箱', nullable: true })
   mail: string
-
-  @CreateDateColumn({ comment: '创建时间', select: false })
-  ctime: Date
-
-  @UpdateDateColumn({ comment: '修改时间', select: false })
-  utime: Date
 }

@@ -1,19 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity } from './base.entity'
 
 @Entity('article_meta_relation')
-export class ArticleMetaRelationEntity {
+export class ArticleMetaRelationEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
   id: number
 
-  @Column({ comment: '文章ID' })
-  article_id: string
+  @Column({ comment: '文章ID', name: 'article_id' })
+  articleId: number
 
-  @Column({ comment: '标签或分类ID' })
-  meta_id: string
-
-  @CreateDateColumn({ comment: '创建时间', select: false })
-  ctime: Date
-
-  @UpdateDateColumn({ comment: '修改时间', select: false })
-  utime: Date
+  @Column({ comment: '标签或分类ID', name: 'meta_id' })
+  metaId: number
 }

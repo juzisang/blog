@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator'
+import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString, IsOptional, isString, IsNumberString } from 'class-validator'
 
 export class UserDto {
   @IsNotEmpty()
@@ -19,6 +19,9 @@ export class OptionDto {
   @IsString()
   alias: string
 
+  @IsOptional()
+  @IsString()
+  @IsNumber()
   value: string
 }
 
@@ -37,6 +40,10 @@ export class MetaDto {
 }
 
 export class ArticleDto {
+  @IsOptional()
+  @IsNumber()
+  id: number
+
   @IsNotEmpty()
   @IsString()
   title: string
@@ -54,16 +61,24 @@ export class ArticleDto {
   thumb: string
 
   @IsNotEmpty()
-  @IsNumber()
-  views: number
-
-  @IsNotEmpty()
   @IsEnum(['online', 'draft', 'delete'])
   state: 'online' | 'draft' | 'delete'
 
+  @IsNotEmpty()
   @IsArray()
   tags: number[]
 
+  @IsNotEmpty()
   @IsNumber()
   category: number
+}
+
+export class PaginationDto {
+  @IsOptional()
+  @IsNumberString()
+  page: string | number
+
+  @IsOptional()
+  @IsNumberString()
+  pageSize: string | number
 }

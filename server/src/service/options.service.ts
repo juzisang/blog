@@ -8,7 +8,7 @@ import { Repository, In } from 'typeorm'
 export class OptionsService {
   constructor(@InjectRepository(OptionsEntity) private readonly optionsEntity: Repository<OptionsEntity>) {}
 
-  async saveOptions(options: OptionDto[]) {
+  async save(options: OptionDto[]) {
     this.optionsEntity.find({})
     const existsOptions = await this.optionsEntity.find({ key: In(options.map(v => v.key)) })
     const updateOptions = options.map((v) => ({ ...existsOptions.find(item => item.key === v.key), ...v }))

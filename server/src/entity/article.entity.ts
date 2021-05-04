@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm'
+import { BaseEntity } from './base.entity'
 
 @Entity('article')
-export class ArticleEntity {
+export class ArticleEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
   id: number
 
@@ -18,18 +19,12 @@ export class ArticleEntity {
   @Column({ comment: '封面' })
   thumb: string
 
-  @Column({ comment: '用户ID' })
-  user_id: string
+  @Column({ comment: '用户ID', name: 'user_id', select: false })
+  userId: number
 
   @Column({ comment: '阅读数' })
   views: number
 
-  @Column({ comment: '状态', type: 'enum', enum: ['online', 'draft', 'delete'] })
+  @Column({ comment: '状态', type: 'enum', enum: ['online', 'draft', 'delete'], select: false })
   state: 'online' | 'draft' | 'delete'
-
-  @CreateDateColumn({ comment: '创建时间', select: false })
-  ctime: Date
-
-  @UpdateDateColumn({ comment: '修改时间', select: false })
-  utime: Date
 }

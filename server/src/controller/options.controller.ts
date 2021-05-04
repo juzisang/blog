@@ -10,7 +10,7 @@ export class OptionsController {
   @Auth()
   @Post()
   save (@Body() options: OptionDto[]) {
-    return this.optionsService.saveOptions(options)
+    return this.optionsService.save(options)
   }
 
   @Auth()

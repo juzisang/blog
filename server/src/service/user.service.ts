@@ -9,41 +9,48 @@ import { MD5, enc } from 'crypto-js'
 
 @Injectable()
 export class UserService {
-  constructor (
+  constructor(
     @InjectRepository(UserEntity)
     private readonly userEntity: Repository<UserEntity>,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
-  public async initAdmin () {
+  public async initAdmin() {
     const user = await this.userEntity.findOne({ username: config.USER_ADMIN_NAME })
     if (!user) {
       await this.register({ username: config.USER_ADMIN_NAME, password: config.USER_ADMIN_PASSWORD }, 'master')
     }
   }
 
-  public getUser (id: number) {
+  public getUser(id: number) {
     return this.userEntity.findOneOrFail({ id })
   }
 
-  public async login (userDto: UserDto) {
-    const user = await this.userEntity.findOneOrFail({ username: userDto.username })
+  public async login(userDto: UserDto) {
+    const user = await this.userEntity.findOne({ username: userDto.username })
+    if (!user) {
+      throw new UnauthorizedException('用户不存在')
+    }
     if (userDto.password === user.password) {
       throw new UnauthorizedException()
     }
     return { token: await this.jwtService.sign({ id: user.id }) }
   }
 
-  public async register (userDto: UserDto, type: 'master' | 'follower' = 'follower') {
+  public async register(userDto: UserDto, type: 'master' | 'follower' = 'follower') {
     if (await this.userEntity.findOne(userDto.username)) {
       throw new BadRequestException('用户已存在')
     }
-    await this.userEntity.save(this.userEntity.create({
-      ...userDto, type, password: this.encryptionPassword(userDto.password)
-    }))
+    await this.userEntity.save(
+      this.userEntity.create({
+        ...userDto,
+        type,
+        password: this.encryptionPassword(userDto.password),
+      }),
+    )
   }
 
-  private encryptionPassword (pwd: string) {
+  private encryptionPassword(pwd: string) {
     return enc.Hex.stringify(MD5(pwd))
   }
 }
