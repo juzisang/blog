@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator'
+import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator'
 
 export class UserDto {
   @IsNotEmpty()
@@ -34,4 +34,36 @@ export class MetaDto {
   @IsNotEmpty()
   @IsString()
   description: string
+}
+
+export class ArticleDto {
+  @IsNotEmpty()
+  @IsString()
+  title: string
+
+  @IsNotEmpty()
+  @IsString()
+  description: string
+
+  @IsNotEmpty()
+  @IsString()
+  content: string
+
+  @IsNotEmpty()
+  @IsString()
+  thumb: string
+
+  @IsNotEmpty()
+  @IsNumber()
+  views: number
+
+  @IsNotEmpty()
+  @IsEnum(['online', 'draft', 'delete'])
+  state: 'online' | 'draft' | 'delete'
+
+  @IsArray()
+  tags: number[]
+
+  @IsNumber()
+  category: number
 }

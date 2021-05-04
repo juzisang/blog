@@ -3,32 +3,32 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
-  id: number;
+  id: number
 
   @Column({ comment: '账号', unique: true })
-  username: string;
+  username: string
 
   @Column({ comment: '密码', select: false, nullable: true })
-  password: string;
+  password: string
 
   @Column({ comment: '用户类型', type: 'enum', enum: ['master', 'follower'], default: 'follower' })
-  type: 'master' | 'follower';
+  type: 'master' | 'follower'
 
   @Column({ comment: '头像', nullable: true })
-  avatar: string;
+  avatar: string
 
   @Column({ comment: '签名', nullable: true })
-  slogan: string;
+  slogan: string
 
   @Column({ comment: '网站地址', nullable: true })
-  url: string;
+  url: string
 
   @Column({ comment: '邮箱', nullable: true })
-  mail: string;
+  mail: string
 
   @CreateDateColumn({ comment: '创建时间', select: false })
-  ctime: Date;
+  ctime: Date
 
   @UpdateDateColumn({ comment: '修改时间', select: false })
-  utime: Date;
+  utime: Date
 }

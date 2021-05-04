@@ -3,17 +3,17 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 @Entity('article')
 export class ArticleEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
-  id: number;
-  
+  id: number
+
   @Index()
   @Column({ comment: '标题' })
-  title: string;
+  title: string
 
   @Column({ comment: '描述' })
-  description: string;
+  description: string
 
   @Column({ comment: '内容', type: 'text' })
-  content: string;
+  content: string
 
   @Column({ comment: '封面' })
   thumb: string
@@ -25,11 +25,11 @@ export class ArticleEntity {
   views: number
 
   @Column({ comment: '状态', type: 'enum', enum: ['online', 'draft', 'delete'] })
-  state: 'online' | 'draft' | 'delete';
+  state: 'online' | 'draft' | 'delete'
 
   @CreateDateColumn({ comment: '创建时间', select: false })
-  ctime: Date;
+  ctime: Date
 
   @UpdateDateColumn({ comment: '修改时间', select: false })
-  utime: Date;
+  utime: Date
 }

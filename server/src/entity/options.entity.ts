@@ -3,20 +3,20 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 @Entity('options')
 export class OptionsEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
-  id: number;
+  id: number
 
   @Column({ comment: 'key', unique: true })
-  key: string;
+  key: string
 
   @Column({ comment: '别名' })
-  alias: string;
+  alias: string
 
   @Column({ comment: 'value', nullable: true })
-  value: string;
+  value: string
 
   @CreateDateColumn({ comment: '创建时间', select: false })
-  ctime: Date;
+  ctime: Date
 
   @UpdateDateColumn({ comment: '修改时间', select: false })
-  utime: Date;
+  utime: Date
 }

@@ -17,6 +17,8 @@ import { OptionsService } from './service/options.service'
 import { TagController } from './controller/tag.controller'
 import { CategoryController } from './controller/category.controller'
 import { MetaService } from './service/meta.service'
+import { ArticleController } from './controller/article.controller'
+import { ArticleService } from './service/article.service'
 @Module({
   imports: [
     PassportModule,
@@ -41,8 +43,8 @@ import { MetaService } from './service/meta.service'
       logging: true,
     }),
   ],
-  controllers: [AppController, UserController, OptionsController, TagController, CategoryController],
-  providers: [JwtStrategy, UserService, OptionsService, MetaService],
+  controllers: [AppController, UserController, OptionsController, TagController, CategoryController, ArticleController],
+  providers: [JwtStrategy, UserService, OptionsService, MetaService, ArticleService],
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly userService: UserService) {}
