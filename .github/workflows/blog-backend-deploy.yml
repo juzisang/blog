@@ -83,7 +83,7 @@ jobs:
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
         command: sudo env VERSION=${{ steps.meta.outputs.version }} docker stack deploy -c ./sites-manage/nodejs-blog-compose.yml nodejs_blog
 
-    - if: ${{ github.ref == 'refs/heads/dev' }}
+    - if: ${{ github.ref == 'refs/heads/test' }}
       name: Deploy Test Server
       uses: garygrossgarten/github-action-ssh@release
       with:
