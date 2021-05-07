@@ -16,11 +16,11 @@ async function bootstrap () {
   // 设置参数验证
   app.useGlobalPipes(new ValidationPipe())
   // cors
-  // app.enableCors({
-  //   origin: config.NODE_ENV === 'development' ? '*' : config.BLOG_SITE_ORIGIN,
-  //   credentials: true,
-  //   maxAge: 60 * 60 * 24,
-  // })
+  app.enableCors({
+    origin: config.NODE_ENV === 'development' ? '*' : config.BLOG_SITE_ORIGIN,
+    credentials: true,
+    maxAge: 60 * 60 * 24,
+  })
   // 将数据格式转换位固定格式
   app.useGlobalInterceptors(new TransformInterceptor())
 
