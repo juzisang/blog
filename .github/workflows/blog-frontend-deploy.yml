@@ -7,6 +7,7 @@ on:
       - test
     paths:
       - 'client/**'
+      - '.github/workflows/blog-frontend-deploy.yml'
 
 jobs:
   build:
@@ -79,7 +80,7 @@ jobs:
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
         command: sudo env VERSION=${{ steps.meta.outputs.version }} docker stack deploy -c ./sites-manage/blog-frontend-compose.yml blog_frontend
 
-    - if: ${{ github.ref == 'refs/heads/dev' }}
+    - if: ${{ github.ref == 'refs/heads/test' }}
       name: Deploy Test Server
       uses: garygrossgarten/github-action-ssh@release
       with:
