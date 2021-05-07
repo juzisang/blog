@@ -1,5 +1,5 @@
 import 'normalize.css'
-import './node_modules/styles/global.css'
+import './styles/global.css'
 import * as sapper from '@sapper/app'
 
 sapper.start({

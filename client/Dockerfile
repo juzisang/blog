@@ -1,7 +1,8 @@
 FROM node:14.16.1-alpine
 
 ENV NODE_ENV='production' \
-  PORT=3000
+  PORT=3000 \
+  BLOG_API='/api'
 
 WORKDIR /usr/src/app
 
