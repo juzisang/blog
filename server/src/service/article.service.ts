@@ -46,4 +46,8 @@ export class ArticleService {
     await this.articleMetaRelationEntity.save(relations)
     await this.articleEntity.save({ ...article, ...dto })
   }
+
+  getCount() {
+    return this.articleEntity.count()
+  }
 }

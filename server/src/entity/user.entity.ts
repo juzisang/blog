@@ -6,8 +6,11 @@ export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ comment: 'id' })
   id: number
 
-  @Column({ comment: '账号', unique: true })
+  @Column({ comment: '用户名', unique: true })
   username: string
+
+  @Column({ comment: '作者名' })
+  authorName: string
 
   @Column({ comment: '密码', select: false, nullable: true })
   password: string

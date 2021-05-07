@@ -26,6 +26,10 @@ export class UserService {
     return this.userEntity.findOneOrFail({ id })
   }
 
+  public getUserInfo() {
+    return this.userEntity.findOne({ select: ['slogan', 'url', 'authorName', 'avatar'] })
+  }
+
   public async login(userDto: UserDto) {
     const user = await this.userEntity.findOne({ username: userDto.username })
     if (!user) {

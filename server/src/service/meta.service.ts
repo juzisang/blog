@@ -16,4 +16,8 @@ export class MetaService {
     const meta = await this.metaService.findOne({ name: dto.name, type })
     await this.metaService.save(this.metaService.create({ ...meta, ...dto, type }))
   }
+
+  getCount(type: 'tag' | 'category') {
+    return this.metaService.count({ type })
+  }
 }
