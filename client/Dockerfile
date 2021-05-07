@@ -1,7 +1,7 @@
 FROM node:14.16.1-alpine
 
 ENV NODE_ENV='production' \
-  APP_PORT=3000
+  PORT=3000
 
 WORKDIR /usr/src/app
 
@@ -11,6 +11,6 @@ RUN npm install --production
 
 COPY . .
 
-EXPOSE $APP_PORT
+EXPOSE $PORT
 
 CMD ["npm", "run", "start"]
