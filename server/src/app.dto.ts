@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString, IsOptional, isString, IsNumberString } from 'class-validator'
+import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString, IsOptional, isString, IsNumberString, IsUrl } from 'class-validator'
 
 export class UserDto {
   @IsNotEmpty()
@@ -57,7 +57,7 @@ export class ArticleDto {
   content: string
 
   @IsNotEmpty()
-  @IsString()
+  @IsUrl()
   thumb: string
 
   @IsNotEmpty()
