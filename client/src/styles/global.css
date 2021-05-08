@@ -7,11 +7,38 @@ body {
   background-color: #f2f5f8;
 }
 a {
-  text-decoration:none;
+  text-decoration: none;
 }
+p,
+ul,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+ul,
+li {
+  list-style: none;
+}
+
 .card {
   padding: 18px;
   border-radius: 8px;
   background: #fff;
-  box-shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+  box-shadow: 0 4px 10px rgba(0, 2, 4, 0.06), 0 0 1px rgba(0, 2, 4, 0.11);
+}
+.card h4 {
+  color: #6b7f94;
+}
+.container {
+  width: 1400px;
+  margin: 0 auto;
+}
+.card-mt {
+  margin-top: 20px;
 }

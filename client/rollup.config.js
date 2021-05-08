@@ -10,10 +10,17 @@ import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
+import dotenv from 'dotenv'
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
+
+dotenv.config()
+
+const envConfig = {
+	BLOG_API: JSON.stringify(process.env.BLOG_API)
+}
 
 const onwarn = (warning, onwarn) =>
 	(warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
@@ -29,7 +36,7 @@ export default {
 			replace({
 				preventAssignment: true,
 				values: {
-					'process.env.BLOG_API': process.env.BLOG_API,
+					...envConfig,
 					'process.browser': true,
 					'process.env.NODE_ENV': JSON.stringify(mode)
 				},
@@ -85,7 +92,7 @@ export default {
 			replace({
 				preventAssignment: true,
 				values: {
-					'process.env.BLOG_API': process.env.BLOG_API,
+					...envConfig,
 					'process.browser': false,
 					'process.env.NODE_ENV': JSON.stringify(mode)
 				},
@@ -123,6 +130,7 @@ export default {
 			replace({
 				preventAssignment: true,
 				values: {
+					...envConfig,
 					'process.browser': true,
 					'process.env.NODE_ENV': JSON.stringify(mode)
 				},

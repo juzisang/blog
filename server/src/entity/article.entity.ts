@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, Index, ManyToOne, JoinColumn } from 'typeorm'
 import { BaseEntity } from './base.entity'
+import { UserEntity } from './user.entity'
 
 @Entity('article')
 export class ArticleEntity extends BaseEntity {
@@ -19,12 +20,13 @@ export class ArticleEntity extends BaseEntity {
   @Column({ comment: '封面' })
   thumb: string
 
-  @Column({ comment: '用户ID', name: 'user_id', select: false })
-  userId: number
-
   @Column({ comment: '阅读数' })
   views: number
 
   @Column({ comment: '状态', type: 'enum', enum: ['online', 'draft', 'delete'], select: false })
   state: 'online' | 'draft' | 'delete'
+
+  @ManyToOne(type => UserEntity, { createForeignKeyConstraints: false })
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity
 }

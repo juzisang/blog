@@ -9,7 +9,7 @@ export class CategoryController {
 
   @Get('list')
   getAll() {
-    return this.metaService.getList('category')
+    return this.metaService.getListAndCount('category')
   }
 
   @Auth()

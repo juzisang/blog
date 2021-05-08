@@ -14,12 +14,7 @@ export class ArticleService {
     const article = await this.articleEntity.findOne({ id })
     article.views = article.views + 1
     await this.articleEntity.save(article)
-    return this.articleEntity
-      .createQueryBuilder('article')
-      .leftJoinAndMapOne('article.user', UserEntity, 'user', 'article.user_id=user.id')
-      .select(['user', 'article.id', 'article.title', 'article.content', 'article.description', 'article.thumb', 'article.views', 'article.utime', 'article.ctime'])
-      .where('article.id=:id', { id })
-      .getOne()
+    return this.articleEntity.findOne({ relations: ['user'], where: { id } })
   }
 
   async getList({ page, pageSize }: PaginationDto) {
@@ -33,7 +28,7 @@ export class ArticleService {
     if (dto.id) return await this.update(dto)
     const article = await this.articleEntity.findOne({ title: dto.title })
     if (article) throw new BadRequestException('文章已存在')
-    const newArticle = await this.articleEntity.save(this.articleEntity.create({ ...dto, userId: user.id, views: 0 }))
+    const newArticle = await this.articleEntity.save(this.articleEntity.create({ ...dto, user, views: 0 }))
     const relations = this.articleMetaRelationEntity.create([...dto.tags, dto.category].filter(v => v).map(v => ({ articleId: newArticle.id, metaId: v })))
     await this.articleMetaRelationEntity.save(relations)
   }
