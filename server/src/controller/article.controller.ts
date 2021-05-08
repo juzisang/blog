@@ -17,6 +17,11 @@ export class ArticleController {
     return this.articleService.getArchives()
   }
 
+  @Get('recent')
+  getRecent() {
+    return this.articleService.getRecent()
+  }
+
   @Get(':id')
   getArticle(@Param('id') pid) {
     return this.articleService.getOne(pid)

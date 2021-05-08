@@ -1,7 +1,7 @@
 import * as dayjs from 'dayjs'
 import { CreateDateColumn, UpdateDateColumn, ValueTransformer } from 'typeorm'
 
-class ReadDateFormat implements ValueTransformer {
+export class ReadDateFormat implements ValueTransformer {
   constructor(private readonly formatstr: string = 'YYYY-MM-DD') {}
   to(value: any) {
     return value

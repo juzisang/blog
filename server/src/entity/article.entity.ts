@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index, ManyToOne, JoinColumn } from 'typeorm'
-import { BaseEntity } from './base.entity'
+import { Entity, Column, PrimaryGeneratedColumn, Index, ManyToOne, JoinColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm'
+import { BaseEntity, ReadDateFormat } from './base.entity'
 import { UserEntity } from './user.entity'
 
 @Entity('article')

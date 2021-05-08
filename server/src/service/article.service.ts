@@ -55,4 +55,8 @@ export class ArticleService {
       .orderBy('name', 'DESC')
       .getRawMany()
   }
+
+  getRecent() {
+    return this.articleEntity.find({ select: ['id', 'thumb', 'title', 'description', 'ctime', 'utime', 'views'], order: { ctime: 'DESC' }, skip: 0, take: 4 })
+  }
 }
