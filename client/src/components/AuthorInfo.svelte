@@ -1,28 +1,31 @@
 <script lang="ts">
+  import Card from './Card.svelte'
   import type { IUserInfo } from '../api.interface'
 
   export let userInfo: IUserInfo
 </script>
 
-<div class="author-info card">
-  <img class="author-avatar" loading="lazy" src={userInfo.info.avatar} alt="" />
-  <div class="author-name">{userInfo.info.authorName}</div>
-  {#if userInfo.info.slogan}<p class="author-slogan">{userInfo.info.slogan}</p>{/if}
-  <ul class="author-data">
-    <li class="author-data-count">
-      <p class="count">{userInfo.articleCount}</p>
-      <p class="type-name">文章</p>
-    </li>
-    <li class="author-data-count">
-      <p class="count">{userInfo.categoryCount}</p>
-      <p class="type-name">分类</p>
-    </li>
-    <li class="author-data-count">
-      <p class="count">{userInfo.tagCount}</p>
-      <p class="type-name">标签</p>
-    </li>
-  </ul>
-</div>
+<Card>
+  <div class="author-info">
+    <img class="author-avatar" loading="lazy" src={userInfo.info.avatar} alt="" />
+    <div class="author-name">{userInfo.info.authorName}</div>
+    {#if userInfo.info.slogan}<p class="author-slogan">{userInfo.info.slogan}</p>{/if}
+    <ul class="author-data">
+      <li class="author-data-count">
+        <p class="count">{userInfo.articleCount}</p>
+        <p class="type-name">文章</p>
+      </li>
+      <li class="author-data-count">
+        <p class="count">{userInfo.categoryCount}</p>
+        <p class="type-name">分类</p>
+      </li>
+      <li class="author-data-count">
+        <p class="count">{userInfo.tagCount}</p>
+        <p class="type-name">标签</p>
+      </li>
+    </ul>
+  </div>
+</Card>
 
 <style lang="less">
   .author-info {

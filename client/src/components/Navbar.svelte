@@ -43,7 +43,7 @@
       padding: 0 10px;
       outline: none;
       color: #37475b;
-      font-size: 16px;
+      font-size: 15px;
       display: flex;
       align-items: center;
       &:focus,

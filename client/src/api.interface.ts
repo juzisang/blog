@@ -24,3 +24,18 @@ export interface ITag {
   alias: string
   description: string
 }
+
+export interface IArchive {
+  name: string
+  articleCount: string
+}
+
+export interface IRecent {
+  ctime: string
+  utime: string
+  id: number
+  title: string
+  description: string
+  thumb: string
+  views: number
+}

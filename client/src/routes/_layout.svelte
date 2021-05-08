@@ -6,8 +6,10 @@
     const userInfo = await get<IUserInfo>('/user/info')
     const categoryList = await get<ICategory[]>('/category/list')
     const tagList = await get<ITag[]>('/tag/list')
+    const archiveList = await get<IArchive>('/article/archives')
+    const recentList = await get('/article/recent')
 
-    return { userInfo, categoryList, tagList }
+    return { userInfo, categoryList, tagList, archiveList, recentList }
   }
 </script>
 
@@ -16,11 +18,15 @@
   import AuthorInfo from '../components/AuthorInfo.svelte'
   import Categorys from '../components/Categorys.svelte'
   import Tags from '../components/Tags.svelte'
-  import type { ICategory, IUserInfo, ITag } from '../api.interface'
+  import Archives from '../components/Archives.svelte'
+  import Recent from '../components/Recent.svelte'
+  import type { ICategory, IUserInfo, ITag, IArchive, IRecent } from '../api.interface'
 
   export let userInfo: IUserInfo
   export let categoryList: ICategory[]
   export let tagList: ITag[]
+  export let archiveList: IArchive[]
+  export let recentList: IRecent[]
 </script>
 
 <Navbar />
@@ -34,7 +40,8 @@
     <slot />
   </main>
   <aside class="right-col">
-    <div />
+    <Recent {recentList} />
+    <Archives {archiveList} />
   </aside>
 </div>
 

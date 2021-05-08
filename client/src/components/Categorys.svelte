@@ -1,11 +1,11 @@
 <script lang="ts">
+  import Card from './Card.svelte'
   import type { ICategory } from '../api.interface'
 
   export let categoryList: ICategory[]
 </script>
 
-<div class="categorys card card-mt">
-  <h4>分类</h4>
+<Card className="categorys" title="分类" isPaddingTop>
   <ul class="category-list">
     {#each categoryList as item}
       <li class="category-item">
@@ -16,7 +16,7 @@
       </li>
     {/each}
   </ul>
-</div>
+</Card>
 
 <style lang="less">
   .category-list {

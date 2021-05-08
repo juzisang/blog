@@ -1,11 +1,11 @@
 <script lang="ts">
+  import Card from './Card.svelte'
   import type { ITag } from '../api.interface'
 
   export let tagList: ITag[]
 </script>
 
-<div class="tags card card-mt">
-  <h4>热门标签</h4>
+<Card className="tags" title="热门标签" isPaddingTop>
   <ul class="tag-list">
     {#each tagList as item}
       <li class="tag-item">
@@ -13,7 +13,7 @@
       </li>
     {/each}
   </ul>
-</div>
+</Card>
 
 <style lang="less">
   .tag-list {
