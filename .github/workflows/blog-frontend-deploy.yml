@@ -40,14 +40,14 @@ jobs:
     - if: ${{ github.ref == 'refs/heads/master' }}
       name: Build Prod
       env:
-        - SERVER_BLOG_API: http://backend/api
-        - BLOG_API: https://blog.juzisang.top/api
+        SERVER_BLOG_API: http://backend/api
+        BLOG_API: https://blog.juzisang.top/api
       run: npm run build
     - if: ${{ github.ref == 'refs/heads/test' }}
       name: Build Test
       env:
-        - SERVER_BLOG_API: http://backend_test/api
-        - BLOG_API: https://blog-test.juzisang.top/api
+        SERVER_BLOG_API: http://backend_test/api
+        BLOG_API: https://blog-test.juzisang.top/api
       run: npm run build
 
     - name: Clear mode_modules
