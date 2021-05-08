@@ -12,6 +12,11 @@ export class ArticleController {
     return this.articleService.getList(pagination)
   }
 
+  @Get('archives')
+  getArchives() {
+    return this.articleService.getArchives()
+  }
+
   @Get(':id')
   getArticle(@Param('id') pid) {
     return this.articleService.getOne(pid)

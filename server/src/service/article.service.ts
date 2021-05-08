@@ -45,4 +45,14 @@ export class ArticleService {
   getCount() {
     return this.articleEntity.count()
   }
+
+  getArchives() {
+    return this.articleEntity
+      .createQueryBuilder('article')
+      .distinct()
+      .select(['COUNT(article.ctime) as articleCount', `DATE_FORMAT(article.ctime,'%Y') as name`])
+      .groupBy('ctime')
+      .orderBy('name', 'DESC')
+      .getRawMany()
+  }
 }
