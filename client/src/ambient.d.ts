@@ -38,4 +38,9 @@ declare module '*.webp' {
   export default value
 }
 
+const SERVER_BLOG_API: string
 const BLOG_API: string
+
+const process: {
+  browser: boolean
+}

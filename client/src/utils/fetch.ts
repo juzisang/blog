@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
 const ajax = axios.create({
-  baseURL: BLOG_API || '/api',
+  baseURL: process.browser ? BLOG_API : SERVER_BLOG_API,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
   timeout: 30 * 1000,

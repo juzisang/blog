@@ -19,6 +19,7 @@ const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 dotenv.config()
 
 const envConfig = {
+	SERVER_BLOG_API: JSON.stringify(process.env.SERVER_BLOG_API),
 	BLOG_API: JSON.stringify(process.env.BLOG_API)
 }
 
