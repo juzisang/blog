@@ -17,6 +17,11 @@ export class ArticleController {
     return this.articleService.getArchives()
   }
 
+  @Get('archive/:year')
+  getArchive(@Param('year') year: string) {
+    return this.articleService.getArchive(year)
+  }
+
   @Get('recent')
   getRecent() {
     return this.articleService.getRecent()

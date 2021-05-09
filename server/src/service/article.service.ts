@@ -4,7 +4,7 @@ import { ArticleMetaRelationEntity } from '@app/entity/article_meta_relation.ent
 import { UserEntity } from '@app/entity/user.entity'
 import { BadRequestException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Like, Repository } from 'typeorm'
 import { MetaService } from './meta.service'
 import marked from 'marked'
 import highlight from 'highlight.js'
@@ -16,7 +16,7 @@ export class ArticleService {
     const article = await this.articleEntity.findOne({ id })
     article.views = article.views + 1
     await this.articleEntity.save(article)
-    return this.articleEntity.findOne({ relations: ['user'], select: ['id', 'thumb', 'title', 'utime', 'views', 'description', 'contentHtml'], where: { id } })
+    return this.articleEntity.findOne({ relations: ['user'], select: ['id', 'thumb', 'title', 'utime', 'ctime', 'views', 'description', 'contentHtml'], where: { id } })
   }
 
   async getList({ page, pageSize }: PaginationDto) {
@@ -65,9 +65,16 @@ export class ArticleService {
       .createQueryBuilder('article')
       .distinct()
       .select(['COUNT(article.ctime) as articleCount', `DATE_FORMAT(article.ctime,'%Y') as name`])
-      .groupBy('ctime')
+      .groupBy('name')
       .orderBy('name', 'DESC')
       .getRawMany()
+  }
+
+  getArchive(year: string) {
+    return this.articleEntity
+      .createQueryBuilder('article')
+      .where('YEAR(article.ctime)=:year', { year })
+      .getMany()
   }
 
   getRecent() {
