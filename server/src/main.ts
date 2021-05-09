@@ -7,8 +7,8 @@ import { TransformInterceptor } from './util/transform.interceptor'
 
 console.log('config:', config)
 
-async function bootstrap () {
-  const app = await NestFactory.create(AppModule,{})
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule, {})
   // 设置路由前缀
   app.setGlobalPrefix('api')
   // 过滤常见安全问题
@@ -17,7 +17,7 @@ async function bootstrap () {
   app.useGlobalPipes(new ValidationPipe())
   // cors
   app.enableCors({
-    origin: config.NODE_ENV === 'development' ? '*' : config.BLOG_SITE_ORIGIN,
+    origin: (url, cb) => cb(null, config.NODE_ENV === 'development' ? url : config.BLOG_SITE_ORIGIN),
     credentials: true,
     maxAge: 60 * 60 * 24,
   })

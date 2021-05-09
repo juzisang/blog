@@ -20,7 +20,7 @@ export class ArticleService {
   async getList({ page, pageSize }: PaginationDto) {
     page = parseInt((page || 1).toString())
     pageSize = parseInt((pageSize || 10).toString())
-    const [list, count] = await this.articleEntity.findAndCount({ skip: (page - 1) * pageSize, take: pageSize })
+    const [list, count] = await this.articleEntity.findAndCount({ skip: (page - 1) * pageSize, take: pageSize, order: { ctime: 'DESC' } })
     return { list, page, pageSize, count }
   }
 
@@ -57,6 +57,6 @@ export class ArticleService {
   }
 
   getRecent() {
-    return this.articleEntity.find({ select: ['id', 'thumb', 'title', 'description', 'ctime', 'utime', 'views'], order: { ctime: 'DESC' }, skip: 0, take: 4 })
+    return this.articleEntity.find({ order: { ctime: 'DESC' }, skip: 0, take: 4 })
   }
 }
