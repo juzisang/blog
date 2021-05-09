@@ -13,8 +13,6 @@
 
 <script lang="ts">
   import type { IArticleResult } from '../../api.interface'
-  import 'highlight.js/styles/github.css'
-  import 'github-markdown-css'
 
   export let articleResult: IArticleResult
 </script>
