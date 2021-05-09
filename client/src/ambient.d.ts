@@ -38,8 +38,6 @@ declare module '*.webp' {
   export default value
 }
 
-declare module '@sveltejs/svelte-scroller'
-
 const SERVER_BLOG_API: string
 const BLOG_API: string
 

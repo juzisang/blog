@@ -3,7 +3,7 @@
   import type { Preload } from '@sapper/common'
 
   export const preload: Preload = async function (this, page, session) {
-    const articleResult = get<IArticleResult>('/article/list')
+    const articleResult = get<IArticleListResult>('/article/list')
 
     return {
       articleResult
@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-  import type { IArticleResult } from '../../api.interface'
+  import type { IArticleListResult } from '../../api.interface'
   
   // export let articleResult:IArticleResult
 </script>

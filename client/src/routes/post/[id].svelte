@@ -1,11 +1,34 @@
-<script lang="ts">
+<script context="module" lang="ts">
+  import { get } from '../../utils/fetch'
+  import type { Preload } from '@sapper/common'
+
+  export const preload: Preload = async function (this, page, session) {
+    const articleResult = await get<IArticleResult>(`/article/${page.params.id}`)
+
+    return {
+      articleResult,
+    }
+  }
 </script>
 
-<p>文章</p>
+<script lang="ts">
+  import type { IArticleResult } from '../../api.interface'
+  import 'highlight.js/styles/github.css'
+  import 'github-markdown-css'
+
+  export let articleResult: IArticleResult
+</script>
 
 <svelte:head>
-  <title>文章 | 橘子的Blog</title>
+  <title>{articleResult.title} | 橘子的Blog</title>
 </svelte:head>
 
+<article class="markdown-body card">
+  {@html articleResult.contentHtml}
+</article>
+
 <style lang="less">
+  .markdown-body {
+    margin-bottom: 20px;
+  }
 </style>

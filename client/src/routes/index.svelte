@@ -3,7 +3,7 @@
   import type { Preload } from '@sapper/common'
 
   export const preload: Preload = async function (this, page, session) {
-    const articleResult = await get<IArticleResult>('/article/list')
+    const articleResult = await get<IArticleListResult>('/article/list')
 
     return {
       articleResult,
@@ -12,10 +12,10 @@
 </script>
 
 <script lang="ts">
-  import type { IArticleResult } from '../api.interface'
+  import type { IArticleListResult } from '../api.interface'
   import ArticleItem from '../components/ArticleItem.svelte'
 
-  export let articleResult: IArticleResult
+  export let articleResult: IArticleListResult
 </script>
 
 {#each articleResult.list as articleItem, index}

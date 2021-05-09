@@ -51,9 +51,32 @@ export interface IArticleItem {
   utime: string
 }
 
-export interface IArticleResult {
+export interface IArticleListResult {
   page: number
   pageSize: number
   count: number
   list: IArticleItem[]
+}
+
+export interface IArticleResult {
+  ctime: string
+  utime: string
+  id: 1
+  title: string
+  description: string
+  contentHtml: string
+  thumb: string
+  views: number
+  user: {
+    ctime: string
+    utime: string
+    id: number
+    username: string
+    authorName: string
+    type: string
+    avatar: string
+    slogan: string
+    url: string
+    mail: string
+  }
 }

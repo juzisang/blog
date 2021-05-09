@@ -1,7 +1,7 @@
 <script lang="ts">
-  export let title: string
-  export let className: string
-  export let isPaddingTop: boolean
+  export let title: string = ''
+  export let className: string = ''
+  export let isPaddingTop: boolean = false
 </script>
 
 <div class="card {isPaddingTop ? 'card-mt' : ''} {className}">
@@ -10,7 +10,7 @@
 </div>
 
 <style lang="less">
-  .card {
+  :global(.card) {
     padding: 18px;
     border-radius: 8px;
     background: #fff;
