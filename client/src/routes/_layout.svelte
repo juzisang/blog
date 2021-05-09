@@ -1,13 +1,13 @@
 <script context="module" lang="ts">
-  import { get } from '../utils/fetch'
+  import { fetchGet } from '../utils/fetch'
   import type { Preload } from '@sapper/common'
 
   export const preload: Preload = async function (this, page, session) {
-    const userInfo = await get<IUserInfo>('/user/info')
-    const categoryList = await get<ICategory[]>('/category/list')
-    const tagList = await get<ITag[]>('/tag/list')
-    const archiveList = await get<IArchive>('/article/archives')
-    const recentList = await get('/article/recent')
+    const userInfo = await fetchGet<IUserInfo>('/user/info')
+    const categoryList = await fetchGet<ICategory[]>('/category/list')
+    const tagList = await fetchGet<ITag[]>('/tag/list')
+    const archiveList = await fetchGet<IArchive>('/article/archives')
+    const recentList = await fetchGet('/article/recent')
 
     return { userInfo, categoryList, tagList, archiveList, recentList }
   }

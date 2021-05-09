@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
-  import { get } from '../../utils/fetch'
+  import { fetchGet } from '../../utils/fetch'
   import type { Preload } from '@sapper/common'
 
   export const preload: Preload = async function (this, page, session) {
-    const articleResult = get<IArticleListResult>('/article/list')
+    const articleResult = fetchGet<IArticleListResult>('/article/list')
 
     return {
       articleResult

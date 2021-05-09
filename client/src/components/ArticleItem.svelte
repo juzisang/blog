@@ -70,10 +70,5 @@
     color: @subtitle;
     justify-content: space-between;
   }
-  .dot {
-    &:after {
-      margin: 0 0.2rem;
-      content: '·';
-    }
-  }
+
 </style>

@@ -7,11 +7,11 @@ const ajax = axios.create({
   timeout: 30 * 1000,
 })
 
-export function get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+export function fetchGet<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
   return ajax.get(url, config).then((res) => handleData(res))
 }
 
-export function post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+export function fetchPost<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
   return ajax.post(url, data, config).then((res) => handleData(res))
 }
 
