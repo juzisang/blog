@@ -22,7 +22,7 @@ export class ArticleService {
   async getList({ page, pageSize }: PaginationDto) {
     page = parseInt((page || 1).toString())
     pageSize = parseInt((pageSize || 10).toString())
-    const [list, count] = await this.articleEntity.findAndCount({ skip: (page - 1) * pageSize, take: pageSize, order: { ctime: 'DESC' } })
+    const [list, count] = await this.articleEntity.findAndCount({ skip: (page - 1) * pageSize, take: pageSize, order: { id: 'DESC' } })
     return { list, page, pageSize, count }
   }
 
