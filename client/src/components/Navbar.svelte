@@ -21,6 +21,7 @@
   .navbar {
     background-color: #fff;
     box-shadow: 0 4px 10px rgba(0, 2, 4, 0.06), 0 0 1px rgba(0, 2, 4, 0.11);
+ 
     .navbar-container {
       width: 1400px;
       height: 56px;

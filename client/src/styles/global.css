@@ -6,9 +6,7 @@ body {
   color: #333;
   background-color: #f2f5f8;
 }
-a {
-  text-decoration: none;
-}
+
 p,
 ul,
 li,
@@ -21,13 +19,8 @@ h6 {
   margin: 0;
   padding: 0;
 }
+
 ul,
 li {
   list-style: none;
 }
-
-.container {
-  width: 1400px;
-  margin: 0 auto;
-}
-

@@ -5,9 +5,7 @@
 </script>
 
 <div class="card {isPaddingTop ? 'card-mt' : ''} {className}">
-  {#if title}
-    <h4>{title}</h4>
-  {/if}
+  {#if title}<h4>{title}</h4>{/if}
   <slot />
 </div>
 

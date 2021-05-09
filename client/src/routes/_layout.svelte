@@ -46,14 +46,19 @@
 </div>
 
 <style lang="less">
+  @import '../styles/cover.less';
   .container {
     padding-top: 32px;
     display: flex;
     .left-col,
     .right-col {
+      position: sticky;
+      top: 20px;
+      z-index: 10;
       width: 23.5%;
       padding: 0 10px;
       box-sizing: border-box;
+      align-self: flex-start;
     }
     .main-col {
       width: 53%;
