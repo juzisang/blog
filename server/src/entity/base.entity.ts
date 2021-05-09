@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { CreateDateColumn, UpdateDateColumn, ValueTransformer } from 'typeorm'
 
 export class ReadDateFormat implements ValueTransformer {

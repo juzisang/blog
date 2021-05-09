@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index, ManyToOne, JoinColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm'
-import { BaseEntity, ReadDateFormat } from './base.entity'
+import { Entity, Column, PrimaryGeneratedColumn, Index, ManyToOne, JoinColumn } from 'typeorm'
+import { BaseEntity } from './base.entity'
 import { UserEntity } from './user.entity'
 
 @Entity('article')
@@ -14,8 +14,11 @@ export class ArticleEntity extends BaseEntity {
   @Column({ comment: '描述' })
   description: string
 
-  @Column({ comment: '内容', type: 'text' })
+  @Column({ comment: '内容', type: 'text', select: false })
   content: string
+
+  @Column({ comment: '内容Html', type: 'text', select: false })
+  contentHtml: string
 
   @Column({ comment: '封面' })
   thumb: string

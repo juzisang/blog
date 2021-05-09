@@ -6,6 +6,8 @@ import { BadRequestException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { MetaService } from './meta.service'
+import marked from 'marked'
+import highlight from 'highlight.js'
 
 export class ArticleService {
   constructor(@InjectRepository(ArticleEntity) private readonly articleEntity: Repository<ArticleEntity>, @InjectRepository(ArticleMetaRelationEntity) private readonly articleMetaRelationEntity: Repository<ArticleMetaRelationEntity>, private readonly metaService: MetaService) {}
@@ -14,7 +16,7 @@ export class ArticleService {
     const article = await this.articleEntity.findOne({ id })
     article.views = article.views + 1
     await this.articleEntity.save(article)
-    return this.articleEntity.findOne({ relations: ['user'], where: { id } })
+    return this.articleEntity.findOne({ relations: ['user'], select: ['id', 'thumb', 'title', 'utime', 'views', 'description', 'contentHtml'], where: { id } })
   }
 
   async getList({ page, pageSize }: PaginationDto) {
@@ -26,9 +28,9 @@ export class ArticleService {
 
   async save(dto: ArticleDto, user: UserEntity) {
     if (dto.id) return await this.update(dto)
-    const article = await this.articleEntity.findOne({ title: dto.title })
-    if (article) throw new BadRequestException('文章已存在')
-    const newArticle = await this.articleEntity.save(this.articleEntity.create({ ...dto, user, views: 0 }))
+    if (await this.articleEntity.findOne({ title: dto.title })) throw new BadRequestException('文章已存在')
+    const contentHtml = this.renderHtml(dto.content)
+    const newArticle = await this.articleEntity.save(this.articleEntity.create({ ...dto, contentHtml, user, views: 0 }))
     const relations = this.articleMetaRelationEntity.create([...dto.tags, dto.category].filter(v => v).map(v => ({ articleId: newArticle.id, metaId: v })))
     await this.articleMetaRelationEntity.save(relations)
   }
@@ -39,7 +41,19 @@ export class ArticleService {
     await this.articleMetaRelationEntity.delete({ articleId: dto.id })
     const relations = this.articleMetaRelationEntity.create([...dto.tags, dto.category].filter(v => v).map(v => ({ articleId: dto.id, metaId: v })))
     await this.articleMetaRelationEntity.save(relations)
-    await this.articleEntity.save({ ...article, ...dto })
+    if (dto.content) {
+      await this.articleEntity.save({ ...article, ...dto, contentHtml: this.renderHtml(dto.content) })
+    } else {
+      await this.articleEntity.save({ ...article, ...dto })
+    }
+  }
+
+  renderHtml(str) {
+    return marked(str, {
+      highlight: function(code) {
+        return highlight.highlightAuto(code).value
+      },
+    })
   }
 
   getCount() {

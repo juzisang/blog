@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
-import * as helmet from 'helmet'
+import helmet from 'helmet'
 import { config } from './app.config'
 import { TransformInterceptor } from './util/transform.interceptor'
 
