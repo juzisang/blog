@@ -28,6 +28,7 @@
     display: flex;
     justify-content: space-between;
     color: #37475b;
+    align-items: center;
     &:hover,
     &:active {
       border-radius: 4px;

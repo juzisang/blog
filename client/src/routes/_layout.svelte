@@ -6,7 +6,7 @@
     const userInfo = await fetchGet<IUserInfo>('/user/info')
     const categoryList = await fetchGet<ICategory[]>('/category/list')
     const tagList = await fetchGet<ITag[]>('/tag/list')
-    const archiveList = await fetchGet<IArchive>('/article/archives')
+    const archiveList = await fetchGet<IArchive>('/archive/list')
     const recentList = await fetchGet('/article/recent')
 
     return { userInfo, categoryList, tagList, archiveList, recentList }
