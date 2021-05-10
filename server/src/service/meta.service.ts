@@ -4,10 +4,11 @@ import { MetaEntity } from '@app/entity/meta.entity'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { ArticleService } from './article.service'
 
 @Injectable()
 export class MetaService {
-  constructor(@InjectRepository(MetaEntity) private readonly metaEntity: Repository<MetaEntity>) {}
+  constructor(private articleService: ArticleService, @InjectRepository(MetaEntity) private readonly metaEntity: Repository<MetaEntity>) {}
 
   getListAndCount(type: 'tag' | 'category') {
     return this.metaEntity

@@ -4,13 +4,18 @@ import { ArticleMetaRelationEntity } from '@app/entity/article_meta_relation.ent
 import { UserEntity } from '@app/entity/user.entity'
 import { BadRequestException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Like, Repository } from 'typeorm'
-import { MetaService } from './meta.service'
+import { Repository } from 'typeorm'
 import marked from 'marked'
 import highlight from 'highlight.js'
+import { MetaEntity } from '@app/entity/meta.entity'
+import _ from 'lodash'
 
 export class ArticleService {
-  constructor(@InjectRepository(ArticleEntity) private readonly articleEntity: Repository<ArticleEntity>, @InjectRepository(ArticleMetaRelationEntity) private readonly articleMetaRelationEntity: Repository<ArticleMetaRelationEntity>, private readonly metaService: MetaService) {}
+  constructor(
+    @InjectRepository(ArticleEntity) private readonly articleEntity: Repository<ArticleEntity>,
+    @InjectRepository(ArticleMetaRelationEntity) private readonly articleMetaRelationEntity: Repository<ArticleMetaRelationEntity>,
+    @InjectRepository(MetaEntity) private readonly metaEntity: Repository<MetaEntity>,
+  ) {}
 
   async getOne(id: number) {
     const article = await this.articleEntity.findOne({ id })
@@ -22,7 +27,25 @@ export class ArticleService {
   async getList({ page, pageSize }: PaginationDto) {
     page = parseInt((page || 1).toString())
     pageSize = parseInt((pageSize || 10).toString())
-    const [list, count] = await this.articleEntity.findAndCount({ skip: (page - 1) * pageSize, take: pageSize, order: { id: 'DESC' } })
+
+    const [originaList, count] = await this.articleEntity
+      .createQueryBuilder('article')
+      .addSelect('meta.type')
+      .leftJoin(ArticleMetaRelationEntity, 'relation', 'article.id=relation.articleId')
+      .leftJoinAndMapMany('article.metas', MetaEntity, 'meta', 'relation.meta_id=meta.id')
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .orderBy('article.id', 'DESC')
+      .getManyAndCount()
+
+    const list = originaList.map((item: any) => {
+      const excludeKeys = ['type', 'ctime', 'utime']
+      const tags = item.metas.filter(v => v.type === 'tag').map(v => _.omit(v, excludeKeys))
+      const findCategory = item.metas.find(v => v.type === 'category')
+      const category = _.omit(findCategory, excludeKeys)
+      return _.omit({ ...item, tags, category }, 'metas')
+    })
+
     return { list, page, pageSize, count }
   }
 
@@ -79,5 +102,21 @@ export class ArticleService {
 
   getRecent() {
     return this.articleEntity.find({ order: { ctime: 'DESC' }, skip: 0, take: 4 })
+  }
+
+  async getMetaList(name: string, { page, pageSize }: PaginationDto) {
+    page = parseInt((page || 1).toString())
+    pageSize = parseInt((pageSize || 10).toString())
+
+    const meta = await this.metaEntity.findOne({ name })
+    const [list, count] = await this.articleEntity
+      .createQueryBuilder('article')
+      .leftJoin(ArticleMetaRelationEntity, 'relation', 'article.id=relation.articleId')
+      .where('relation.meta_id=:id', { id: meta.id })
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .orderBy('article.id', 'DESC')
+      .getManyAndCount()
+    return { list, page, pageSize, count }
   }
 }

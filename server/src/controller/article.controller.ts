@@ -11,17 +11,7 @@ export class ArticleController {
   getList(@Query() pagination: PaginationDto) {
     return this.articleService.getList(pagination)
   }
-
-  @Get('archives')
-  getArchives() {
-    return this.articleService.getArchives()
-  }
-
-  @Get('archive/:year')
-  getArchive(@Param('year') year: string) {
-    return this.articleService.getArchive(year)
-  }
-
+  
   @Get('recent')
   getRecent() {
     return this.articleService.getRecent()

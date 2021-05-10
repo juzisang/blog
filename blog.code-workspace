@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": "client"
+		},
+		{
+			"path": "server"
+		},
+		{
+			"path": "admin"
+		}
+	],
+	"settings": {
+		"remote.SSH.defaultForwardedPorts": [
+			{
+				"name": "client",
+				"localPort": 9000,
+				"remotePort": 9000
+			},
+			{
+				"name": "client-reload",
+				"localPort": 10000,
+				"remotePort": 10000
+			},
+			{
+				"name": "server",
+				"localPort": 3000,
+				"remotePort": 3000
+			}
+		]
+	}
+}
