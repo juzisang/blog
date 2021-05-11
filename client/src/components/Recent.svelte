@@ -10,7 +10,7 @@
     {#each recentList as item}
       <li class="recent-item">
         <div class="time">{item.ctime}</div>
-        <a href="/post/{item.id}">{item.title}</a>
+        <a href="/article/{item.id}">{item.title}</a>
       </li>
     {/each}
   </ul>

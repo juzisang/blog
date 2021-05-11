@@ -4,9 +4,9 @@
 
   export const preload: Preload = async function (this, page, session) {
     const userInfo = await fetchGet<IUserInfo>('/user/info')
-    const categoryList = await fetchGet<ICategory[]>('/category/list')
-    const tagList = await fetchGet<ITag[]>('/tag/list')
-    const archiveList = await fetchGet<IArchive>('/archive/list')
+    const categoryList = await fetchGet<ICategory[]>('/category/all')
+    const tagList = await fetchGet<ITag[]>('/tag/all')
+    const archiveList = await fetchGet<IArchive>('/archive/all')
     const recentList = await fetchGet('/article/recent')
 
     return { userInfo, categoryList, tagList, archiveList, recentList }

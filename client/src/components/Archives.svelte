@@ -9,7 +9,7 @@
   <ul class="archive-list">
     {#each archiveList as item}
       <li class="archive-item">
-        <a href="/archives/{item.name}">
+        <a href="/archive/{item.name}">
           {item.name}
           <span class="article-count">{item.articleCount}</span>
         </a>

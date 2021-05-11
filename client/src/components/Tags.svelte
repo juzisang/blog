@@ -9,7 +9,7 @@
   <ul class="tag-list">
     {#each tagList as item}
       <li class="tag-item">
-        <a href="/tags/{item.name}">#{item.name}</a>
+        <a href="/tag/{item.name}">#{item.alias}</a>
       </li>
     {/each}
   </ul>

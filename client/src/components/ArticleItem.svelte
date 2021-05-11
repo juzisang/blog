@@ -8,12 +8,12 @@
 
 <Card className="article-item" {isPaddingTop}>
   {#if !!articleItem.thumb}
-    <a class="article-thumb" href="/post/{articleItem.id}">
+    <a class="article-thumb" href="/article/{articleItem.id}">
       <img src={articleItem.thumb} alt="{articleItem.title}-缩略图" />
     </a>
   {/if}
   <article class="article">
-    <h1 class="article-title"><a href="/post/{articleItem.id}">{articleItem.title}</a></h1>
+    <h1 class="article-title"><a href="/article/{articleItem.id}">{articleItem.title}</a></h1>
     <p class="article-description">{articleItem.description}</p>
     <div class="article-info">
       <div class="info-left">
@@ -21,7 +21,7 @@
         <span class="dot" />
         <span class="views">阅读数：{articleItem.views}</span>
       </div>
-      <a class="article-link" href="/post/{articleItem.id}">继续阅读</a>
+      <a class="article-link" href="/article/{articleItem.id}">继续阅读</a>
     </div>
   </article>
 </Card>

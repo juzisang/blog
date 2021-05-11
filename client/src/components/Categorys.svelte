@@ -9,8 +9,8 @@
   <ul class="category-list">
     {#each categoryList as item}
       <li class="category-item">
-        <a href="/categorys/{item.name}">
-          {item.name}
+        <a href="/category/{item.name}">
+          {item.alias}
           <span class="article-count">{item.articleCount}</span>
         </a>
       </li>
