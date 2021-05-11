@@ -12,9 +12,9 @@ export class ReadDateFormat implements ValueTransformer {
 }
 
 export class BaseEntity {
-  @CreateDateColumn({ comment: '创建时间', transformer: new ReadDateFormat() })
+  @CreateDateColumn({ comment: '创建时间', transformer: new ReadDateFormat(), select: false })
   ctime: Date
 
-  @UpdateDateColumn({ comment: '修改时间', transformer: new ReadDateFormat() })
+  @UpdateDateColumn({ comment: '修改时间', transformer: new ReadDateFormat(), select: false })
   utime: Date
 }

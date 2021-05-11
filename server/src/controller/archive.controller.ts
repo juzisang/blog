@@ -5,7 +5,7 @@ import { Controller, Get, Param } from '@nestjs/common'
 export class ArchiveController {
   constructor(private articleService: ArticleService) {}
 
-  @Get('list')
+  @Get('all')
   getArchiveList() {
     return this.articleService.getArchives()
   }

@@ -14,7 +14,6 @@ export class ArticleService {
   constructor(
     @InjectRepository(ArticleEntity) private readonly articleEntity: Repository<ArticleEntity>,
     @InjectRepository(ArticleMetaRelationEntity) private readonly articleMetaRelationEntity: Repository<ArticleMetaRelationEntity>,
-    @InjectRepository(MetaEntity) private readonly metaEntity: Repository<MetaEntity>,
   ) {}
 
   async getOne(id: number) {
@@ -31,8 +30,10 @@ export class ArticleService {
     const [originaList, count] = await this.articleEntity
       .createQueryBuilder('article')
       .addSelect('meta.type')
+      .addSelect('article.ctime')
       .leftJoin(ArticleMetaRelationEntity, 'relation', 'article.id=relation.articleId')
       .leftJoinAndMapMany('article.metas', MetaEntity, 'meta', 'relation.meta_id=meta.id')
+      .where('article.state=:state', { state: 'online' })
       .skip((page - 1) * pageSize)
       .take(pageSize)
       .orderBy('article.id', 'DESC')
@@ -101,22 +102,12 @@ export class ArticleService {
   }
 
   getRecent() {
-    return this.articleEntity.find({ order: { ctime: 'DESC' }, skip: 0, take: 4 })
-  }
-
-  async getMetaList(name: string, { page, pageSize }: PaginationDto) {
-    page = parseInt((page || 1).toString())
-    pageSize = parseInt((pageSize || 10).toString())
-
-    const meta = await this.metaEntity.findOne({ name })
-    const [list, count] = await this.articleEntity
+    return this.articleEntity
       .createQueryBuilder('article')
-      .leftJoin(ArticleMetaRelationEntity, 'relation', 'article.id=relation.articleId')
-      .where('relation.meta_id=:id', { id: meta.id })
-      .skip((page - 1) * pageSize)
-      .take(pageSize)
-      .orderBy('article.id', 'DESC')
-      .getManyAndCount()
-    return { list, page, pageSize, count }
+      .addSelect('article.ctime')
+      .orderBy('ctime', 'DESC')
+      .skip(0)
+      .take(4)
+      .getMany()
   }
 }
