@@ -13,13 +13,18 @@ export class UserController {
     return this.userService.login(userDto)
   }
 
-  @Get('/info')
-  async getAuthorInfo() {
+  @Get()
+  async getAdminInfo() {
     return {
       info: await this.userService.getUserInfo(),
       tagCount: await this.metaService.getCount('tag'),
       categoryCount: await this.metaService.getCount('category'),
       articleCount: await this.articleService.getCount(),
     }
+  }
+
+  @Get(':username')
+  async getAuthorInfo() {
+    return Promise.reject()
   }
 }

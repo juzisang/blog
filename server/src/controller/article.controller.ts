@@ -1,30 +1,46 @@
 import { ArticleDto, PaginationDto } from '@app/app.dto'
 import { ArticleService } from '@app/service/article.service'
 import { Auth } from '@app/util/auth.decorator'
-import { Controller, Post, Body, Get, Req, Param, Query } from '@nestjs/common'
+import { Controller, Post, Body, Get, Req, Param, Query, Put } from '@nestjs/common'
 
 @Controller('article')
 export class ArticleController {
   constructor(private articleService: ArticleService) {}
 
-  @Get('list')
-  getList(@Query() pagination: PaginationDto) {
-    return this.articleService.getList(pagination)
+  @Auth()
+  @Post()
+  saveArticle(@Body() dto: ArticleDto, @Req() req) {
+    return this.articleService.save(dto, req.user)
   }
-  
+
+  @Auth()
+  @Put(':id')
+  updateArticle(@Param('id') id, @Body() dto: ArticleDto) {
+    return this.articleService.update(id, dto)
+  }
+
+  @Get()
+  getList(@Query() pagination: PaginationDto) {
+    return this.articleService.getPagingList(pagination)
+  }
+
   @Get('recent')
   getRecent() {
     return this.articleService.getRecent()
   }
 
-  @Get(':id')
-  getArticle(@Param('id') pid) {
-    return this.articleService.getOne(pid)
+  @Get('archive')
+  getArchives() {
+    return this.articleService.getArchives()
   }
 
-  @Auth()
-  @Post()
-  saveArticle(@Body() dto: ArticleDto, @Req() req) {
-    return this.articleService.save(dto, req.user)
+  @Get('archive/year/:year')
+  getYearArchives(@Param('year') year: string) {
+    return this.articleService.getArchive(year)
+  }
+
+  @Get(':id')
+  getArticle(@Param('id') id) {
+    return this.articleService.getDetails(id)
   }
 }

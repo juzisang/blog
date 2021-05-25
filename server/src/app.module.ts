@@ -19,7 +19,6 @@ import { CategoryController } from './controller/category.controller'
 import { MetaService } from './service/meta.service'
 import { ArticleController } from './controller/article.controller'
 import { ArticleService } from './service/article.service'
-import { ArchiveController } from './controller/archive.controller'
 @Module({
   imports: [
     PassportModule,
@@ -44,7 +43,7 @@ import { ArchiveController } from './controller/archive.controller'
       logging: true,
     }),
   ],
-  controllers: [AppController, UserController, OptionsController, TagController, CategoryController, ArticleController, ArchiveController],
+  controllers: [AppController, UserController, OptionsController, TagController, CategoryController, ArticleController],
   providers: [JwtStrategy, UserService, OptionsService, MetaService, ArticleService],
 })
 export class AppModule implements OnModuleInit {

@@ -14,16 +14,38 @@ export class ArticleService {
   constructor(
     @InjectRepository(ArticleEntity) private readonly articleEntity: Repository<ArticleEntity>,
     @InjectRepository(ArticleMetaRelationEntity) private readonly articleMetaRelationEntity: Repository<ArticleMetaRelationEntity>,
+    @InjectRepository(MetaEntity) private readonly metaEntity: Repository<MetaEntity>,
   ) {}
 
-  async getOne(id: number) {
+  async save(dto: ArticleDto, user: UserEntity) {
+    if (await this.articleEntity.findOne({ title: dto.title })) throw new BadRequestException('文章已存在')
+    const contentHtml = this.renderHtml(dto.content)
+    const newArticle = await this.articleEntity.save(this.articleEntity.create({ ...dto, contentHtml, user, views: 0 }))
+    const relations = this.articleMetaRelationEntity.create([...dto.tags, dto.category].filter(v => v).map(v => ({ articleId: newArticle.id, metaId: v })))
+    await this.articleMetaRelationEntity.save(relations)
+  }
+
+  async update(id: string, dto: ArticleDto) {
+    const article = await this.articleEntity.findOne(dto.id)
+    if (!article) throw new NotFoundException('文章不存在')
+    await this.articleMetaRelationEntity.delete({ articleId: dto.id })
+    const relations = this.articleMetaRelationEntity.create([...dto.tags, dto.category].filter(v => v).map(v => ({ articleId: dto.id, metaId: v })))
+    await this.articleMetaRelationEntity.save(relations)
+    if (dto.content) {
+      await this.articleEntity.save({ ...article, ...dto, contentHtml: this.renderHtml(dto.content) })
+    } else {
+      await this.articleEntity.save({ ...article, ...dto })
+    }
+  }
+
+  async getDetails(id: number) {
     const article = await this.articleEntity.findOne({ id })
     article.views = article.views + 1
     await this.articleEntity.save(article)
     return this.articleEntity.findOne({ relations: ['user'], select: ['id', 'thumb', 'title', 'utime', 'ctime', 'views', 'description', 'contentHtml'], where: { id } })
   }
 
-  async getList({ page, pageSize }: PaginationDto) {
+  async getPagingList({ page, pageSize }: PaginationDto) {
     page = parseInt((page || 1).toString())
     pageSize = parseInt((pageSize || 10).toString())
 
@@ -48,36 +70,6 @@ export class ArticleService {
     })
 
     return { list, page, pageSize, count }
-  }
-
-  async save(dto: ArticleDto, user: UserEntity) {
-    if (dto.id) return await this.update(dto)
-    if (await this.articleEntity.findOne({ title: dto.title })) throw new BadRequestException('文章已存在')
-    const contentHtml = this.renderHtml(dto.content)
-    const newArticle = await this.articleEntity.save(this.articleEntity.create({ ...dto, contentHtml, user, views: 0 }))
-    const relations = this.articleMetaRelationEntity.create([...dto.tags, dto.category].filter(v => v).map(v => ({ articleId: newArticle.id, metaId: v })))
-    await this.articleMetaRelationEntity.save(relations)
-  }
-
-  async update(dto: ArticleDto) {
-    const article = await this.articleEntity.findOne(dto.id)
-    if (!article) throw new NotFoundException('文章不存在')
-    await this.articleMetaRelationEntity.delete({ articleId: dto.id })
-    const relations = this.articleMetaRelationEntity.create([...dto.tags, dto.category].filter(v => v).map(v => ({ articleId: dto.id, metaId: v })))
-    await this.articleMetaRelationEntity.save(relations)
-    if (dto.content) {
-      await this.articleEntity.save({ ...article, ...dto, contentHtml: this.renderHtml(dto.content) })
-    } else {
-      await this.articleEntity.save({ ...article, ...dto })
-    }
-  }
-
-  renderHtml(str) {
-    return marked(str, {
-      highlight: function(code) {
-        return highlight.highlightAuto(code).value
-      },
-    })
   }
 
   getCount() {
@@ -109,5 +101,29 @@ export class ArticleService {
       .skip(0)
       .take(4)
       .getMany()
+  }
+
+  async getMetaArticle(name: string, { page, pageSize }: PaginationDto) {
+    page = parseInt((page || 1).toString())
+    pageSize = parseInt((pageSize || 10).toString())
+
+    const meta = await this.metaEntity.findOne({ name })
+    const [list, count] = await this.articleEntity
+      .createQueryBuilder('article')
+      .leftJoin(ArticleMetaRelationEntity, 'relation', 'article.id=relation.articleId')
+      .where('relation.meta_id=:id', { id: meta.id })
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .orderBy('article.id', 'DESC')
+      .getManyAndCount()
+    return { list, page, pageSize, count }
+  }
+
+  private renderHtml(str) {
+    return marked(str, {
+      highlight: function(code) {
+        return highlight.highlightAuto(code).value
+      },
+    })
   }
 }

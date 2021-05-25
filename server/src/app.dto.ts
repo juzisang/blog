@@ -82,3 +82,13 @@ export class PaginationDto {
   @IsNumberString()
   pageSize: string | number
 }
+
+export class IArticleFilterDto extends PaginationDto {
+  @IsOptional()
+  @IsNumberString()
+  tag?: string
+
+  @IsOptional()
+  @IsNumberString()
+  category?: string
+}

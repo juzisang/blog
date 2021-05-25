@@ -1,11 +1,12 @@
 import { MetaDto, PaginationDto } from '@app/app.dto'
 import { MetaService } from '@app/service/meta.service'
+import { ArticleService } from '@app/service/article.service'
 import { Auth } from '@app/util/auth.decorator'
-import { Controller, Post, Body, Get, Param, Query } from '@nestjs/common'
+import { Controller, Post, Body, Get, Param, Query, Put } from '@nestjs/common'
 
 @Controller('category')
 export class CategoryController {
-  constructor(private readonly metaService: MetaService) {}
+  constructor(private readonly metaService: MetaService, private articleService: ArticleService) {}
 
   @Auth()
   @Post()
@@ -13,18 +14,24 @@ export class CategoryController {
     return this.metaService.save(category, 'category')
   }
 
+  @Auth()
+  @Put(':name')
+  update(@Param('name') name: string, @Body() category: MetaDto) {
+    return this.metaService.update(name, category, 'category')
+  }
+
   @Get('all')
   getAll() {
-    return this.metaService.getListAndCount('category')
+    return this.metaService.getListAndArticleCount('category')
   }
 
   @Get(':name')
-  getDetails(@Param('name') name: string) {
+  getCategory(@Param('name') name: string) {
     return this.metaService.getDetails(name)
   }
 
-  @Get(':name/list')
-  getArticleList(@Param('name') name: string, @Query() pagination: PaginationDto) {
-    return this.metaService.getArticleList(name, pagination)
+  @Get(':name/article')
+  getCategoryArticleList(@Param('name') name: string, @Query() pagination: PaginationDto) {
+    return this.articleService.getMetaArticle(name, pagination)
   }
 }
