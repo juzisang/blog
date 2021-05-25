@@ -3,10 +3,10 @@
   import type { Preload } from '@sapper/common'
 
   export const preload: Preload = async function (this, page, session) {
-    const userInfo = await fetchGet<IUserInfo>('/user/info')
+    const userInfo = await fetchGet<IUserInfo>('/user')
     const categoryList = await fetchGet<ICategory[]>('/category/all')
     const tagList = await fetchGet<ITag[]>('/tag/all')
-    const archiveList = await fetchGet<IArchive>('/archive/all')
+    const archiveList = await fetchGet<IArchive>('/article/archive')
     const recentList = await fetchGet('/article/recent')
 
     return { userInfo, categoryList, tagList, archiveList, recentList }

@@ -6,8 +6,8 @@
     <div class="navbar-menu">
       <div class="navbar-start">
         <a class="navbar-item" href="/">首页</a>
-        <a class="navbar-item" href="/archives">归档</a>
-        <a class="navbar-item" href="/tags">标签</a>
+        <a class="navbar-item" href="/archive">归档</a>
+        <a class="navbar-item" href="/tag">标签</a>
         <a class="navbar-item" href="/links">友链</a>
       </div>
       <div class="navbar-end">

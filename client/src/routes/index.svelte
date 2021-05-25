@@ -3,7 +3,7 @@
   import type { Preload } from '@sapper/common'
 
   export const preload: Preload = async function (this, page, session) {
-    const articleResult = await fetchGet<IArticleListResult>('/article/list')
+    const articleResult = await fetchGet<IArticleListResult>('/article')
 
     return {
       articleResult,
