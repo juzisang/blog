@@ -2,7 +2,7 @@ import { MetaDto, PaginationDto } from '@app/app.dto'
 import { MetaService } from '@app/service/meta.service'
 import { ArticleService } from '@app/service/article.service'
 import { Auth } from '@app/util/auth.decorator'
-import { Controller, Post, Body, Get, Param, Query, Put } from '@nestjs/common'
+import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common'
 
 @Controller('category')
 export class CategoryController {
@@ -28,10 +28,5 @@ export class CategoryController {
   @Get(':name')
   getCategory(@Param('name') name: string) {
     return this.metaService.getDetails(name)
-  }
-
-  @Get(':name/article')
-  getCategoryArticleList(@Param('name') name: string, @Query() pagination: PaginationDto) {
-    return this.articleService.getMetaArticle(name, pagination)
   }
 }

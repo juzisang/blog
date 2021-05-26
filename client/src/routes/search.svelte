@@ -1,10 +1,13 @@
 <script lang="ts">
+import { getTitle } from "../utils/utils";
+
+
 </script>
 
 <p>搜索</p>
 
 <svelte:head>
-  <title>搜索 | 橘子的Blog</title>
+  <title>{getTitle('搜索')}</title>
 </svelte:head>
 
 <style lang="less">

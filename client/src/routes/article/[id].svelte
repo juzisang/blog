@@ -13,12 +13,13 @@
 
 <script lang="ts">
   import type { IArticleResult } from '../../api.interface'
+import { getTitle } from '../../utils/utils';
 
   export let articleResult: IArticleResult
 </script>
 
 <svelte:head>
-  <title>{articleResult.title} | 橘子的Blog</title>
+  <title>{getTitle(articleResult.title)}</title>
   <meta content={articleResult.description} name="description" />
 </svelte:head>
 

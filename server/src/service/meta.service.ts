@@ -7,7 +7,7 @@ import { Repository } from 'typeorm'
 
 @Injectable()
 export class MetaService {
-  constructor(@InjectRepository(MetaEntity) private readonly metaEntity: Repository<MetaEntity>) {}
+  constructor(@InjectRepository(MetaEntity) private readonly metaEntity: Repository<MetaEntity>, @InjectRepository(ArticleMetaRelationEntity) private readonly articleMetaRelationEntity: Repository<ArticleMetaRelationEntity>) {}
 
   getAll(type: 'tag' | 'category') {
     return this.metaEntity.find({ type })
@@ -26,8 +26,13 @@ export class MetaService {
     return this.metaEntity.count({ type })
   }
 
-  getDetails(name: string) {
-    return this.metaEntity.findOne({ name })
+  async getDetails(name: string) {
+    const meta = await this.metaEntity.findOne({ name })
+    const articleCount = await this.articleMetaRelationEntity.count({ where: { metaId: meta.id } })
+    return {
+      ...meta,
+      articleCount,
+    }
   }
 
   getListAndArticleCount(type: 'tag' | 'category') {

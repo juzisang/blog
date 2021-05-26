@@ -85,10 +85,10 @@ export class PaginationDto {
 
 export class IArticleFilterDto extends PaginationDto {
   @IsOptional()
-  @IsNumberString()
+  @IsString()
   tag?: string
 
   @IsOptional()
-  @IsNumberString()
+  @IsString()
   category?: string
 }

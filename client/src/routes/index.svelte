@@ -14,6 +14,7 @@
 <script lang="ts">
   import type { IArticleListResult } from '../api.interface'
   import ArticleItem from '../components/ArticleItem.svelte'
+  import { getTitle } from '../utils/utils'
 
   export let articleResult: IArticleListResult
 </script>
@@ -23,7 +24,7 @@
 {/each}
 
 <svelte:head>
-  <title>橘子的Blog</title>
+  <title>{getTitle()}</title>
 </svelte:head>
 
 <style lang="less">

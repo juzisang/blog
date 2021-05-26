@@ -1,4 +1,4 @@
-import { ArticleDto, PaginationDto } from '@app/app.dto'
+import { ArticleDto, IArticleFilterDto, PaginationDto } from '@app/app.dto'
 import { ArticleEntity } from '@app/entity/article.entity'
 import { ArticleMetaRelationEntity } from '@app/entity/article_meta_relation.entity'
 import { UserEntity } from '@app/entity/user.entity'
@@ -45,29 +45,26 @@ export class ArticleService {
     return this.articleEntity.findOne({ relations: ['user'], select: ['id', 'thumb', 'title', 'utime', 'ctime', 'views', 'description', 'contentHtml'], where: { id } })
   }
 
-  async getPagingList({ page, pageSize }: PaginationDto) {
+  async getPagingList({ page, pageSize }: IArticleFilterDto) {
     page = parseInt((page || 1).toString())
     pageSize = parseInt((pageSize || 10).toString())
 
-    const [originaList, count] = await this.articleEntity
+    const query = this.articleEntity
       .createQueryBuilder('article')
-      .addSelect('meta.type')
       .addSelect('article.ctime')
       .leftJoin(ArticleMetaRelationEntity, 'relation', 'article.id=relation.articleId')
-      .leftJoinAndMapMany('article.metas', MetaEntity, 'meta', 'relation.meta_id=meta.id')
+      // .leftJoinAndMapMany('article.tags', MetaEntity, 'tag', `relation.meta_id=tag.id AND tag.type=:type1`, { type1: 'tag' })
+      // .leftJoinAndMapOne('article.category', MetaEntity, 'category', `relation.meta_id=category.id AND category.type=:type2`, { type2: 'category' })
       .where('article.state=:state', { state: 'online' })
+
+    // if (tag) query.andWhere('tag.name=:tag', { tag })
+    // if (category) query.andWhere('category.name=:category', { category })
+
+    const [list, count] = await query
       .skip((page - 1) * pageSize)
       .take(pageSize)
       .orderBy('article.id', 'DESC')
       .getManyAndCount()
-
-    const list = originaList.map((item: any) => {
-      const excludeKeys = ['type', 'ctime', 'utime']
-      const tags = item.metas.filter(v => v.type === 'tag').map(v => _.omit(v, excludeKeys))
-      const findCategory = item.metas.find(v => v.type === 'category')
-      const category = _.omit(findCategory, excludeKeys)
-      return _.omit({ ...item, tags, category }, 'metas')
-    })
 
     return { list, page, pageSize, count }
   }
@@ -101,22 +98,6 @@ export class ArticleService {
       .skip(0)
       .take(4)
       .getMany()
-  }
-
-  async getMetaArticle(name: string, { page, pageSize }: PaginationDto) {
-    page = parseInt((page || 1).toString())
-    pageSize = parseInt((pageSize || 10).toString())
-
-    const meta = await this.metaEntity.findOne({ name })
-    const [list, count] = await this.articleEntity
-      .createQueryBuilder('article')
-      .leftJoin(ArticleMetaRelationEntity, 'relation', 'article.id=relation.articleId')
-      .where('relation.meta_id=:id', { id: meta.id })
-      .skip((page - 1) * pageSize)
-      .take(pageSize)
-      .orderBy('article.id', 'DESC')
-      .getManyAndCount()
-    return { list, page, pageSize, count }
   }
 
   private renderHtml(str) {

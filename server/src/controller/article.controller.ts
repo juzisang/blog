@@ -1,4 +1,4 @@
-import { ArticleDto, PaginationDto } from '@app/app.dto'
+import { ArticleDto, IArticleFilterDto, PaginationDto } from '@app/app.dto'
 import { ArticleService } from '@app/service/article.service'
 import { Auth } from '@app/util/auth.decorator'
 import { Controller, Post, Body, Get, Req, Param, Query, Put } from '@nestjs/common'
@@ -20,7 +20,7 @@ export class ArticleController {
   }
 
   @Get()
-  getList(@Query() pagination: PaginationDto) {
+  getList(@Query() pagination: IArticleFilterDto) {
     return this.articleService.getPagingList(pagination)
   }
 
@@ -37,6 +37,16 @@ export class ArticleController {
   @Get('archive/year/:year')
   getYearArchives(@Param('year') year: string) {
     return this.articleService.getArchive(year)
+  }
+
+  @Get('category/:name')
+  getCategoryArticleList(@Param('name') name: string, @Query() pagination: PaginationDto) {
+    return this.articleService.getPagingList({ ...pagination, category: name })
+  }
+
+  @Get('tag/:name')
+  getTagArticleList(@Param('name') name: string, @Query() pagination: PaginationDto) {
+    return this.articleService.getPagingList({ ...pagination, tag: name })
   }
 
   @Get(':id')
