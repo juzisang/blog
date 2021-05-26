@@ -88,7 +88,9 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER_NAME }}
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: sudo env VERSION=${{ steps.meta.outputs.version }} docker stack deploy -c ./sites-manage/blog-frontend-compose.yml blog_frontend
+        command: |
+          sed -i 's/blog-front-end:sha-[0-9a-z]\{7\}/blog-front-end:${{ steps.meta.outputs.version }}/' ./sites-manage/blog-nodejs-compose.yml
+          sudo docker stack deploy -c ./sites-manage/blog-nodejs-compose.yml blog_nodejs
 
     - if: ${{ github.ref == 'refs/heads/test' }}
       name: Deploy Test Server
@@ -97,4 +99,6 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER_NAME }}
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: sudo env VERSION=${{ steps.meta.outputs.version }} docker stack deploy -c ./sites-manage/blog-frontend-test-compose.yml blog_frontend_test
+        command: |
+          sed -i 's/blog-front-end:sha-[0-9a-z]\{7\}/blog-front-end:${{ steps.meta.outputs.version }}/' ./sites-manage/blog-nodejs-test-compose.yml
+          sudo docker stack deploy -c ./sites-manage/blog-nodejs-test-compose.yml blog_nodejs_test
