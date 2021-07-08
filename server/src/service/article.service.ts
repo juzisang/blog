@@ -1,4 +1,4 @@
-import { ArticleDto, IArticleFilterDto, PaginationDto } from '@app/app.dto'
+import { ArticleDto, IArticleFilterDto } from '@app/app.dto'
 import { ArticleEntity } from '@app/entity/article.entity'
 import { ArticleMetaRelationEntity } from '@app/entity/article_meta_relation.entity'
 import { UserEntity } from '@app/entity/user.entity'
@@ -9,6 +9,7 @@ import marked from 'marked'
 import highlight from 'highlight.js'
 import { MetaEntity } from '@app/entity/meta.entity'
 import _ from 'lodash'
+import assert from 'assert'
 
 export class ArticleService {
   constructor(
@@ -27,7 +28,7 @@ export class ArticleService {
 
   async update(id: string, dto: ArticleDto) {
     const article = await this.articleEntity.findOne(dto.id)
-    if (!article) throw new NotFoundException('文章不存在')
+    assert.ok(article, new NotFoundException('文章不存在'))
     await this.articleMetaRelationEntity.delete({ articleId: dto.id })
     const relations = this.articleMetaRelationEntity.create([...dto.tags, dto.category].filter(v => v).map(v => ({ articleId: dto.id, metaId: v })))
     await this.articleMetaRelationEntity.save(relations)
@@ -53,12 +54,9 @@ export class ArticleService {
       .createQueryBuilder('article')
       .addSelect('article.ctime')
       .leftJoin(ArticleMetaRelationEntity, 'relation', 'article.id=relation.articleId')
-      // .leftJoinAndMapMany('article.tags', MetaEntity, 'tag', `relation.meta_id=tag.id AND tag.type=:type1`, { type1: 'tag' })
-      // .leftJoinAndMapOne('article.category', MetaEntity, 'category', `relation.meta_id=category.id AND category.type=:type2`, { type2: 'category' })
+      // .leftJoinAndMapMany('article.tags', qb => qb.select().from(MetaEntity, 'tag'), 'tag', `relation.meta_id=tag.id AND tag.type=:type1`, { type1: 'tag' })
+      // .leftJoinAndMapOne('article.category', qb => qb.select().from(MetaEntity, 'category'), 'category', `relation.meta_id=category.id AND category.type=:type2`, { type2: 'category' })
       .where('article.state=:state', { state: 'online' })
-
-    // if (tag) query.andWhere('tag.name=:tag', { tag })
-    // if (category) query.andWhere('category.name=:category', { category })
 
     const [list, count] = await query
       .skip((page - 1) * pageSize)

@@ -14,4 +14,5 @@ export const config = {
   JWT_SECRET: process.env.JWT_SECRET,
   USER_ADMIN_NAME: process.env.USER_ADMIN_NAME,
   USER_ADMIN_PASSWORD: process.env.USER_ADMIN_PASSWORD,
+  AUTHOR_NAME: process.env.AUTHOR_NAME,
 }

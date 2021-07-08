@@ -1,4 +1,4 @@
-import { MetaDto, PaginationDto } from '@app/app.dto'
+import { MetaDto } from '@app/app.dto'
 import { MetaService } from '@app/service/meta.service'
 import { ArticleService } from '@app/service/article.service'
 import { Auth } from '@app/util/auth.decorator'

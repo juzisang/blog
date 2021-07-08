@@ -5,8 +5,6 @@ import helmet from 'helmet'
 import { config } from './app.config'
 import { TransformInterceptor } from './util/transform.interceptor'
 
-console.log('config:', config)
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {})
   // 设置路由前缀

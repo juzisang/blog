@@ -10,11 +10,11 @@ export interface IHttpResponse<T> {
 
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor {
-  intercept (context: ExecutionContext, next: CallHandler<any>): Observable<IHttpResponse<T>> {
+  intercept(context: ExecutionContext, next: CallHandler<any>): Observable<IHttpResponse<T>> {
     return next.handle().pipe(map(data => this.transformResponse(data)))
   }
 
-  transformResponse (data: any) {
+  transformResponse(data: any) {
     return {
       statusCode: 200,
       message: 'ok',

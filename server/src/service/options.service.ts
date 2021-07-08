@@ -11,7 +11,7 @@ export class OptionsService {
   async save(options: OptionDto[]) {
     this.optionsEntity.find({})
     const existsOptions = await this.optionsEntity.find({ key: In(options.map(v => v.key)) })
-    const updateOptions = options.map((v) => ({ ...existsOptions.find(item => item.key === v.key), ...v }))
+    const updateOptions = options.map(v => ({ ...existsOptions.find(item => item.key === v.key), ...v }))
     await this.optionsEntity.save(updateOptions)
   }
 

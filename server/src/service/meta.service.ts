@@ -1,8 +1,9 @@
 import { MetaDto } from '@app/app.dto'
 import { ArticleMetaRelationEntity } from '@app/entity/article_meta_relation.entity'
 import { MetaEntity } from '@app/entity/meta.entity'
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import assert from 'assert'
 import { Repository } from 'typeorm'
 
 @Injectable()
@@ -14,6 +15,7 @@ export class MetaService {
   }
 
   async save(dto: MetaDto, type: 'tag' | 'category') {
+    assert.ok(!(await this.metaEntity.findOne({ ...dto, type })), new BadRequestException(`${type} ${dto.name}已存在`))
     await this.metaEntity.save(this.metaEntity.create({ ...dto, type }))
   }
 
@@ -29,10 +31,7 @@ export class MetaService {
   async getDetails(name: string) {
     const meta = await this.metaEntity.findOne({ name })
     const articleCount = await this.articleMetaRelationEntity.count({ where: { metaId: meta.id } })
-    return {
-      ...meta,
-      articleCount,
-    }
+    return { ...meta, articleCount }
   }
 
   getListAndArticleCount(type: 'tag' | 'category') {
