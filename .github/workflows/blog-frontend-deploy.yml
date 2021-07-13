@@ -108,13 +108,13 @@ jobs:
       uses: yakumioto/serverchan-action@v2
       with:
         key: ${{ secrets.SERVERCHAN_KEY  }}
-        text: Blog前端部署到线上环境成功
-        desp: 版本号：blog-front-end:${{ steps.meta.outputs.version }}
+        text: 部署通知
+        desp: Blog前端部署到线上环境，版本号：blog-front-end:${{ steps.meta.outputs.version }}
     
     - if: ${{ github.ref == 'refs/heads/test' && success() }}
       name: ServerTestPushMessage
       uses: yakumioto/serverchan-action@v2
       with:
         key: ${{ secrets.SERVERCHAN_KEY  }}
-        text: Blog前端部署到测试环境成功
-        desp: 版本号：blog-front-end:${{ steps.meta.outputs.version }}
+        text: 部署通知
+        desp: Blog前端部署到测试环境，版本号：blog-front-end:${{ steps.meta.outputs.version }}
