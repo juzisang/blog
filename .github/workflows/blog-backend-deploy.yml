@@ -95,3 +95,16 @@ jobs:
         command: |
           sed -i 's/blog-back-end:sha-[0-9a-z]\{7\}/blog-back-end:${{ steps.meta.outputs.version }}/' ./sites-manage/blog-nodejs-test-compose.yml
           sudo docker stack deploy -c ./sites-manage/blog-nodejs-test-compose.yml blog_nodejs_test
+    - name: ServerPushMessage
+      if: ${{ github.ref == 'refs/heads/master' && success() }}
+      uses: yakumioto/serverchan-action@v2
+      with:
+        key: ${{ secrets.SERVERCHAN_KEY  }}
+        text: Blog服务端部署到线上环境成功
+        desp: 版本号：blog-back-end:${{ steps.meta.outputs.version }}
+      if: ${{ github.ref == 'refs/heads/test' && success() }}
+      uses: yakumioto/serverchan-action@v2
+      with:
+        key: ${{ secrets.SERVERCHAN_KEY  }}
+        text: Blog服务端部署到测试环境成功
+        desp: 版本号：blog-back-end:${{ steps.meta.outputs.version }}
