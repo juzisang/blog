@@ -103,14 +103,16 @@ jobs:
           sed -i 's/blog-front-end:sha-[0-9a-z]\{7\}/blog-front-end:${{ steps.meta.outputs.version }}/' ./sites-manage/blog-nodejs-test-compose.yml
           sudo docker stack deploy -c ./sites-manage/blog-nodejs-test-compose.yml blog_nodejs_test
 
-    - name: ServerPushMessage
-      if: ${{ github.ref == 'refs/heads/master' && success() }}
+    - if: ${{ github.ref == 'refs/heads/master' && success() }}
+      name: ServerMasterPushMessage
       uses: yakumioto/serverchan-action@v2
       with:
         key: ${{ secrets.SERVERCHAN_KEY  }}
         text: Blog前端部署到线上环境成功
         desp: 版本号：blog-front-end:${{ steps.meta.outputs.version }}
-      if: ${{ github.ref == 'refs/heads/test' && success() }}
+    
+    - if: ${{ github.ref == 'refs/heads/test' && success() }}
+      name: ServerTestPushMessage
       uses: yakumioto/serverchan-action@v2
       with:
         key: ${{ secrets.SERVERCHAN_KEY  }}
