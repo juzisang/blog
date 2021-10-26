@@ -1,6 +1,6 @@
 import { CommentController } from './controller/comment.controller'
 import { CommentService } from './service/comment.service'
-import { Module, OnModuleInit } from '@nestjs/common'
+import { CacheModule, Module, OnModuleInit } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
@@ -29,6 +29,7 @@ const entities = [ArticleEntity, OptionsEntity, UserEntity, TagEntity, CategoryE
 @Module({
   imports: [
     PassportModule,
+    CacheModule.register(),
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: config.JWT_SECRET,

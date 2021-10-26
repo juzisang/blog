@@ -12,8 +12,8 @@ export class TagService {
     return this.tagEntity.find()
   }
 
-  getDetails(id: number) {
-    return this.tagEntity.findOne(id, { relations: ['articles'] })
+  getDetails(name: string) {
+    return this.tagEntity.findOne({ name }, { relations: ['articles'] })
   }
 
   async save(dto: MetaDto) {

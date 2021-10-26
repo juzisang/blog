@@ -1,13 +1,14 @@
 import { ArticleDto, PaginationDto } from '@app/app.dto'
 import { ArticleService } from '@app/service/article.service'
 import { Auth } from '@app/util/auth.decorator'
-import { Controller, Post, Body, Get, Req, Param, Query } from '@nestjs/common'
+import { Controller, Post, Body, Get, Req, Param, Query, UseInterceptors, CacheInterceptor } from '@nestjs/common'
 
 @Controller('article')
+@UseInterceptors(CacheInterceptor)
 export class ArticleController {
   constructor(private articleService: ArticleService) {}
 
-  @Get('list')
+  @Get()
   getList(@Query() pagination: PaginationDto) {
     return this.articleService.getList(pagination)
   }
@@ -15,6 +16,16 @@ export class ArticleController {
   @Get(':id')
   getDetails(@Param('id') pid) {
     return this.articleService.getDetails(pid)
+  }
+
+  @Get('category/:name')
+  getCategoryByList(@Param('name') name: string, @Query() pagination: PaginationDto) {
+    return this.articleService.getCategoryByList(name, pagination)
+  }
+
+  @Get('tag/:name')
+  getTagByList(@Param('name') name: string, @Query() pagination: PaginationDto) {
+    return this.articleService.getTagByList(name, pagination)
   }
 
   @Auth()

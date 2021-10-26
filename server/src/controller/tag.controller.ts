@@ -12,9 +12,9 @@ export class TagController {
     return this.tagService.getAll()
   }
 
-  @Get(':id/articles')
-  getCategoryAndArticles(@Param('id') id) {
-    return this.tagService.getDetails(id)
+  @Get(':name')
+  getCategoryAndArticles(@Param('name') name: string) {
+    return this.tagService.getDetails(name)
   }
 
   @Auth()

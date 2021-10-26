@@ -8,7 +8,11 @@ import { TagEntity } from '@app/entity/tag.entity'
 import { CategoryEntity } from '@app/entity/category.entity'
 
 export class ArticleService {
-  constructor(@InjectRepository(ArticleEntity) private readonly articleEntity: Repository<ArticleEntity>, @InjectRepository(TagEntity) private readonly tagEntity: Repository<TagEntity>, @InjectRepository(CategoryEntity) private readonly categoryEntity: Repository<CategoryEntity>) {}
+  constructor(
+    @InjectRepository(ArticleEntity) private readonly articleEntity: Repository<ArticleEntity>,
+    @InjectRepository(TagEntity) private readonly tagEntity: Repository<TagEntity>,
+    @InjectRepository(CategoryEntity) private readonly categoryEntity: Repository<CategoryEntity>, // @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
 
   async getDetails(id: number) {
     return this.articleEntity.findOne(id, { relations: ['user', 'tags', 'category', 'comments'], select: ['content'] })
@@ -24,6 +28,28 @@ export class ArticleService {
     page = parseInt((page || 1).toString())
     pageSize = parseInt((pageSize || 10).toString())
     const [list, count] = await this.articleEntity.findAndCount({ relations: ['tags', 'category'], skip: (page - 1) * pageSize, take: pageSize })
+    return { list, page, pageSize, count }
+  }
+
+  async getCategoryByList(name: string, { page, pageSize }: PaginationDto) {
+    page = parseInt((page || 1).toString())
+    pageSize = parseInt((pageSize || 10).toString())
+
+    const category = await this.categoryEntity.findOne({ name })
+
+    const [list, count] = await this.articleEntity.findAndCount({ where: { category }, relations: ['tags', 'category'], skip: (page - 1) * pageSize, take: pageSize })
+
+    return { list, page, pageSize, count }
+  }
+
+  async getTagByList(name: string, { page, pageSize }: PaginationDto) {
+    page = parseInt((page || 1).toString())
+    pageSize = parseInt((pageSize || 10).toString())
+
+    const tags = await this.tagEntity.find({ name })
+
+    const [list, count] = await this.articleEntity.findAndCount({ where: { tags }, relations: ['tags', 'category'], skip: (page - 1) * pageSize, take: pageSize })
+
     return { list, page, pageSize, count }
   }
 
