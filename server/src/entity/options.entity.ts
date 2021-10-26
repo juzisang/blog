@@ -14,5 +14,4 @@ export class OptionsEntity extends BaseEntity {
 
   @Column({ comment: 'value', nullable: true })
   value: string
-  
 }

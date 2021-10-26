@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import { ArticleEntity } from './article.entity'
 import { BaseEntity } from './base.entity'
 
 @Entity('user')
@@ -9,11 +10,8 @@ export class UserEntity extends BaseEntity {
   @Column({ comment: '账号', unique: true })
   username: string
 
-  @Column({ comment: '密码', select: false, nullable: true })
+  @Column({ comment: '密码', select: false })
   password: string
-
-  @Column({ comment: '用户类型', type: 'enum', enum: ['master', 'follower'], default: 'follower' })
-  type: 'master' | 'follower'
 
   @Column({ comment: '头像', nullable: true })
   avatar: string
@@ -26,4 +24,10 @@ export class UserEntity extends BaseEntity {
 
   @Column({ comment: '邮箱', nullable: true })
   mail: string
+
+  @OneToMany(
+    () => ArticleEntity,
+    article => article.user,
+  )
+  articles: ArticleEntity[]
 }

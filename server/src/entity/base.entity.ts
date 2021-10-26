@@ -1,20 +1,9 @@
-import * as dayjs from 'dayjs'
-import { CreateDateColumn, UpdateDateColumn, ValueTransformer } from 'typeorm'
-
-class ReadDateFormat implements ValueTransformer {
-  constructor(private readonly formatstr: string = 'YYYY-MM-DD') {}
-  to(value: any) {
-    return value
-  }
-  from(value: any) {
-    return dayjs(value).format(this.formatstr)
-  }
-}
+import { CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
 export class BaseEntity {
-  @CreateDateColumn({ comment: '创建时间', transformer: new ReadDateFormat(), select: false })
-  ctime: Date
+  @CreateDateColumn({ type: 'timestamp', comment: '创建时间', select: false })
+  ctime: number
 
-  @UpdateDateColumn({ comment: '修改时间', transformer: new ReadDateFormat(), select: false })
-  utime: Date
+  @UpdateDateColumn({ type: 'timestamp', comment: '修改时间', select: false })
+  utime: number
 }

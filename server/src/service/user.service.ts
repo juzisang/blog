@@ -18,7 +18,7 @@ export class UserService {
   public async initAdmin() {
     const user = await this.userEntity.findOne({ username: config.USER_ADMIN_NAME })
     if (!user) {
-      await this.register({ username: config.USER_ADMIN_NAME, password: config.USER_ADMIN_PASSWORD }, 'master')
+      await this.register({ username: config.USER_ADMIN_NAME, password: config.USER_ADMIN_PASSWORD })
     }
   }
 
@@ -37,14 +37,13 @@ export class UserService {
     return { token: await this.jwtService.sign({ id: user.id }) }
   }
 
-  public async register(userDto: UserDto, type: 'master' | 'follower' = 'follower') {
+  public async register(userDto: UserDto) {
     if (await this.userEntity.findOne(userDto.username)) {
       throw new BadRequestException('用户已存在')
     }
     await this.userEntity.save(
       this.userEntity.create({
         ...userDto,
-        type,
         password: this.encryptionPassword(userDto.password),
       }),
     )

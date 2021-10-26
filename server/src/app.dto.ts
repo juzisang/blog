@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString, IsOptional, isString, IsNumberString, IsUrl } from 'class-validator'
+import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString, IsOptional, IsNumberString, IsUrl } from 'class-validator'
 
 export class UserDto {
   @IsNotEmpty()
@@ -81,4 +81,26 @@ export class PaginationDto {
   @IsOptional()
   @IsNumberString()
   pageSize: string | number
+}
+
+export class CommentDto {
+  @IsNotEmpty()
+  @IsNumber()
+  articleId: number
+
+  @IsNotEmpty()
+  @IsString()
+  nickname: string
+
+  @IsNotEmpty()
+  @IsString()
+  mail: string
+
+  @IsOptional()
+  @IsUrl()
+  siteUrl: string
+
+  @IsNotEmpty()
+  @IsString()
+  content: string
 }

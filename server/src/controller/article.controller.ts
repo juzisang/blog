@@ -13,13 +13,13 @@ export class ArticleController {
   }
 
   @Get(':id')
-  getArticle(@Param('id') pid) {
-    return this.articleService.getOne(pid)
+  getDetails(@Param('id') pid) {
+    return this.articleService.getDetails(pid)
   }
 
   @Auth()
   @Post()
-  saveArticle(@Body() dto: ArticleDto, @Req() req) {
+  add(@Body() dto: ArticleDto, @Req() req) {
     return this.articleService.save(dto, req.user)
   }
 }

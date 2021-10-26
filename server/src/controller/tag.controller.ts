@@ -1,20 +1,25 @@
 import { MetaDto } from '@app/app.dto'
-import { MetaService } from '@app/service/meta.service'
+import { TagService } from '@app/service/tag.service'
 import { Auth } from '@app/util/auth.decorator'
-import { Controller, Post, Body, Get, Put } from '@nestjs/common'
+import { Controller, Post, Body, Get, Param } from '@nestjs/common'
 
 @Controller('tag')
 export class TagController {
-  constructor(private readonly metaService: MetaService) {}
+  constructor(private readonly tagService: TagService) {}
 
-  @Get('list')
+  @Get()
   getAll() {
-    return this.metaService.getList('tag')
+    return this.tagService.getAll()
+  }
+
+  @Get(':id/articles')
+  getCategoryAndArticles(@Param('id') id) {
+    return this.tagService.getDetails(id)
   }
 
   @Auth()
   @Post()
   save(@Body() tag: MetaDto) {
-    return this.metaService.save(tag, 'tag')
+    return this.tagService.save(tag)
   }
 }

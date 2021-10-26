@@ -1,20 +1,25 @@
 import { MetaDto } from '@app/app.dto'
-import { MetaService } from '@app/service/meta.service'
+import { CategoryService } from '@app/service/category.service'
 import { Auth } from '@app/util/auth.decorator'
-import { Controller, Post, Body, Get, Put } from '@nestjs/common'
+import { Controller, Post, Body, Get, Param } from '@nestjs/common'
 
 @Controller('category')
 export class CategoryController {
-  constructor(private readonly metaService: MetaService) {}
+  constructor(private readonly categoryService: CategoryService) {}
 
-  @Get('list')
+  @Get()
   getAll() {
-    return this.metaService.getList('category')
+    return this.categoryService.getAll()
+  }
+
+  @Get(':id/articles')
+  getCategoryAndArticles(@Param('id') id) {
+    return this.categoryService.getDetails(id)
   }
 
   @Auth()
   @Post()
   save(@Body() category: MetaDto) {
-    return this.metaService.save(category, 'category')
+    return this.categoryService.save(category)
   }
 }
