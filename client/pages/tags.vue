@@ -1,5 +1,5 @@
 <template>
-  <div class="index">index</div>
+  <div class="tags">tags</div>
 </template>
 
 <script setup>

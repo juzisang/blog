@@ -1,5 +1,5 @@
 <template>
-  <div class="index">index</div>
+  <div class="archives">archives</div>
 </template>
 
 <script setup>

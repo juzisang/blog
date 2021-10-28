@@ -1,11 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --port 4000",
     "build": "nuxt build",
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "nuxt3": "latest"
+    "nuxt3": "latest",
+    "sass": "^1.43.4"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1"
   }
 }

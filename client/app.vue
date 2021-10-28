@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <!-- Remove this component to get started! -->
-    <NuxtWelcome />
-  </div>
+  <NuxtPage />
 </template>
+
+<script setup>
+</script>
+
+<style lang="scss">
+@import './assets/reset.scss';
+@import './assets/global.scss';
+</style>
