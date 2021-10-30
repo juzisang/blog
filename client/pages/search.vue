@@ -2,5 +2,8 @@
   <div class="search">search</div>
 </template>
 
-<script setup>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({})
 </script>

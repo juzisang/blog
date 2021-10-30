@@ -1,11 +1,15 @@
 <template>
   <NuxtPage />
 </template>
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-<script setup>
+export default defineComponent({
+  setup() {},
+})
 </script>
 
+
 <style lang="scss">
-@import './assets/reset.scss';
-@import './assets/global.scss';
+@import './assets/tailwind.scss';
 </style>

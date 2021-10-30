@@ -6,10 +6,16 @@
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "nuxt-windicss": "^2.0.0-7",
     "nuxt3": "latest",
-    "sass": "^1.43.4"
+    "postcss": "^8.3.11",
+    "sass": "^1.43.4",
+    "tailwindcss": "^2.2.17"
   },
   "dependencies": {
+    "github-markdown-css": "^5.0.0",
+    "highlight.js": "^11.3.1",
     "normalize.css": "^8.0.1"
   }
 }

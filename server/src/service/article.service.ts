@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { TagEntity } from '@app/entity/tag.entity'
 import { CategoryEntity } from '@app/entity/category.entity'
+import * as marked from 'marked'
 
 export class ArticleService {
   constructor(
@@ -15,7 +16,12 @@ export class ArticleService {
   ) {}
 
   async getDetails(id: number) {
-    return this.articleEntity.findOne(id, { relations: ['user', 'tags', 'category', 'comments'], select: ['content'] })
+    return this.articleEntity.findOne(id, { relations: ['user', 'tags', 'category'], select: ['description', 'content', 'title', 'thumb', 'ctime', 'viewNumber', 'giveNumber', 'utime'] }).then(res => {
+      return {
+        ...res,
+        content: marked(res.content),
+      }
+    })
   }
 
   async addViewsNumber(id: number) {

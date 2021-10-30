@@ -1,9 +1,10 @@
-import { CommentDto } from '@app/app.dto'
+import { CommentDto, PaginationDto } from '@app/app.dto'
 import { ArticleEntity } from '@app/entity/article.entity'
 import { CommentEntity } from '@app/entity/comment.entity'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import * as gravatar from 'gravatar'
 
 @Injectable()
 export class CommentService {
@@ -15,5 +16,13 @@ export class CommentService {
       article: article,
       ...dto,
     })
+  }
+
+  async getList(id: number, { page, pageSize }: PaginationDto) {
+    page = parseInt((page || 1).toString())
+    pageSize = parseInt((pageSize || 10).toString())
+    const article = this.articleEntity.create({ id })
+    const [list, count] = await this.commentEntity.findAndCount({ where: { article }, skip: (page - 1) * pageSize, take: pageSize })
+    return { list: list.map(item => ({ ...item, avatar: gravatar.url(item.mail) })), page, pageSize, count }
   }
 }

@@ -1,9 +1,16 @@
 {
+  "git.enabled": true,
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "git.enabled": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "remote.SSH.defaultForwardedPorts": [
+    {
+      "name": "server",
+      "localPort": 3000,
+      "remotePort": 3000
+    }
+  ]
 }

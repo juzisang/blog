@@ -1,16 +1,14 @@
-<script setup>
-</script>
-
 <template>
-  <footer class="footer">
-    <div class="controller">这是底部</div>
+  <footer class="footer bg-gray-800 text-gray-100 py-12">
+    <div class="container px-4 mx-auto">这是底部</div>
   </footer>
 </template>
 
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({})
+</script>
+
 <style lang="scss" scoped>
-.footer {
-  padding: 50px 0;
-  color: rgba(255, 255, 255, 0.7);
-  background: #2d3236;
-}
 </style>
