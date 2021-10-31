@@ -13,11 +13,6 @@ export class ArticleController {
     return this.articleService.getList(pagination)
   }
 
-  @Get(':id')
-  getDetails(@Param('id') pid) {
-    return this.articleService.getDetails(pid)
-  }
-
   @Get('category/:name')
   getCategoryByList(@Param('name') name: string, @Query() pagination: PaginationDto) {
     return this.articleService.getCategoryByList(name, pagination)
@@ -26,6 +21,16 @@ export class ArticleController {
   @Get('tag/:name')
   getTagByList(@Param('name') name: string, @Query() pagination: PaginationDto) {
     return this.articleService.getTagByList(name, pagination)
+  }
+
+  @Get('hot')
+  getHot() {
+    return this.articleService.getHotByList()
+  }
+
+  @Get(':id')
+  getDetails(@Param('id') pid) {
+    return this.articleService.getDetails(pid)
   }
 
   @Auth()

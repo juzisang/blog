@@ -15,15 +15,5 @@ export default defineNuxtConfig({
         }
       }
     },
-  },
-  server: {
-    port: 4000
-  },
-  vite: {
-    server: {
-      watch: {
-        usePolling: true
-      }
-    }
   }
 })

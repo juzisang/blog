@@ -2,8 +2,8 @@
   "remote.SSH.defaultForwardedPorts": [
     {
       "name": "web",
-      "localPort": 4000,
-      "remotePort": 4000
+      "localPort": 3000,
+      "remotePort": 3000
     },
     {
       "name": "hot reload",

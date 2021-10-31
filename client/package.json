@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "nuxt dev --port 4000",
+    "dev": "nuxt dev",
     "build": "nuxt build",
     "start": "node .output/server/index.mjs"
   },

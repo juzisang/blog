@@ -9,8 +9,8 @@
   "remote.SSH.defaultForwardedPorts": [
     {
       "name": "server",
-      "localPort": 3000,
-      "remotePort": 3000
+      "localPort": 9000,
+      "remotePort": 9000
     }
   ]
 }

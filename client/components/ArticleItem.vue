@@ -22,7 +22,9 @@ import { IArticle } from '@/app.interface'
 
 export default defineComponent({
   props: {
-    type: Object as PropType<IArticle>,
+    item: {
+      type: Object as PropType<IArticle>,
+    },
   },
   setup() {},
 })

@@ -16,18 +16,13 @@ export class ArticleService {
   ) {}
 
   async getDetails(id: number) {
-    return this.articleEntity.findOne(id, { relations: ['user', 'tags', 'category'], select: ['description', 'content', 'title', 'thumb', 'ctime', 'viewNumber', 'giveNumber', 'utime'] }).then(res => {
+    await this.addViewsNumber(id)
+    return this.articleEntity.findOne(id, { relations: ['user', 'tags', 'category'], select: ['title', 'description', 'content', 'thumb', 'ctime', 'utime', 'viewNumber', 'giveNumber'] }).then(res => {
       return {
         ...res,
         content: marked(res.content),
       }
     })
-  }
-
-  async addViewsNumber(id: number) {
-    const article = await this.articleEntity.findOne(id)
-    article.viewNumber = article.viewNumber + 1
-    await this.articleEntity.save(article)
   }
 
   async getList({ page, pageSize }: PaginationDto) {
@@ -57,6 +52,10 @@ export class ArticleService {
     const [list, count] = await this.articleEntity.findAndCount({ where: { tags }, relations: ['tags', 'category'], skip: (page - 1) * pageSize, take: pageSize })
 
     return { list, page, pageSize, count }
+  }
+
+  async getHotByList() {
+    return this.articleEntity.find({ skip: 0, take: 5, order: { viewNumber: 'DESC' }, select: ['title', 'description', 'thumb', 'ctime', 'utime', 'viewNumber', 'giveNumber'] })
   }
 
   async save(dto: ArticleDto, user: UserEntity) {
@@ -104,5 +103,11 @@ export class ArticleService {
         category,
       }),
     )
+  }
+
+  async addViewsNumber(id: number) {
+    const article = await this.articleEntity.findOne(id)
+    article.viewNumber = article.viewNumber + 1
+    await this.articleEntity.save(article)
   }
 }

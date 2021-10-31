@@ -17,7 +17,9 @@ export default defineComponent({
   },
   async setup() {
     const { data } = await useData('/api/article')
-    return data
+    return {
+      data,
+    }
   },
 })
 </script>

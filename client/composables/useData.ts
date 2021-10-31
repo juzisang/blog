@@ -4,7 +4,7 @@ export interface IResponseData<T> {
   data: T
 }
 
-export const baseURL = 'http://127.0.0.1:3000'
+export const baseURL = 'http://127.0.0.1:9000'
 
 type UseFetch = typeof import('nuxt3/dist/app')['useFetch']
 
